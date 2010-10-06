@@ -54,10 +54,16 @@ def addkey(request):
 	if request.method == 'POST':
 		form = AddForm(request.POST)
 		if form.is_valid():
-			#form.save()
-			return HttpResponseRedirect('/postkey/success/')
+			form.save()
+			request.session['hostname'] = form.cleaned_data['name']
+			return HttpResponseRedirect('success')
 	else:
 		form = AddForm()
 	return render_to_response('postkey.html', {
 		'form': form,
 		}, context_instance=RequestContext(request))
+
+def success(request):
+	return render_to_response('success_submission.html', {
+		'hostname': request.session['hostname'],
+		})
