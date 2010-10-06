@@ -8,6 +8,10 @@ from web.postkey.models import i2phost
 import re
 
 class AddForm(ModelForm):
+	"""
+	This is our class for host-add form. It's based on django's ModelForm
+	and uses our model "i2phost" (see postkey/models.py)
+	"""
 	class Meta:
 		model = i2phost
 		fields = ('name', 'b64hash', 'description')
@@ -17,6 +21,10 @@ class AddForm(ModelForm):
 				'description': forms.Textarea(attrs={'rows': '2', 'cols': '72'})
 				}
 	def clean_name(self):
+		"""
+		Here we do additional hostname validation as described in
+		http://www.i2p2.i2p/naming.html
+		"""
 		data = self.cleaned_data['name']
 		# convert hostname to lowercase
 		data = data.lower()
@@ -46,6 +54,9 @@ class AddForm(ModelForm):
 			raise forms.ValidationError('Trying to use reserved hostname')
 		return data
 	def clean_b64hash(self):
+		"""
+		Base64 hash validation
+		"""
 		data = self.cleaned_data['b64hash']
 		# Minimum key length 516 bytes
 		if len(data) < 516:
