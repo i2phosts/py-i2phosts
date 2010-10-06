@@ -50,7 +50,7 @@ class AddForm(ModelForm):
 			raise forms.ValidationError('Invalid base64 hash')
 		return data
 
-def index(request):
+def addkey(request):
 	if request.method == 'POST':
 		form = AddForm(request.POST)
 		if form.is_valid():
