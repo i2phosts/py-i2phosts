@@ -10,7 +10,7 @@ import re
 class AddForm(ModelForm):
 	class Meta:
 		model = i2phost
-		fields = ('name', 'b64hash')
+		fields = ('name', 'b64hash', 'description')
 	def clean_name(self):
 		data = self.cleaned_data['name']
 		# convert hostname to lowercase
