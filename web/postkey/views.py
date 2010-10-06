@@ -11,6 +11,11 @@ class AddForm(ModelForm):
 	class Meta:
 		model = i2phost
 		fields = ('name', 'b64hash', 'description')
+		widgets = {
+				'name': forms.TextInput(attrs={'size': '67'}),
+				'b64hash': forms.Textarea(attrs={'rows': '1', 'cols': '100'}),
+				'description': forms.Textarea(attrs={'rows': '2', 'cols': '72'})
+				}
 	def clean_name(self):
 		data = self.cleaned_data['name']
 		# convert hostname to lowercase
