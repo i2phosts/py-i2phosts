@@ -1,4 +1,5 @@
 *.pyc
 *.pyo
 *.swp
+__init__.py
 local_settings.py
