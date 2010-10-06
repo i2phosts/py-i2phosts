@@ -40,6 +40,15 @@ class AddForm(ModelForm):
 		if re.search(r'(^|\.)(proxy|router|console)$', namepart):
 			raise forms.ValidationError('Trying to use reserved hostname')
 		return data
+	def clean_b64hash(self):
+		data = self.cleaned_data['b64hash']
+		# Minimum key length 516 bytes
+		if len(data) < 516:
+			raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
+		# base64-i2p
+		if re.match(r'[a-zA-Z0-9\-~]+AAAA$', data) == None:
+			raise forms.ValidationError('Invalid base64 hash')
+		return data
 
 def index(request):
 	if request.method == 'POST':
