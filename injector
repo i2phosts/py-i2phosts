@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
+DJANGO_PROJECT_PATH = 'web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+from web.postkey.models import i2phost
+
+# hosts.txt we want to parse
+hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
+
+f = open(hostsfile, 'r')
+for line in f:
+	entry = line.split('=')
+	# check for already existed hosts in database to avoid adding duplicates
+	# 1. do lookup by hostname
+	# 2. do lookup by base64 hash
+	if not i2phost.objects.filter(name=entry[0]) \
+			and not i2phost.objects.filter(b64hash=entry[1]):
+				print 'Adding %s' % entry[0]
+				host = i2phost(name=entry[0], b64hash=entry[1],
+					description='Auto-added from external hosts.txt',
+					activated=True)
+				host.save()
+	else:
+		print 'Host %s already exists' % entry[0]
+f.close()
