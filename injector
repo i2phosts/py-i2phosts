@@ -16,17 +16,15 @@ hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
 f = open(hostsfile, 'r')
 for line in f:
 	entry = line.split('=')
-	# check for already existed hosts in database to avoid adding duplicates
-	# 1. do lookup by hostname
-	# 2. do lookup by base64 hash
-	qs1 = i2phost.objects.filter(name=entry[0])
-	qs2 = i2phost.objects.filter(name=entry[1])
-	if not qs1.exists() and not qs2.exists():
+	# Check for already existed hosts in database to avoid adding duplicates.
+	# Do lookup by hostname only.
+	qs = i2phost.objects.filter(name=entry[0])
+	if qs.exists():
+		print 'Host %s already exists' % entry[0]
+	else:
 		print 'Adding %s' % entry[0]
 		host = i2phost(name=entry[0], b64hash=entry[1],
 				description='Auto-added from external hosts.txt',
 				activated=True)
 		host.save()
-	else:
-		print 'Host %s already exists' % entry[0]
 f.close()
