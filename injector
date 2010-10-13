@@ -2,6 +2,7 @@
 
 import os
 import sys
+import argparse
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
@@ -10,10 +11,15 @@ sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
 
-# hosts.txt we want to parse
-hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
+# parse command line options
+parser = argparse.ArgumentParser(
+		description='Hosts injector for py-i2phosts.',
+		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.txt', dest='hostsfile',
+		help='hosts.txt for parsing')
+args = parser.parse_args()
 
-f = open(hostsfile, 'r')
+f = open(args.hostsfile, 'r')
 for line in f:
 	entry = line.split('=')
 	# Check for already existed hosts in database to avoid adding duplicates.
