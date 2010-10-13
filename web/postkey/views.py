@@ -64,6 +64,10 @@ class AddForm(ModelForm):
 		# base64-i2p
 		if re.match(r'[a-zA-Z0-9\-~]+AAAA$', data) == None:
 			raise forms.ValidationError('Invalid base64 hash')
+		# Avoid adding non-unique hashes
+		qs = i2phost.objects.filter(b64hash=data)
+		if qs.exists():
+			raise forms.ValidationError('Base64 hash must be unique')
 		return data
 
 def addkey(request):
