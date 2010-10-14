@@ -8,6 +8,7 @@ class i2phost(models.Model):
 	description = models.TextField("Description", blank=True)
 	date_added = models.DateTimeField(auto_now_add=True)
 	activated = models.BooleanField(default=False)
+	external = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return self.name
