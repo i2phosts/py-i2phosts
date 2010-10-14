@@ -9,7 +9,7 @@ class i2phost(models.Model):
 	date_added = models.DateTimeField(auto_now_add=True)
 	# Not-activated hosts will not appear in exported hosts.txt
 	activated = models.BooleanField(default=False)
-	# Hosts from external sources shouldn't be autoremoved
+	# Indicator for hosts added from external source
 	external = models.BooleanField(default=False)
 
 	def __unicode__(self):
