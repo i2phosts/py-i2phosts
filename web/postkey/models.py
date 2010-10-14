@@ -7,7 +7,9 @@ class i2phost(models.Model):
 	b64hash = models.CharField("Base 64 hash", max_length=616)
 	description = models.TextField("Description", blank=True)
 	date_added = models.DateTimeField(auto_now_add=True)
+	# Not-activated hosts will not appear in exported hosts.txt
 	activated = models.BooleanField(default=False)
+	# Hosts from external sources shouldn't be autoremoved
 	external = models.BooleanField(default=False)
 
 	def __unicode__(self):
