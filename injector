@@ -31,6 +31,6 @@ for line in f:
 		print 'Adding %s' % entry[0]
 		host = i2phost(name=entry[0], b64hash=entry[1],
 				description='Auto-added from external hosts.txt',
-				activated=True)
+				activated=True, external=True)
 		host.save()
 f.close()
