@@ -3,6 +3,7 @@
 import os
 import sys
 import argparse
+from django.core.exceptions import ValidationError
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
@@ -10,6 +11,8 @@ DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
+from web.lib.validation import validate_hostname
+from web.lib.validation import validate_b64hash
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -22,15 +25,21 @@ args = parser.parse_args()
 f = open(args.hostsfile, 'r')
 for line in f:
 	entry = line.split('=')
-	# Check for already existed hosts in database to avoid adding duplicates.
-	# Do lookup by hostname only.
-	qs = i2phost.objects.filter(name=entry[0])
-	if qs.exists():
-		print 'Host %s already exists' % entry[0]
+	try:
+		hostname = validate_hostname(entry[0])
+		base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
+	except ValidationError, e:
+		print 'validation error: %s: %s' % (e, line)
 	else:
-		print 'Adding %s' % entry[0]
-		host = i2phost(name=entry[0], b64hash=entry[1],
-				description='Auto-added from external hosts.txt',
-				activated=True, external=True)
-		host.save()
+		# Check for already existed hosts in database to avoid unneeded INSERTs
+		# beacuse they will fail anyway.
+		qs = i2phost.objects.filter(name=hostname)
+		if qs.exists():
+			print 'Host %s already exists' % hostname
+		else:
+			print 'Adding %s' % hostname
+			host = i2phost(name=hostname, b64hash=base64,
+					description='Auto-added from external hosts.txt',
+					activated=True, external=True)
+			host.save()
 f.close()
