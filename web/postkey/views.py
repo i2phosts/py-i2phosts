@@ -30,10 +30,6 @@ class AddForm(ModelForm):
 		"""Validate base64 hash"""
 		data = self.cleaned_data['b64hash']
 		data = validate_b64hash(data)
-		# Avoid adding non-unique hashes
-		qs = i2phost.objects.filter(b64hash=data)
-		if qs.exists():
-			raise forms.ValidationError('Base64 hash must be unique')
 		return data
 
 def addkey(request):
