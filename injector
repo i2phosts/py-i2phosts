@@ -24,6 +24,9 @@ args = parser.parse_args()
 
 f = open(args.hostsfile, 'r')
 for line in f:
+	if line.find('=') == -1:
+		print 'Invalid line: %s' % line
+		continue
 	entry = line.split('=')
 	try:
 		hostname = validate_hostname(entry[0])
