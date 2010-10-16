@@ -33,7 +33,7 @@ class AddForm(ModelForm):
 			raise forms.ValidationError('Hostname doesn\'t ends with .i2p')
 		# Base 32 hostnames (*.b32.i2p) are not allowed
 		if re.match(r'.*\.b32\.i2p$', data):
-			 raise forms.ValidationError('Base 32 hostnames are not allowed')
+			raise forms.ValidationError('Base 32 hostnames are not allowed')
 		# Must contain only [a-z] [0-9] '.' and '-'
 		h = re.match(r'([a-z0-9.-]+)\.i2p$', data)
 		if h == None:
