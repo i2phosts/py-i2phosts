@@ -27,6 +27,8 @@ for line in f:
 	if line.find('=') == -1:
 		print 'Invalid line: %s' % line
 		continue
+	# strip trailing '\n'
+	line = line.rstrip('\n')
 	entry = line.split('=')
 	try:
 		hostname = validate_hostname(entry[0])
