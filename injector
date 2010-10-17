@@ -24,6 +24,9 @@ args = parser.parse_args()
 
 f = open(args.hostsfile, 'r')
 for line in f:
+	# ignore comments and empty lines
+	if line.startswith('#') or line.isspace():
+		continue
 	if line.find('=') == -1:
 		print 'Invalid line: %s' % line
 		continue
