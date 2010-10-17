@@ -6,6 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 		(r'^postkey/', include('web.postkey.urls')),
+		(r'^jump/', include('web.jump.urls')),
     # Example:
     # (r'^web/', include('web.foo.urls')),
 
