@@ -20,6 +20,8 @@ parser = argparse.ArgumentParser(
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.txt', dest='hostsfile',
 		help='hosts.txt for parsing')
+parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
+		help='provide custom description message')
 args = parser.parse_args()
 
 f = open(args.hostsfile, 'r')
@@ -47,7 +49,7 @@ for line in f:
 		else:
 			print 'Adding %s' % hostname
 			host = i2phost(name=hostname, b64hash=base64,
-					description='Auto-added from external hosts.txt',
+					description=args.description,
 					activated=True, external=True)
 			host.save()
 f.close()
