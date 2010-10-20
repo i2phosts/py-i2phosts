@@ -1,0 +1,72 @@
+#!/usr/bin/python
+
+import re
+import os
+import sys
+import errno
+import time
+import urllib2
+import subprocess
+
+proxyurl = 'http://localhost:4444/'
+sources = ['http://www.i2p2.i2p/hosts.txt', 'http://stats.i2p/cgi-bin/newhosts.txt',
+		'http://i2host.i2p/cgi-bin/i2hostetag', 'http://tino.i2p/hosts.txt',
+		'http://trevorreznik.i2p/hosts.txt', 'http://dream.i2p/hosts.txt',
+		'http://biw5iauxm7cjkakqygod3tq4w6ic4zzz5mtd4c7xdvvz54fyhnwa.b32.i2p/uncensoredhosts.txt',
+		'http://cipherspace.i2p/addressbook.txt', 'http://hosts.i2p/hosts.cgi?filter=all']
+#sources = ['http://www.i2p2.i2p/hosts.txt', 'http://stats.i2p/cgi-bin/newhosts.txt']
+#sources = ['http://hiddenchan.i2p/ggfg.txt']
+#sources = ['http://stats.i2p/cgi-bin/newhosts.xml']
+
+# we want open urls through proxy
+proxy_handler = urllib2.ProxyHandler({'http': proxyurl})
+opener = urllib2.build_opener(proxy_handler)
+
+for source in sources:
+	# cut hostname.i2p from url
+	source_hostname = re.sub(r'.*//(.+?)/.+', r'\1', source)
+	# use separate file for each host
+	filename = 'hosts.txt.' + source_hostname
+	# build last-modified info from file mtime
+	try:
+		statinfo = os.stat(filename)
+	except OSError, e:
+		if e.errno == errno.ENOENT:
+			pass
+		else:
+			sys.stderr.write('fatal error: %s', e)
+			os.exit(1)
+	else:
+		last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.localtime(statinfo.st_mtime))
+		# prevent redownloading of hosts-file by passing If-Modified-Since http header
+		opener.addheaders = [('If-Modified-Since', last_modified)]
+	try:
+		resp = opener.open(source, timeout=60)
+	except urllib2.URLError, e:
+		if hasattr(e, 'reason'):
+			print 'failed to reach server %s, reason: %s' % (source_hostname, e.reason)
+		elif hasattr(e, 'code'):
+			if e.code == 304:
+				print '%s: not modified' % source_hostname
+			else:
+				print 'server %s can\'t finish the request, error code: %s' \
+					% (source_hostname, e.code)
+		continue
+	# read data from remote and write it to local file
+	content = resp.read()
+	f = open(filename, 'w')
+	f.write(content)
+	f.close()
+	# get last-modified info from header and change file's mtime
+	lm = resp.headers.get('Last-Modified')
+	print '%s: %s' % (source_hostname, lm)
+	if lm:
+		target_mtime = int(time.mktime(time.strptime(lm, '%a, %d %b %Y %H:%M:%S GMT')))
+		os.utime(filename, (target_mtime, target_mtime))
+
+	# form commnd-line for invoke injector
+	path = os.path.dirname(sys.argv[0])
+	sp_args = [path + '/py-i2phosts-injector', '-s', '-f', filename, '-d', 'Auto-added from ' + source_hostname]
+	p = subprocess.Popen(sp_args, shell=False, stdin=None,
+			stdout=None, stderr=subprocess.STDOUT)
+	p.wait()
