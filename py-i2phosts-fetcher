@@ -2,6 +2,7 @@
 
 import re
 import os
+import os.path
 import sys
 import errno
 import time
@@ -29,7 +30,7 @@ for source in sources:
 	filename = 'hosts.txt.' + source_hostname
 	# build last-modified info from file mtime
 	try:
-		statinfo = os.stat(filename)
+		mtime = os.path.getmtime(filename)
 	except OSError, e:
 		if e.errno == errno.ENOENT:
 			pass
@@ -37,7 +38,7 @@ for source in sources:
 			sys.stderr.write('fatal error: %s', e)
 			os.exit(1)
 	else:
-		last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.localtime(statinfo.st_mtime))
+		last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.localtime(mtime))
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
 		opener.addheaders = [('If-Modified-Since', last_modified)]
 	try:
