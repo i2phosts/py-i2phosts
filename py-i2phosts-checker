@@ -1,0 +1,61 @@
+#!/usr/bin/python
+
+import os
+import sys
+import argparse
+import logging
+import datetime
+import time
+import hashlib
+import base64
+
+from i2p import samclasses
+from i2p import socket
+
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
+DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+from web.postkey.models import i2phost
+
+# parse command line options
+parser = argparse.ArgumentParser(
+		description='Hosts checker for py-i2phosts.',
+		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-d', '--debug', action='store_true',
+		help='enable debug messages')
+args = parser.parse_args()
+
+# configure logger
+log = logging.getLogger(sys.argv[0])
+handler = logging.StreamHandler()
+log.addHandler(handler)
+if args.debug:
+	log.setLevel(logging.DEBUG)
+else:
+	log.setLevel(logging.INFO)
+
+all_hosts = i2phost.objects.all()
+
+S = samclasses.BaseSession('127.0.0.1:7656')
+for host in all_hosts:
+	log.debug('testing %s', host.name)
+	# get b32 address from full dest key
+	dest = host.b64hash
+	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
+	hash = hashlib.sha256(raw_key)
+	b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+	# do name lookup query with b32 address
+	# it success only if host is alive
+	try:
+		a = S._namelookup(b32dest)
+	except socket.NetworkError, e:
+		log.debug('%s: %s', host.name, e.args[0][0])
+		continue
+	log.info('alive host: %s', host.name)
+	# update lastseen timestamp
+	host.last_seen = datetime.datetime.now()
+	host.save()
+S.close()
+
