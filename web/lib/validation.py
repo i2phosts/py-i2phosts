@@ -44,14 +44,15 @@ def validate_b64hash(data, check_uniq=True):
 	"""
 	Base64 hash validation
 	"""
+	length = len(data)
 	# Minimum key length 516 bytes
-	if len(data) < 516:
+	if length < 516:
 		raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
 	# keys with cert may ends with anything, so check is relaxed
-	if len(data) > 516 and re.match(r'[a-zA-Z0-9\-~]+$', data) == None:
+	if length > 516 and re.match(r'[a-zA-Z0-9\-~]+$', data) == None:
 		raise forms.ValidationError('Invalid characters in base64 hash')
 	# base64-i2p
-	if len(data) == 516 and re.match(r'[a-zA-Z0-9\-~]+AA$', data) == None:
+	if length == 516 and re.match(r'[a-zA-Z0-9\-~]+AA$', data) == None:
 		raise forms.ValidationError('Invalid base64 hash')
 	if check_uniq == True:
 		# Avoid adding non-unique hashes
