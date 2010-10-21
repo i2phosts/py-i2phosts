@@ -23,8 +23,13 @@ parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.tx
 parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
 		help='provide custom description message')
 parser.add_argument('-s', '--supress', action='store_true',
-		help='supress warnings about already existed hostnames')
+		help='supress warnings about already existed hostnames'),
+parser.add_argument('-q', '--quiet', action='store_true',
+		help='be completely quiet, print only errors')
 args = parser.parse_args()
+
+if args.quiet:
+	args.supress = True
 
 f = open(args.hostsfile, 'r')
 for line in f:
@@ -50,7 +55,8 @@ for line in f:
 			if not args.supress:
 				print 'Host %s already exists' % hostname
 		else:
-			print 'Adding %s' % hostname
+			if not args.quiet:
+				print 'Adding %s' % hostname
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
 					activated=True, external=True)
