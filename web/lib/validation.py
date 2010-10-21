@@ -48,6 +48,8 @@ def validate_b64hash(data, check_uniq=True):
 	# Minimum key length 516 bytes
 	if length < 516:
 		raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
+	if length > 616:
+		raise forms.ValidationError('Specified base64 hash are bigger than 616 bytes')
 	# keys with cert may ends with anything, so check is relaxed
 	if length > 516 and re.match(r'[a-zA-Z0-9\-~]+$', data) == None:
 		raise forms.ValidationError('Invalid characters in base64 hash')
