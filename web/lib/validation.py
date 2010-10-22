@@ -26,6 +26,8 @@ def validate_hostname(data):
 	# prevent common errors
 	if re.match(r'\.i2p$', data):
 		raise forms.ValidationError('Incomplete hostname')
+	if re.match(r'^http:/', data):
+		raise forms.ValidationError('Do not paste full URL, just domain')
 	# Must not contain '..'
 	if re.search(r'\.\.', data):
 		raise forms.ValidationError('".." in hostname')
