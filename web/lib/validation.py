@@ -26,6 +26,9 @@ def validate_hostname(data):
 	# Must not contain '..'
 	if re.search(r'\.\.', data):
 		raise forms.ValidationError('".." in hostname')
+	# Allow only 4ld domains and below
+	if data.count('.') > 3:
+		raise forms.ValidationError('Subdomains deeper than 4LD are not allowed')
 	# Must contain only [a-z] [0-9] '.' and '-'
 	h = re.match(r'([a-z0-9.-]+)\.i2p$', data)
 	if h == None:
