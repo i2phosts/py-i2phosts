@@ -19,15 +19,15 @@ def validate_hostname(data):
 	# Base 32 hostnames (*.b32.i2p) are not allowed
 	if re.match(r'.*\.b32\.i2p$', data):
 		raise forms.ValidationError('Base 32 hostnames are not allowed')
+	# Must not contain '..'
+	if re.search(r'\.\.', data):
+		raise forms.ValidationError('".." in hostname')
 	# Must contain only [a-z] [0-9] '.' and '-'
 	h = re.match(r'([a-z0-9.-]+)\.i2p$', data)
 	if h == None:
 		raise forms.ValidationError('Illegal characters in hostname')
 	else:
 		namepart = h.groups()[0]
-	# Must not contain '..'
-	if re.search(r'\.\.', namepart):
-		raise forms.ValidationError('".." in hostname')
 	# Must not contain '.-' or '-.' (as of 0.6.1.33)
 	if re.search(r'(\.-)|(-\.)', namepart):
 		raise forms.ValidationError('Hostname contain ".-" or "-."')
