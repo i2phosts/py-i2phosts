@@ -60,6 +60,8 @@ def validate_b64hash(data, check_uniq=True):
 	"""
 	Base64 hash validation
 	"""
+	# strip leading and trailing whitespaces
+	data = data.strip()
 	length = len(data)
 	# Minimum key length 516 bytes
 	if length < 516:
