@@ -23,6 +23,9 @@ def validate_hostname(data):
 	# Base 32 hostnames (*.b32.i2p) are not allowed
 	if re.match(r'.*\.b32\.i2p$', data):
 		raise forms.ValidationError('Base32 hostnames are not allowed')
+	# prevent common errors
+	if re.match(r'\.i2p$', data):
+		raise forms.ValidationError('Incomplete hostname')
 	# Must not contain '..'
 	if re.search(r'\.\.', data):
 		raise forms.ValidationError('".." in hostname')
