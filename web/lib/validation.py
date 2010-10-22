@@ -11,8 +11,8 @@ def validate_hostname(data):
 	Here we do additional hostname validation as described in
 	http://www.i2p2.i2p/naming.html
 	"""
-	# convert hostname to lowercase
-	data = data.lower()
+	# convert hostname to lowercase and strip leading and trailing whitespaces
+	data = data.lower().strip()
 	# Must end with '.i2p'.
 	if re.match(r'.*\.i2p$', data) == None:
 		raise forms.ValidationError('Hostname doesn\'t ends with .i2p')
