@@ -46,7 +46,7 @@ for line in f:
 		hostname = validate_hostname(entry[0])
 		base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
 	except ValidationError, e:
-		sys.stderr.write('validation error: %s: %s\n' % (e, line))
+		sys.stderr.write('validation error: %s: %s\n\n' % (e, line))
 	else:
 		# Check for already existed hosts in database to avoid unneeded INSERTs
 		# beacuse they will fail anyway.
