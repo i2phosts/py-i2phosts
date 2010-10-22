@@ -13,6 +13,10 @@ def validate_hostname(data):
 	"""
 	# convert hostname to lowercase and strip leading and trailing whitespaces
 	data = data.lower().strip()
+	# do lenght check here for avoiding django.db.utils.DatabaseError exceptions
+	# when trying to add too long hostname with py-i2phosts-injector
+	if len(data) > 67:
+		raise forms.ValidationError('Too long hostname (should be 67 chars max)')
 	# Must end with '.i2p'.
 	if re.match(r'.*\.i2p$', data) == None:
 		raise forms.ValidationError('Hostname doesn\'t ends with .i2p')
