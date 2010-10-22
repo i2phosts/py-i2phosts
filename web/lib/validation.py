@@ -32,6 +32,9 @@ def validate_hostname(data):
 		raise forms.ValidationError('Illegal characters in hostname')
 	else:
 		namepart = h.groups()[0]
+	# Must not start with '.' or '-'
+	if re.match(r'^\.|-', namepart):
+		raise forms.ValidationError('Hostname must not starts with "." or "-"')
 	# Must not contain '.-' or '-.' (as of 0.6.1.33)
 	if re.search(r'(\.-)|(-\.)', namepart):
 		raise forms.ValidationError('Hostname contain ".-" or "-."')
