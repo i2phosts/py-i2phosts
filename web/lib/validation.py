@@ -69,6 +69,10 @@ def validate_b64hash(data, check_uniq=True):
 	# fail if contains .i2p= (full foo.i2p=key)
 	if re.search(r'\.i2p=', data):
 		raise forms.ValidationError('Do not paste full hosts.txt entry! Only base64 hash are needed')
+	# check for pasting router hash
+	if length == 44:
+		raise forms.ValidationError('Do not paste router hash! Go to i2ptunnel page and \
+				find a destination hash')
 	# Minimum key length 516 bytes
 	if length < 516:
 		raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
