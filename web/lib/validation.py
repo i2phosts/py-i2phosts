@@ -8,8 +8,9 @@ from web.postkey.models import i2phost
 
 def validate_hostname(data):
 	"""
-	Here we do additional hostname validation as described in
-	http://www.i2p2.i2p/naming.html
+	Here we do hostname validation as described in
+	http://www.i2p2.i2p/naming.html and some additional checks
+	described in http://zzz.i2p/topics/739
 	"""
 	# convert hostname to lowercase and strip leading and trailing whitespaces
 	data = data.lower().strip()
