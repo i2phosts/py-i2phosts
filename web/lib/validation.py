@@ -39,7 +39,7 @@ def validate_hostname(data):
 	if re.search(r'(\.-)|(-\.)', namepart):
 		raise forms.ValidationError('Hostname contain ".-" or "-."')
 	# Must not contain '--' except in 'xn--' for IDN
-	if re.search(r'(?<!^xn)--', namepart):
+	if re.search(r'(?<!^xn)--', namepart) and re.search(r'(?<!\.xn)--', namepart):
 		raise forms.ValidationError('Hostname contain "--" and it\'s not an IDN')
 	# Certain hostnames reserved for project use are not allowed
 	if re.search(r'(^|\.)(proxy|router|console)$', namepart):
