@@ -66,6 +66,9 @@ def validate_b64hash(data, check_uniq=True):
 	# check for b32 address misuse
 	if re.match(r'.*\.b32\.i2p$', data):
 		raise forms.ValidationError('You should paste base64 hash, not a base32!')
+	# fail if contains .i2p= (full foo.i2p=key)
+	if re.search(r'\.i2p=', data):
+		raise forms.ValidationError('Do not paste full hosts.txt entry! Only base64 hash are needed')
 	# Minimum key length 516 bytes
 	if length < 516:
 		raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
