@@ -63,6 +63,9 @@ def validate_b64hash(data, check_uniq=True):
 	# strip leading and trailing whitespaces
 	data = data.strip()
 	length = len(data)
+	# check for b32 address misuse
+	if re.match(r'.*\.b32\.i2p$', data):
+		raise forms.ValidationError('You should paste base64 hash, not a base32!')
 	# Minimum key length 516 bytes
 	if length < 516:
 		raise forms.ValidationError('Specified base64 hash are less than 516 bytes')
