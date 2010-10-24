@@ -17,5 +17,5 @@ f = open(hostsfile, 'w')
 # select name and hash for all activated hosts
 l = i2phost.objects.filter(activated=True).values('name', 'b64hash')
 for entry in l:
-	f.write(entry['name'] + '=' + entry['b64hash'])
+	f.write(entry['name'] + '=' + entry['b64hash'] + '\n')
 f.close()
