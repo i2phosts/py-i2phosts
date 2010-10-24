@@ -10,11 +10,11 @@ def jumper(request, data):
 	try:
 		hostname = validate_hostname(data)
 	except ValidationError, e:
-		return redirect('error/')
+		return redirect('/jump/error/')
 	try:
 		key = i2phost.objects.get(name=hostname, activated=True).b64hash
 	except i2phost.DoesNotExist:
-		return redirect('unknown/')
+		return redirect('/jump/unknown/')
 	url = 'http://' + hostname + '/?i2paddresshelper=' + key
 	return redirect(url, permanent=True)
 
