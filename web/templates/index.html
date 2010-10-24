@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>About</h2>
+	<h2>Addressbook service</h2>
+	To start getting new hostnames from {{ title }}, add this
+	<a href=/export/hosts.txt>subscription link</a> into router's addressbook.
+	<h2>Jump service</h2><p>
+		{{ title }} also provides a jump service. For accessing hosts through it,
+		use urls like <a href={% url jump.views.jumper 'example.i2p' %}>
+			http://{{ domain }}{% url jump.views.jumper 'example.i2p' %}<a/>
+	</p>
+	<h2>Adding hosts</h2>
+	<a href={% url postkey.views.addkey %}>Here</a>
+{% endblock %}
