@@ -4,6 +4,7 @@ from django import forms
 from django.forms import ModelForm
 from django.template import RequestContext
 
+from web import settings
 from web.postkey.models import i2phost
 from web.lib.validation import validate_hostname
 from web.lib.validation import validate_b64hash
@@ -42,10 +43,12 @@ def addkey(request):
 	else:
 		form = AddForm()
 	return render_to_response('postkey.html', {
+		'title': settings.SITE_NAME,
 		'form': form,
 		}, context_instance=RequestContext(request))
 
 def success(request):
 	return render_to_response('success_submission.html', {
+		'title': settings.SITE_NAME,
 		'hostname': request.session['hostname'],
 		})
