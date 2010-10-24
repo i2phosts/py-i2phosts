@@ -2,14 +2,20 @@
 
 {% block content %}
 	<h2>About</h2>
+	<p>{{ title }} is a domain names registration service for I2P. Hostnames in I2P isn't
+	globally unique. {{ title }} doesn't act as "central authority", it only provides a
+	way to publish a hosts to give easy accessability for them. You can read more about how
+	does I2P naming works in <a href=http://www.i2p2.i2p/naming.html>official docs</a>
+	</p>
 	<h2>Addressbook service</h2>
 	To start getting new hostnames from {{ title }}, add this
-	<a href=/export/hosts.txt>subscription link</a> into router's addressbook.
+	<a href=/export/full-hosts.txt>subscription link</a> into router's addressbook.
 	<h2>Jump service</h2><p>
 		{{ title }} also provides a jump service. For accessing hosts through it,
 		use urls like <a href={% url jump.views.jumper 'example.i2p' %}>
 			http://{{ domain }}{% url jump.views.jumper 'example.i2p' %}<a/>
 	</p>
 	<h2>Adding hosts</h2>
-	<a href={% url postkey.views.addkey %}>Here</a>
+	<p>If you are running an eepsite or another service and wants a human-readable domain name
+	for them, consider to <a href={% url postkey.views.addkey %}>register it</a>
 {% endblock %}
