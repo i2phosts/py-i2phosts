@@ -4,7 +4,10 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
+from web.other.views import *
+
 urlpatterns = patterns('',
+		url(r'^$', index, name='index'),
 		(r'^postkey/', include('web.postkey.urls')),
 		(r'^jump/', include('web.jump.urls')),
     # Example:
