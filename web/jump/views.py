@@ -1,11 +1,13 @@
 import re
 
 from django.shortcuts import redirect
+from django.shortcuts import render_to_response
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 
 from web.postkey.models import i2phost
 from web.lib.validation import validate_hostname
+from web import settings
 
 def jumper(request, host):
 	"""Actually do jumps."""
@@ -24,7 +26,10 @@ def jumper(request, host):
 	if m:
 		params = m.group(1)
 		url += '/' + params
-	return redirect(url, permanent=True)
+	return render_to_response('jump.html', {
+		'title': settings.SITE_NAME,
+		'url': url,
+		})
 
 def error(request):
 	return HttpResponse('You are trying to access an invalid hostname.')
