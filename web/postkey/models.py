@@ -9,6 +9,8 @@ class i2phost(models.Model):
 	date_added = models.DateTimeField(auto_now_add=True)
 	# Last time this host was up
 	last_seen = models.DateTimeField(null=True)
+	# Scheduled expiration date
+	expires = models.DateField(null=True)
 	# Not-activated hosts will not appear in exported hosts.txt
 	activated = models.BooleanField(default=False)
 	# Indicator for hosts added from external source
