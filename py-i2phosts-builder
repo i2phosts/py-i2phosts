@@ -14,8 +14,11 @@ from web.postkey.models import i2phost
 hostsfile = 'hosts.txt'
 
 f = open(hostsfile, 'w')
-# select name and hash for all activated hosts
-l = i2phost.objects.filter(activated=True).values('name', 'b64hash')
+# get activated hosts
+qs = i2phost.objects.filter(activated=True)
+# select theirs name and base64 hash
+l = qs.values('name', 'b64hash')
+# write final hosts.txt-format file
 for entry in l:
 	f.write(entry['name'] + '=' + entry['b64hash'] + '\n')
 f.close()
