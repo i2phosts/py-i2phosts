@@ -1,0 +1,82 @@
+#!/usr/bin/python
+# vim: set fileencoding=utf-8 tw=90 :
+
+import os
+import sys
+import datetime
+import argparse
+import logging
+
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
+DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+from web.postkey.models import i2phost
+
+# parse command line options
+parser = argparse.ArgumentParser(
+		description='Hosts maintainer for py-i2phosts.',
+		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-d', '--debug', action='store_true',
+		help='enable debug messages')
+args = parser.parse_args()
+
+# configure logger
+log = logging.getLogger(sys.argv[0])
+handler = logging.StreamHandler()
+log.addHandler(handler)
+if args.debug:
+	log.setLevel(logging.DEBUG)
+else:
+	log.setLevel(logging.INFO)
+
+
+all_hosts = i2phost.objects.all()
+for host in all_hosts:
+	# how long host was added
+	dl = datetime.datetime.now() - host.date_added
+	if host.last_seen == None:
+		# delete external hosts which we never seen after 365 days of inactivity
+		if host.external == True:
+			if dl > datetime.timedelta(days=365):
+				log.info('deleting %s, reason: external host, 365 days inactive', host.name)
+				host.delete()
+				continue
+		# delete hosts added by us and never seen after 14 days of inactivity
+		else:
+			if dl > datetime.timedelta(days=14):
+				log.info('deleting %s, reason: internal host, 14 days inactive', host.name)
+				host.delete()
+				continue
+	else:
+		# configure registration period for hosts
+		# FIXME: make intervals configurable via config or/and commandline
+		if host.external == True:
+			timedelta = datetime.timedelta(days=30)
+		else:
+			timedelta = datetime.timedelta(days=60)
+		# get current host expiration date from database
+		expires_current = host.expires
+		# calculate new expiration date
+		expires_new = host.last_seen + timedelta
+		expires_new = expires_new.date()
+		# update expiration date only if changed
+		if expires_new > expires_current:
+			log.debug('updating expires for %s', host.name)
+			host.expires = expires_new
+		# deactivate if expired
+		if host.expires < datetime.datetime.now().date():
+			log.info('deactivating %s, reason: expired', host.name)
+			host.activated = False
+		# if not expired and added more than 3 days ago then activate
+		elif dl > datetime.timedelta(days=3) and host.activated == False:
+			log.info('activating %s, reason: host up and added more than 3 days ago', host.name)
+			host.activated = True
+		# if expired two years ago then delete
+		dl_e = datetime.datetime.now().date() - host.expires
+		if dl_e > datetime.timedelta(days=730):
+			log.info('deleting %s, reason: expired 2 years ago', host.name)
+			host.delete()
+			continue
+		host.save()
