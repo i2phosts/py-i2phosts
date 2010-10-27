@@ -57,7 +57,7 @@ for line in f:
 				print 'Adding %s' % hostname
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
-					activated=True, external=True)
+					activated=False, external=True)
 			host.save()
 		else:
 			if not args.supress:
