@@ -50,15 +50,18 @@ for line in f:
 	else:
 		# Check for already existed hosts in database to avoid unneeded INSERTs
 		# beacuse they will fail anyway.
-		qs = i2phost.objects.filter(name=hostname)
-		if qs.exists():
-			if not args.supress:
-				print 'Host %s already exists' % hostname
-		else:
+		try:
+			h = i2phost.objects.get(name=hostname)
+		except i2phost.DoesNotExist:
 			if not args.quiet:
 				print 'Adding %s' % hostname
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
 					activated=True, external=True)
 			host.save()
+		else:
+			if not args.supress:
+				print 'Host %s already exists' % hostname
+			if h.b64hash != base64:
+				print 'Key conflict for host: %s' % hostname
 f.close()
