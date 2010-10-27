@@ -57,7 +57,11 @@ for host in all_hosts:
 		else:
 			timedelta = datetime.timedelta(days=60)
 		# get current host expiration date from database
-		expires_current = host.expires
+		if host.expires == None:
+			# workaround for situation when we updating expires first time
+			expires_current = datetime.datetime.now().date()
+		else:
+			expires_current = host.expires
 		# calculate new expiration date
 		expires_new = host.last_seen + timedelta
 		expires_new = expires_new.date()
