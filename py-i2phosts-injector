@@ -22,11 +22,19 @@ parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.tx
 		help='hosts.txt for parsing')
 parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
 		help='provide custom description message')
+parser.add_argument('-a', '--approve', action='store_true',
+		help='add hosts as approved')
 parser.add_argument('-s', '--supress', action='store_true',
 		help='supress warnings about already existed hostnames'),
 parser.add_argument('-q', '--quiet', action='store_true',
 		help='be completely quiet, print only errors')
 args = parser.parse_args()
+
+# determine approve hosts or not
+if args.approve:
+	approved = True
+else:
+	approved = False
 
 if args.quiet:
 	args.supress = True
@@ -57,7 +65,7 @@ for line in f:
 				print 'Adding %s' % hostname
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
-					activated=False, external=True)
+					activated=False, external=True, approved=approved)
 			host.save()
 		else:
 			if not args.supress:
