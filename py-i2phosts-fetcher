@@ -68,7 +68,8 @@ for source in sources:
 	# form commnd-line for invoke injector
 	path = os.path.dirname(sys.argv[0])
 	print 'adding hosts from: %s' % source_hostname
-	sp_args = [path + '/py-i2phosts-injector', '-s', '-f', filename, '-d', 'Auto-added from ' + source_hostname]
+	sp_args = [path + '/py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
+			'Auto-added from ' + source_hostname]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=None, stderr=subprocess.STDOUT)
 	p.wait()
