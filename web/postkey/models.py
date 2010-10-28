@@ -20,3 +20,8 @@ class i2phost(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+class PendingHost(i2phost):
+	""" Proxy model needed for displaying not approved hosts in django admin separatelly """
+	class Meta:
+		proxy = True
