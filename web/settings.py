@@ -95,7 +95,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'web.postkey',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
 )
 
 # include local settings
