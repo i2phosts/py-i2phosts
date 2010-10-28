@@ -73,8 +73,8 @@ for host in all_hosts:
 		if host.expires < datetime.datetime.now().date():
 			log.info('deactivating %s, reason: expired', host.name)
 			host.activated = False
-		# if not expired and added more than 3 days ago then activate
-		elif dl > datetime.timedelta(days=3) and host.activated == False:
+		# if not expired and added more than 3 days ago and approved then activate
+		elif dl > datetime.timedelta(days=3) and host.activated == False and host.approved == True:
 			log.info('activating %s, reason: host up and added more than 3 days ago', host.name)
 			host.activated = True
 		# if expired two years ago then delete
