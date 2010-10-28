@@ -15,6 +15,8 @@ class i2phost(models.Model):
 	activated = models.BooleanField(default=False)
 	# Indicator for hosts added from external source
 	external = models.BooleanField(default=False)
+	# Not approved hosts will not appear in exported hosts.txt
+	approved = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return self.name
