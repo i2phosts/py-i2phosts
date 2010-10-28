@@ -36,6 +36,7 @@ if args.approve:
 else:
 	approved = False
 
+# turn on output supressing if quiet
 if args.quiet:
 	args.supress = True
 
