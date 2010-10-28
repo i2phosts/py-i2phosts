@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# vim: set fileencoding=utf-8 tw=90 :
+# vim: set fileencoding=utf-8 :
 
 import os
 import sys
