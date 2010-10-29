@@ -37,15 +37,16 @@ else:
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
+from web.lib.utils import get_logger
 
 # configure logger
-log = logging.getLogger(sys.argv[0])
-handler = logging.StreamHandler()
-log.addHandler(handler)
-if args.debug:
-	log.setLevel(logging.DEBUG)
+if args.debug == True:
+	log_level = 'debug'
+	log_file = None
 else:
-	log.setLevel(logging.INFO)
+	log_level = config['log_level']
+	log_file = config['log_file']
+log = get_logger(log_level=log_level)
 
 all_hosts = i2phost.objects.all()
 
