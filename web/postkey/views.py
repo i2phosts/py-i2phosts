@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django import forms
@@ -26,6 +28,9 @@ class AddForm(ModelForm):
 		"""Validate hostname"""
 		data = self.cleaned_data['name']
 		data = validate_hostname(data)
+		# Another set of reserved hostnames (suggested by zzz)
+		if re.search(r'(^|\.)(i2p|i2p2|geti2p|mail|project|i2project|i2pproject|i2p-project).i2p$', data):
+			raise forms.ValidationError('Trying to use hostname from additional reserved set')
 		return data
 	def clean_b64hash(self):
 		"""Validate base64 hash"""
