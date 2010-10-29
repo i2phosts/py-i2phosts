@@ -13,13 +13,6 @@ import configobj
 from i2p import samclasses
 from i2p import socket
 
-# django setup
-DJANGO_SETTINGS_MODULE = 'settings'
-DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
-sys.path.insert(1, DJANGO_PROJECT_PATH)
-os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
-from web.postkey.models import i2phost
-
 # parse command line options
 parser = argparse.ArgumentParser(
 		description='Hosts checker for py-i2phosts.',
@@ -34,6 +27,16 @@ args = parser.parse_args()
 config = configobj.ConfigObj(args.config_file, file_error=True)
 config_included = configobj.ConfigObj(config['include'])
 config.merge(config_included)
+
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
+if config['DJANGO_PROJECT_PATH']:
+	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+else:
+	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+from web.postkey.models import i2phost
 
 # configure logger
 log = logging.getLogger(sys.argv[0])
