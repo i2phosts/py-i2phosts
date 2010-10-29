@@ -103,3 +103,11 @@ try:
 	from local_settings import *
 except ImportError:
 	pass
+
+# template for local settings:
+"""
+SECRET_KEY = 'topsecret'
+SITE_NAME = 'My cool registration service'
+DOMAIN = 'example.i2p'
+
+"""
