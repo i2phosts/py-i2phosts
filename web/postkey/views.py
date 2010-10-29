@@ -31,6 +31,8 @@ class AddForm(ModelForm):
 		# Another set of reserved hostnames (suggested by zzz)
 		if re.search(r'(^|\.)(i2p|i2p2|geti2p|mail|project|i2project|i2pproject|i2p-project).i2p$', data):
 			raise forms.ValidationError('Trying to use hostname from additional reserved set')
+		if data.count('.') > 1:
+			raise  forms.ValidationError('Currently only 2-level domains are allowed')
 		return data
 	def clean_b64hash(self):
 		"""Validate base64 hash"""
