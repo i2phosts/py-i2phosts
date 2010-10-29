@@ -53,6 +53,9 @@ def validate_hostname(data):
 	# Certain hostnames reserved for project use are not allowed
 	if re.search(r'(^|\.)(proxy|router|console|b32|b64)$', namepart):
 		raise forms.ValidationError('Trying to use reserved hostname')
+	# Block various localhost.* in addition
+	if re.match(r'^localhost($|\..*$)', namepart):
+		raise forms.ValidationError('localhost.* not allowed')
 	return data
 
 
