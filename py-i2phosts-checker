@@ -24,7 +24,9 @@ parser = argparse.ArgumentParser(
 		description='Hosts checker for py-i2phosts.',
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
-		help='enable debug messages')
+		help='write debug messages to stdout'),
+parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', dest='config_file',
+		help='config file to use')
 args = parser.parse_args()
 
 # configure logger
