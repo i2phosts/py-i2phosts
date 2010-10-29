@@ -8,6 +8,7 @@ import datetime
 import time
 import hashlib
 import base64
+import configobj
 
 from i2p import samclasses
 from i2p import socket
@@ -28,6 +29,11 @@ parser.add_argument('-d', '--debug', action='store_true',
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', dest='config_file',
 		help='config file to use')
 args = parser.parse_args()
+
+# read config
+config = configobj.ConfigObj(args.config_file, file_error=True)
+config_included = configobj.ConfigObj(config['include'])
+config.merge(config_included)
 
 # configure logger
 log = logging.getLogger(sys.argv[0])
