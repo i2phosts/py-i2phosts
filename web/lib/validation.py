@@ -51,7 +51,7 @@ def validate_hostname(data):
 	if re.search(r'(?<!^xn)--', namepart) and re.search(r'(?<!\.xn)--', namepart):
 		raise forms.ValidationError('Hostname contain "--" and it\'s not an IDN')
 	# Certain hostnames reserved for project use are not allowed
-	if re.search(r'(^|\.)(proxy|router|console)$', namepart):
+	if re.search(r'(^|\.)(proxy|router|console|b32|b64)$', namepart):
 		raise forms.ValidationError('Trying to use reserved hostname')
 	return data
 
