@@ -68,8 +68,8 @@ for source in config['sources']:
 		if e.errno == errno.ENOENT:
 			pass
 		else:
-			sys.stderr.write('fatal error: %s', e)
-			os.exit(1)
+			log.critical('fatal error: %s', e)
+			sys.exit(1)
 	else:
 		last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.localtime(mtime))
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
@@ -78,13 +78,13 @@ for source in config['sources']:
 		resp = opener.open(source, timeout=60)
 	except urllib2.URLError, e:
 		if hasattr(e, 'reason'):
-			print 'failed to reach server %s, reason: %s' % (source_hostname, e.reason)
+			log.warning('failed to reach server %s, reason: %s', source_hostname, e.reason)
 		elif hasattr(e, 'code'):
 			if e.code == 304:
-				print '%s: not modified' % source_hostname
+				log.info('%s: not modified', source_hostname)
 			else:
-				print 'server %s can\'t finish the request, error code: %s' \
-					% (source_hostname, e.code)
+				log.warning('server %s can\'t finish the request, error code: %s',
+					source_hostname, e.code)
 		continue
 	# read data from remote and write it to local file
 	content = resp.read()
@@ -93,14 +93,14 @@ for source in config['sources']:
 	f.close()
 	# get last-modified info from header and change file's mtime
 	lm = resp.headers.get('Last-Modified')
-	print '%s: %s' % (source_hostname, lm)
+	log.debug('%s Last-Modified: %s', source_hostname, lm)
 	if lm:
 		target_mtime = int(time.mktime(time.strptime(lm, '%a, %d %b %Y %H:%M:%S GMT')))
 		os.utime(filename, (target_mtime, target_mtime))
 
 	# form commnd-line for invoke injector
 	path = os.path.dirname(sys.argv[0])
-	print 'adding hosts from: %s' % source_hostname
+	log.info('adding hosts from: %s', source_hostname)
 	sp_args = [path + '/py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
 			'Auto-added from ' + source_hostname]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
