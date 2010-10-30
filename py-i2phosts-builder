@@ -3,6 +3,7 @@
 import os
 import sys
 import argparse
+import configobj
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -11,6 +12,12 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/builder.conf', dest='config_file',
 		help='config file to use')
 args = parser.parse_args()
+
+# read config
+config = configobj.ConfigObj(args.config_file, file_error=True)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
