@@ -46,7 +46,7 @@ if args.debug == True:
 else:
 	log_level = config['log_level']
 	log_file = config['log_file']
-log = get_logger(log_level=log_level)
+log = get_logger(filename=log_file, log_level=log_level)
 
 all_hosts = i2phost.objects.all()
 
