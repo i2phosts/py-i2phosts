@@ -16,7 +16,7 @@ def get_logger(filename=None, log_level='debug'):
 	logger = logging.getLogger(__name__)
 	logger.setLevel(level)
 	if filename:
-		handler = logging.FileHandler(filename)
+		handler = logging.WatchedFileHandler(filename)
 	else:
 		handler = logging.StreamHandler()
 	handler.setFormatter(formatter)
