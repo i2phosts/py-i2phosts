@@ -44,7 +44,7 @@ from web.lib.validation import validate_hostname
 from web.lib.validation import validate_b64hash
 
 # determine approve hosts or not
-if args.approve:
+if args.approve or config.as_bool('approve'):
 	approved = True
 else:
 	approved = False
