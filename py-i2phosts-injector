@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 from django.core.exceptions import ValidationError
+import configobj
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
@@ -18,6 +19,8 @@ from web.lib.validation import validate_b64hash
 parser = argparse.ArgumentParser(
 		description='Hosts injector for py-i2phosts.',
 		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-c', '--config', default='/etc/py-i2phosts/injector.conf', dest='config_file',
+		help='config file to use')
 parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.txt', dest='hostsfile',
 		help='hosts.txt for parsing')
 parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
@@ -29,6 +32,12 @@ parser.add_argument('-s', '--supress', action='store_true',
 parser.add_argument('-q', '--quiet', action='store_true',
 		help='be completely quiet, print only errors')
 args = parser.parse_args()
+
+# read config
+config = configobj.ConfigObj(args.config_file)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
 
 # determine approve hosts or not
 if args.approve:
