@@ -75,6 +75,7 @@ for source in config['sources']:
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
 		opener.addheaders = [('If-Modified-Since', last_modified)]
 	try:
+		log.debug('fetching hosts from: %s', source_hostname)
 		resp = opener.open(source, timeout=60)
 	except urllib2.URLError, e:
 		if hasattr(e, 'reason'):
