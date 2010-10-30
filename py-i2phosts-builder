@@ -11,6 +11,8 @@ parser = argparse.ArgumentParser(
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/builder.conf', dest='config_file',
 		help='config file to use')
+parser.add_argument('-f', '--file',
+		help='write hosts into specified file')
 args = parser.parse_args()
 
 # read config
@@ -30,7 +32,10 @@ os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
 
 # result hosts.txt
-hostsfile = 'hosts.txt'
+if 'hostsfile' in config:
+	hostsfile = config['hostsfile']
+if args.file:
+	hostsfile = args.file
 
 f = open(hostsfile, 'w')
 # get activated hosts
