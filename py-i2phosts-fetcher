@@ -32,6 +32,16 @@ if 'DJANGO_PROJECT_PATH' in config:
 else:
 	sys.stderr.write('"DJANGO_PROJECT_PATH" is missing in config\n')
 	sys.exit(1)
+from web.lib.utils import get_logger
+
+# configure logger
+if args.debug == True:
+	log_level = 'debug'
+	log_file = None
+else:
+	log_level = config['log_level']
+	log_file = config['log_file']
+log = get_logger(filename=log_file, log_level=log_level)
 
 # we want open urls through proxy
 if 'proxyurl' in config:
