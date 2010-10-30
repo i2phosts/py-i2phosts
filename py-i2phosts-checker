@@ -18,6 +18,8 @@ parser = argparse.ArgumentParser(
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
 		help='write debug messages to stdout'),
+parser.add_argument('-v', '--verbose', action='store_true',
+		help='set loglevel to info and write messages to stdout'),
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', dest='config_file',
 		help='config file to use')
 args = parser.parse_args()
@@ -42,6 +44,9 @@ from web.lib.utils import get_logger
 # configure logger
 if args.debug == True:
 	log_level = 'debug'
+	log_file = None
+elif args.verbose == True:
+	log_level = 'info'
 	log_file = None
 else:
 	log_level = config['log_level']
