@@ -23,9 +23,10 @@ parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', d
 args = parser.parse_args()
 
 # read config
-config = configobj.ConfigObj(args.config_file, file_error=True)
-config_included = configobj.ConfigObj(config['include'])
-config.merge(config_included)
+config = configobj.ConfigObj(args.config_file)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
