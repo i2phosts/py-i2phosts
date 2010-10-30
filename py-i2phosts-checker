@@ -30,7 +30,7 @@ if 'include' in config:
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
-if config['DJANGO_PROJECT_PATH']:
+if 'DJANGO_PROJECT_PATH' in config:
 	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
 	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
