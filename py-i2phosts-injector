@@ -59,7 +59,7 @@ for line in f:
 	if line.startswith('#') or line.isspace():
 		continue
 	if line.find('=') == -1:
-		sys.stderr.write('Invalid line: %s\n' % line)
+		sys.stdout.write('Invalid line: %s\n' % line)
 		continue
 	# strip trailing '\n'
 	line = line.rstrip('\n')
@@ -68,7 +68,7 @@ for line in f:
 		hostname = validate_hostname(entry[0])
 		base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
 	except ValidationError, e:
-		sys.stderr.write('validation error: %s: %s\n\n' % (e, line))
+		sys.stdout.write('validation error: %s: %s\n\n' % (e, line))
 	else:
 		# Check for already existed hosts in database to avoid unneeded INSERTs
 		# beacuse they will fail anyway.
