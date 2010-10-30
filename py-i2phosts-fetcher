@@ -9,16 +9,8 @@ import time
 import urllib2
 import subprocess
 import argparse
+import configobj
 
-proxyurl = 'http://localhost:4444/'
-sources = ['http://www.i2p2.i2p/hosts.txt', 'http://stats.i2p/cgi-bin/newhosts.txt',
-		'http://i2host.i2p/cgi-bin/i2hostetag', 'http://tino.i2p/hosts.txt',
-		'http://trevorreznik.i2p/hosts.txt', 'http://dream.i2p/hosts.txt',
-		'http://biw5iauxm7cjkakqygod3tq4w6ic4zzz5mtd4c7xdvvz54fyhnwa.b32.i2p/uncensoredhosts.txt',
-		'http://cipherspace.i2p/addressbook.txt', 'http://hosts.i2p/hosts.cgi?filter=all']
-#sources = ['http://www.i2p2.i2p/hosts.txt', 'http://stats.i2p/cgi-bin/newhosts.txt']
-#sources = ['http://hiddenchan.i2p/ggfg.txt']
-#sources = ['http://stats.i2p/cgi-bin/newhosts.xml']
 # parse command line options
 parser = argparse.ArgumentParser(
 		description='Hosts fetcher for py-i2phosts.',
@@ -29,11 +21,32 @@ parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fetcher.conf', d
 		help='config file to use')
 args = parser.parse_args()
 
+# read config
+config = configobj.ConfigObj(args.config_file, file_error=True)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
+
+if 'DJANGO_PROJECT_PATH' in config:
+	sys.path.insert(1, config['DJANGO_PROJECT_PATH'])
+else:
+	sys.stderr.write('"DJANGO_PROJECT_PATH" is missing in config\n')
+	sys.exit(1)
+
 # we want open urls through proxy
-proxy_handler = urllib2.ProxyHandler({'http': proxyurl})
+if 'proxyurl' in config:
+	proxy_handler = urllib2.ProxyHandler({'http': config['proxyurl']})
+else:
+	log.critical('"proxyurl" is missing in config')
+	sys.exit(1)
 opener = urllib2.build_opener(proxy_handler)
 
-for source in sources:
+if not 'sources' in config:
+	log.critical('"sources" is missing in config')
+	sys.exit(1)
+
+# FIXME: use as_list() here
+for source in config['sources']:
 	# cut hostname.i2p from url
 	source_hostname = re.sub(r'.*//(.+?)/.+', r'\1', source)
 	# use separate file for each host
