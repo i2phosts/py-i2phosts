@@ -2,6 +2,15 @@
 
 import os
 import sys
+import argparse
+
+# parse command line options
+parser = argparse.ArgumentParser(
+		description='Hosts builder for py-i2phosts.',
+		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-c', '--config', default='/etc/py-i2phosts/builder.conf', dest='config_file',
+		help='config file to use')
+args = parser.parse_args()
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'settings'
