@@ -7,6 +7,7 @@ import datetime
 import argparse
 import logging
 import configobj
+import validate
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -18,8 +19,30 @@ parser.add_argument('-c', '--config', default='/etc/py-i2phosts/maintainer.conf'
 		help='config file to use')
 args = parser.parse_args()
 
-# read config
-config = configobj.ConfigObj(args.config_file)
+# read and validate config
+spec = '''
+	external_inactive_max = integer(default=365)
+	internal_inactive_max = integer(default=14)
+	external_expires = integer(default=30)
+	internal_expires = integer(default=30)
+	activate_min_delay = integer(default=3)
+	keep_expired = integer(default=730)
+	'''
+spec = spec.split('\n')
+config = configobj.ConfigObj(args.config_file, configspec=spec)
+val = validate.Validator()
+res = config.validate(val, preserve_errors=True)
+for entry in configobj.flatten_errors(config, res):
+	# each entry is a tuple
+	section_list, key, error = entry
+	if key is not None:
+		section_list.append(key)
+	else:
+		section_list.append('[missing section]')
+	section_string = ', '.join(section_list)
+	if error == False:
+		error = 'Missing value or section.'
+	sys.stderr.write(section_string + '=' + str(error) + '\n')
 if 'include' in config:
 	config_included = configobj.ConfigObj(config['include'])
 	config.merge(config_included)
