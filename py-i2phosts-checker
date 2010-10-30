@@ -51,7 +51,7 @@ log = get_logger(filename=log_file, log_level=log_level)
 all_hosts = i2phost.objects.all()
 
 # determine SAM interface address
-if sam_addr in config:
+if 'sam_addr' in config:
 	sam_addr = config['sam_addr']
 else:
 	log.warning('SAM address isn\'t specified in config, falling back to localhost')
