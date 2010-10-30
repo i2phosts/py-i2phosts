@@ -87,7 +87,11 @@ for source in config['sources']:
 					source_hostname, e.code)
 		continue
 	# read data from remote and write it to local file
-	content = resp.read()
+	try:
+		content = resp.read()
+	except:
+		log.warning('failed to read data from %s', source_hostname)
+		continue
 	f = open(filename, 'w')
 	f.write(content)
 	f.close()
