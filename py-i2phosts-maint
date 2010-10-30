@@ -72,25 +72,26 @@ for host in all_hosts:
 	# how long host was added
 	dl = datetime.datetime.now() - host.date_added
 	if host.last_seen == None:
-		# delete external hosts which we never seen after 365 days of inactivity
+		# delete external hosts which we never seen after X days of inactivity
 		if host.external == True:
-			if dl > datetime.timedelta(days=365):
-				log.info('deleting %s, reason: external host, never seen for 365 days', host.name)
+			if dl > datetime.timedelta(days=config['external_inactive_max']):
+				log.info('deleting %s, reason: external host, never seen for %s days',
+						host.name, config['external_inactive_max'])
 				host.delete()
 				continue
-		# delete hosts added by us and never seen after 14 days of inactivity
+		# delete hosts added by us and never seen after X days of inactivity
 		else:
-			if dl > datetime.timedelta(days=14):
-				log.info('deleting %s, reason: internal host, never seen for 14 days', host.name)
+			if dl > datetime.timedelta(days=config['internal_inactive_max']):
+				log.info('deleting %s, reason: internal host, never seen for %s days',
+						host.name, config['internal_inactive_max'])
 				host.delete()
 				continue
 	else:
 		# configure registration period for hosts
-		# FIXME: make intervals configurable via config or/and commandline
 		if host.external == True:
-			timedelta = datetime.timedelta(days=30)
+			timedelta = datetime.timedelta(days=config['external_expires'])
 		else:
-			timedelta = datetime.timedelta(days=60)
+			timedelta = datetime.timedelta(days=config['internal_expires'])
 		# get current host expiration date from database
 		if host.expires == None:
 			# workaround for situation when we updating expires first time
@@ -105,17 +106,20 @@ for host in all_hosts:
 			log.debug('updating expires for %s', host.name)
 			host.expires = expires_new
 		# deactivate if expired
+		min_dl = datetime.timedelta(days=config['activate_min_delay'])
 		if host.expires < datetime.datetime.now().date():
 			log.info('deactivating %s, reason: expired', host.name)
 			host.activated = False
-		# if not expired and added more than 3 days ago and approved then activate
-		elif dl > datetime.timedelta(days=3) and host.activated == False and host.approved == True:
-			log.info('activating %s, reason: host up and added more than 3 days ago', host.name)
+		# if not expired and added more than X days ago and approved then activate
+		elif dl > min_dl and host.activated == False and host.approved == True:
+			log.info('activating %s, reason: host up and added more than %s days ago',
+					host.name, config['activate_min_delay'])
 			host.activated = True
-		# if expired two years ago then delete
+		# if expired X days ago then delete
 		dl_e = datetime.datetime.now().date() - host.expires
-		if dl_e > datetime.timedelta(days=730):
-			log.info('deleting %s, reason: expired 2 years ago', host.name)
+		if dl_e > datetime.timedelta(days=config['keep_expired']):
+			log.info('deleting %s, reason: expired % days ago',
+					host.name, config['keep_expired'])
 			host.delete()
 			continue
 		host.save()
