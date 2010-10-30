@@ -13,6 +13,7 @@ DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
+import configobj
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -20,6 +21,8 @@ parser = argparse.ArgumentParser(
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
 		help='enable debug messages')
+parser.add_argument('-c', '--config', default='/etc/py-i2phosts/maintainer.conf', dest='config_file',
+		help='config file to use')
 args = parser.parse_args()
 
 # configure logger
@@ -28,6 +31,12 @@ handler = logging.StreamHandler()
 log.addHandler(handler)
 if args.debug:
 	log.setLevel(logging.DEBUG)
+# read config
+config = configobj.ConfigObj(args.config_file)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
+
 else:
 	log.setLevel(logging.INFO)
 
