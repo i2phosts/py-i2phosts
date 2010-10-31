@@ -104,9 +104,8 @@ for source in all_sources:
 	source.last_success = datetime.datetime.now()
 	source.save()
 	# form commnd-line for invoke injector
-	path = os.path.dirname(sys.argv[0])
 	log.info('adding hosts from: %s', source.name)
-	sp_args = [path + '/py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
+	sp_args = ['py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
 			'Auto-added from ' + source.name]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
