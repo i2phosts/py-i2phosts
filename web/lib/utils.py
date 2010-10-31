@@ -1,4 +1,5 @@
 import logging
+from logging import handlers
 
 def get_logger(filename=None, log_level='debug'):
 	""" Prepare logger instance for our scripts """
@@ -16,7 +17,7 @@ def get_logger(filename=None, log_level='debug'):
 	logger = logging.getLogger(__name__)
 	logger.setLevel(level)
 	if filename:
-		handler = logging.WatchedFileHandler(filename)
+		handler = logging.handlers.WatchedFileHandler(filename)
 	else:
 		handler = logging.StreamHandler()
 	handler.setFormatter(formatter)
