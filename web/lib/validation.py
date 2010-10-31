@@ -109,3 +109,12 @@ def validate_b64hash(data, check_uniq=True):
 		if qs.exists():
 			raise ValidationError('Base64 hash must be unique')
 	return data
+
+
+def validate_i2purl(data):
+	""" Basic I2P URL validator """
+	# convert to lowercase and strip leading and trailing whitespaces
+	data = data.lower().strip()
+	# check for http://, .i2p in domain and GET validity
+	if re.match(r'^http://(?:.+?\.i2p)(?:/?|[/?]\S+)$', data) == None:
+		raise ValidationError('Bad I2P url')
