@@ -1,3 +1,4 @@
+import sys
 import logging
 from logging import handlers
 
@@ -25,3 +26,17 @@ def get_logger(filename=None, log_level='debug'):
 
 	return logger
 
+
+def check_logger_options(config):
+	""" Check passed config for logger options """
+	if 'log_level' in config:
+		log_level = config['log_level']
+	else:
+		sys.stderr.write('"log_level" is missing in config\n')
+		sys.exit(1)
+	if 'log_file' in config:
+		log_file = config['log_file']
+	else:
+		sys.stderr.write('"log_file is missing in config\n')
+		sys.exit(1)
+	return (log_file, log_level)
