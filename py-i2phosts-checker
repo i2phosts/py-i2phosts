@@ -84,6 +84,7 @@ sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
 from web.lib.utils import get_logger
+from web.lib.utils import check_logger_options
 
 # configure logger
 if args.debug == True:
@@ -93,16 +94,7 @@ elif args.verbose == True:
 	log_level = 'info'
 	log_file = None
 else:
-	if 'log_level' in config:
-		log_level = config['log_level']
-	else:
-		sys.stderr.write('"log_level" missing in config\n')
-		sys.exit(1)
-	if 'log_file' in config:
-		log_file = config['log_file']
-	else:
-		sys.stderr.write('"log_file missing in config\n')
-		sys.exit(1)
+	log_file, log_level = check_logger_options(config)
 
 if not args.debug and not args.verbose:
 	# get pid object for daemon
