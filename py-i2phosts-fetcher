@@ -4,7 +4,6 @@ import re
 import os
 import os.path
 import sys
-import errno
 import datetime
 import urllib2
 import subprocess
