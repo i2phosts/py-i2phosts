@@ -36,6 +36,7 @@ else:
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.lib.utils import get_logger
+from web.lib.utils import check_logger_options
 from web.extsources.models import ExternalSource
 
 # configure logger
@@ -43,8 +44,7 @@ if args.debug == True:
 	log_level = 'debug'
 	log_file = None
 else:
-	log_level = config['log_level']
-	log_file = config['log_file']
+	log_file, log_level = check_logger_options(config)
 log = get_logger(filename=log_file, log_level=log_level)
 
 # we want open urls through proxy
