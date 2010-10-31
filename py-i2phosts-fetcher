@@ -5,7 +5,7 @@ import os
 import os.path
 import sys
 import errno
-import time
+import datetime
 import urllib2
 import subprocess
 import argparse
@@ -27,12 +27,16 @@ if 'include' in config:
 	config_included = configobj.ConfigObj(config['include'])
 	config.merge(config_included)
 
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	sys.path.insert(1, config['DJANGO_PROJECT_PATH'])
+	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	sys.stderr.write('"DJANGO_PROJECT_PATH" is missing in config\n')
-	sys.exit(1)
+	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.lib.utils import get_logger
+from web.extsources.models import ExternalSource
 
 # configure logger
 if args.debug == True:
@@ -51,63 +55,59 @@ else:
 	sys.exit(1)
 opener = urllib2.build_opener(proxy_handler)
 
-if not 'sources' in config:
-	log.critical('"sources" is missing in config')
-	sys.exit(1)
+all_sources = ExternalSource.objects.filter(active=True)
 
-# FIXME: use as_list() here
-for source in config['sources']:
-	# cut hostname.i2p from url
-	source_hostname = re.sub(r'.*//(.+?)/.+', r'\1', source)
+for source in all_sources:
 	# use separate file for each host
-	filename = 'hosts.txt.' + source_hostname
-	# build last-modified info from file mtime
-	try:
-		mtime = os.path.getmtime(filename)
-	except OSError, e:
-		if e.errno == errno.ENOENT:
-			pass
-		else:
-			log.critical('fatal error: %s', e)
-			sys.exit(1)
-	else:
-		last_modified = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.localtime(mtime))
+	filename = 'hosts.txt.' + source.name
+	if source.last_modified:
+		last_modified = source.last_modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
 		opener.addheaders = [('If-Modified-Since', last_modified)]
+	if source.etag:
+		opener.addheaders = [('If-None-Match', source.etag)]
 	try:
-		log.debug('fetching hosts from: %s', source_hostname)
-		resp = opener.open(source, timeout=60)
+		log.debug('fetching hosts from: %s', source.name)
+		resp = opener.open(source.url, timeout=60)
 	except urllib2.URLError, e:
 		if hasattr(e, 'reason'):
-			log.warning('failed to reach server %s, reason: %s', source_hostname, e.reason)
+			log.warning('failed to reach server %s, reason: %s', source.name, e.reason)
 		elif hasattr(e, 'code'):
 			if e.code == 304:
-				log.info('%s: not modified', source_hostname)
+				log.info('%s: not modified', source.name)
+				source.last_success = datetime.datetime.now()
+				source.save()
 			else:
 				log.warning('server %s can\'t finish the request, error code: %s',
-					source_hostname, e.code)
+					source.name, e.code)
 		continue
 	# read data from remote and write it to local file
 	try:
 		content = resp.read()
 	except:
-		log.warning('failed to read data from %s', source_hostname)
+		log.warning('failed to read data from %s', source.name)
 		continue
 	f = open(filename, 'w')
 	f.write(content)
 	f.close()
-	# get last-modified info from header and change file's mtime
+	# get last-modified info from header
 	lm = resp.headers.get('Last-Modified')
-	log.debug('%s Last-Modified: %s', source_hostname, lm)
 	if lm:
-		target_mtime = int(time.mktime(time.strptime(lm, '%a, %d %b %Y %H:%M:%S GMT')))
-		os.utime(filename, (target_mtime, target_mtime))
-
+		log.debug('%s Last-Modified: %s', source.name, lm)
+		source.last_modified = datetime.datetime.strptime(lm, '%a, %d %b %Y %H:%M:%S GMT')
+	# get ETag
+	etag = resp.headers.get('ETag')
+	if etag:
+		log.debug('%s ETag: %s', source.name, etag)
+		source.etag = etag
+	# update last_success
+	source.last_success = datetime.datetime.now()
+	source.save()
 	# form commnd-line for invoke injector
 	path = os.path.dirname(sys.argv[0])
-	log.info('adding hosts from: %s', source_hostname)
+	log.info('adding hosts from: %s', source.name)
 	sp_args = [path + '/py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
-			'Auto-added from ' + source_hostname]
+			'Auto-added from ' + source.name]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	out = p.communicate()[0]
