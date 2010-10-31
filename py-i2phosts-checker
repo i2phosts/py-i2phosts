@@ -2,15 +2,59 @@
 
 import os
 import sys
+import pwd
 import argparse
 import datetime
 import time
 import hashlib
 import base64
 import configobj
+import daemon
+import daemon.pidlockfile
 
 from i2p import samclasses
 from i2p import socket
+
+def check():
+	all_hosts = i2phost.objects.all()
+
+	# determine SAM interface address
+	if 'sam_addr' in config:
+		sam_addr = config['sam_addr']
+	else:
+		log.warning('SAM address isn\'t specified in config, falling back to localhost')
+		sam_addr = '127.0.0.1:7656'
+	S = samclasses.BaseSession(sam_addr)
+
+	log.info('starting check')
+	for host in all_hosts:
+		log.debug('testing %s', host.name)
+		# get b32 address from full dest key
+		dest = host.b64hash
+		raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
+		hash = hashlib.sha256(raw_key)
+		b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+		# do name lookup query with b32 address
+		# it success only if host is alive
+		try:
+			a = S._namelookup(b32dest)
+		except socket.NetworkError, e:
+			log.debug('%s: %s', host.name, e.args[0][0])
+			continue
+		log.info('alive host: %s', host.name)
+		# update lastseen timestamp
+		host.last_seen = datetime.datetime.now()
+		host.save()
+	S.close()
+	log.info('check finished')
+
+def main():
+	while True:
+		check()
+		if args.debug or args.verbose:
+			sys.exit(0)
+		else:
+			time.sleep(float(config['check_interval']))
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -49,38 +93,36 @@ elif args.verbose == True:
 	log_level = 'info'
 	log_file = None
 else:
-	log_level = config['log_level']
-	log_file = config['log_file']
+	if 'log_level' in config:
+		log_level = config['log_level']
+	else:
+		sys.stderr.write('"log_level" missing in config\n')
+		sys.exit(1)
+	if 'log_file' in config:
+		log_file = config['log_file']
+	else:
+		sys.stderr.write('"log_file missing in config\n')
+		sys.exit(1)
+
+if not args.debug and not args.verbose:
+	# get pid object for daemon
+	if 'pid_file' in config:
+		pid = daemon.pidlockfile.TimeoutPIDLockFile(config['pid_file'], 10)
+	else:
+		sys.stderr.write('"pid_file" missing in config\n')
+		sys.exit(1)
+	# create daemon context
+	d = daemon.DaemonContext(pidfile=pid, umask=077)
+	# write stderr to logfile # FIXME: and how we will deal with log rotation?
+	logfile = open(config['log_file'], 'a')
+	d.stderr = logfile
+	d.stdout = logfile
+	# drop privileges when started as root
+	if os.getuid() == 0:
+		runas = '_pyi2phosts'
+		pw_entry = pwd.getpwnam(runas)
+		d.uid = pw_entry[2]
+		d.gid = pw_entry[3]
+	d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
-
-all_hosts = i2phost.objects.all()
-
-# determine SAM interface address
-if 'sam_addr' in config:
-	sam_addr = config['sam_addr']
-else:
-	log.warning('SAM address isn\'t specified in config, falling back to localhost')
-	sam_addr = '127.0.0.1:7656'
-S = samclasses.BaseSession(sam_addr)
-
-log.info('starting check')
-for host in all_hosts:
-	log.debug('testing %s', host.name)
-	# get b32 address from full dest key
-	dest = host.b64hash
-	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
-	hash = hashlib.sha256(raw_key)
-	b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
-	# do name lookup query with b32 address
-	# it success only if host is alive
-	try:
-		a = S._namelookup(b32dest)
-	except socket.NetworkError, e:
-		log.debug('%s: %s', host.name, e.args[0][0])
-		continue
-	log.info('alive host: %s', host.name)
-	# update lastseen timestamp
-	host.last_seen = datetime.datetime.now()
-	host.save()
-S.close()
-
+main()
