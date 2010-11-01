@@ -1,5 +1,8 @@
 import sys
 import logging
+import configobj
+import validate
+
 from logging import handlers
 
 def get_logger(filename=None, log_level='debug'):
@@ -40,3 +43,17 @@ def check_logger_options(config):
 		sys.stderr.write('"log_file is missing in config\n')
 		sys.exit(1)
 	return (log_file, log_level)
+
+def validate_config(config):
+	""" Validate configobj config """
+	validator = validate.Validator()
+	results = config.validate(validator)
+	if results != True:
+		for (section_list, key, _) in configobj.flatten_errors(config, results):
+			if key is not None:
+				sys.stderr.write('The "%s" key in the section "%s" failed validation' %
+						(key, ', '.join(section_list)))
+			else:
+				sys.stderr.write('The following section was missing:%s ' %
+					', '.join(section_list))
+		sys.exit(1)
