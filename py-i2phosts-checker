@@ -57,7 +57,8 @@ elif args.verbose == True:
 	log_level = 'info'
 	log_file = None
 else:
-	log_file, log_level = check_logger_options(config)
+	log_level = config['log_level']
+	log_file = config['log_file']
 log = get_logger(filename=log_file, log_level=log_level)
 
 # determine SAM interface address
