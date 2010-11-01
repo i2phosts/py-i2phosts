@@ -20,6 +20,8 @@ args = parser.parse_args()
 
 # read config
 spec = '''
+	log_file = string(default='/var/log/py-i2phosts/maintainer.log')
+	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
 	external_inactive_max = integer(default=365)
 	internal_inactive_max = integer(default=14)
 	external_expires = integer(default=30)
@@ -43,7 +45,6 @@ sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
 from web.lib.utils import get_logger
-from web.lib.utils import check_logger_options
 from web.lib.utils import validate_config
 
 # validate config
@@ -54,7 +55,8 @@ if args.debug == True:
 	log_level = 'debug'
 	log_file = None
 else:
-	log_file, log_level = check_logger_options(config)
+	log_level = config['log_level']
+	log_file = config['log_file']
 log = get_logger(filename=log_file, log_level=log_level)
 
 all_hosts = i2phost.objects.all()
