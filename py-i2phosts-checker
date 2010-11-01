@@ -2,81 +2,14 @@
 
 import os
 import sys
-import pwd
-import errno
 import argparse
 import datetime
-import time
 import hashlib
 import base64
 import configobj
-import subprocess
-import daemon
-import daemon.pidlockfile
 
 from i2p import samclasses
 from i2p import socket
-
-def check():
-	all_hosts = i2phost.objects.all()
-
-	# determine SAM interface address
-	if 'sam_addr' in config:
-		sam_addr = config['sam_addr']
-	else:
-		log.warning('SAM address isn\'t specified in config, falling back to localhost')
-		sam_addr = '127.0.0.1:7656'
-	S = samclasses.BaseSession(sam_addr)
-
-	log.info('starting check')
-	for host in all_hosts:
-		log.debug('testing %s', host.name)
-		# get b32 address from full dest key
-		dest = host.b64hash
-		raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
-		hash = hashlib.sha256(raw_key)
-		b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
-		# do name lookup query with b32 address
-		# it success only if host is alive
-		try:
-			a = S._namelookup(b32dest)
-		except socket.NetworkError, e:
-			log.debug('%s: %s', host.name, e.args[0][0])
-			continue
-		log.info('alive host: %s', host.name)
-		# update lastseen timestamp
-		host.last_seen = datetime.datetime.now()
-		host.save()
-	S.close()
-	log.info('check finished')
-
-def run_prog(prog):
-	try:
-		log.info('launching %s (see his log for details)', prog)
-		p = subprocess.Popen([prog], shell=False, stdin=None,
-				stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	except OSError, e:
-		log.error('failed to exec %s: %s', prog, e)
-		if e.errno == errno.ENOENT:
-			log.error('maybe it isn\'t in PATH')
-	else:
-		out = p.communicate()[0]
-		if out:
-			log.info('got output from %s: %s', prog, out)
-
-def main():
-	while True:
-		if config.as_bool('run_fetcher'):
-			run_prog('py-i2phosts-fetcher')
-		check()
-		if config.as_bool('run_maint'):
-			run_prog('py-i2phosts-maint')
-		if config.as_bool('run_builder'):
-			run_prog('py-i2phosts-builder')
-		if args.debug or args.verbose:
-			sys.exit(0)
-		else:
-			time.sleep(float(config['check_interval']))
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -91,7 +24,12 @@ parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', d
 args = parser.parse_args()
 
 # read config
-config = configobj.ConfigObj(args.config_file)
+spec = '''
+	log_file = string(default='/var/log/py-i2phosts/master.log')
+	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+	'''
+spec = spec.split('\n')
+config = configobj.ConfigObj(args.config_file, configspec=spec)
 if 'include' in config:
 	config_included = configobj.ConfigObj(config['include'])
 	config.merge(config_included)
@@ -106,7 +44,10 @@ sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
 from web.lib.utils import get_logger
-from web.lib.utils import check_logger_options
+from web.lib.utils import validate_config
+
+# validate config
+validate_config(config)
 
 # configure logger
 if args.debug == True:
@@ -117,26 +58,35 @@ elif args.verbose == True:
 	log_file = None
 else:
 	log_file, log_level = check_logger_options(config)
-
-if not args.debug and not args.verbose:
-	# get pid object for daemon
-	if 'pid_file' in config:
-		pid = daemon.pidlockfile.TimeoutPIDLockFile(config['pid_file'], 10)
-	else:
-		sys.stderr.write('"pid_file" missing in config\n')
-		sys.exit(1)
-	# create daemon context
-	d = daemon.DaemonContext(pidfile=pid, umask=077)
-	# write stderr to logfile # FIXME: and how we will deal with log rotation?
-	logfile = open(config['log_file'], 'a')
-	d.stderr = logfile
-	d.stdout = logfile
-	# drop privileges when started as root
-	if os.getuid() == 0:
-		runas = '_pyi2phosts'
-		pw_entry = pwd.getpwnam(runas)
-		d.uid = pw_entry[2]
-		d.gid = pw_entry[3]
-	d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
-main()
+
+# determine SAM interface address
+if 'sam_addr' in config:
+	sam_addr = config['sam_addr']
+else:
+	log.warning('SAM address isn\'t specified in config, falling back to localhost')
+	sam_addr = '127.0.0.1:7656'
+S = samclasses.BaseSession(sam_addr)
+
+all_hosts = i2phost.objects.all()
+log.info('starting check')
+for host in all_hosts:
+	log.debug('testing %s', host.name)
+	# get b32 address from full dest key
+	dest = host.b64hash
+	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
+	hash = hashlib.sha256(raw_key)
+	b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+	# do name lookup query with b32 address
+	# it success only if host is alive
+	try:
+		a = S._namelookup(b32dest)
+	except socket.NetworkError, e:
+		log.debug('%s: %s', host.name, e.args[0][0])
+		continue
+	log.info('alive host: %s', host.name)
+	# update lastseen timestamp
+	host.last_seen = datetime.datetime.now()
+	host.save()
+S.close()
+log.info('check finished')
