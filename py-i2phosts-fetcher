@@ -22,7 +22,13 @@ parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fetcher.conf', d
 args = parser.parse_args()
 
 # read config
-config = configobj.ConfigObj(args.config_file, file_error=True)
+spec = '''
+	proxyurl = string(default='http://localhost:4444/')
+	log_file = string(default='/var/log/py-i2phosts/fetcher.log')
+	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+	'''
+spec = spec.split('\n')
+config = configobj.ConfigObj(args.config_file, configspec=spec, file_error=True)
 if 'include' in config:
 	config_included = configobj.ConfigObj(config['include'])
 	config.merge(config_included)
@@ -36,7 +42,11 @@ else:
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.lib.utils import get_logger
+from web.lib.utils import validate_config
 from web.extsources.models import ExternalSource
+
+# validate config
+validate_config(config)
 
 # configure logger
 if args.debug == True:
@@ -48,11 +58,7 @@ else:
 log = get_logger(filename=log_file, log_level=log_level)
 
 # we want open urls through proxy
-if 'proxyurl' in config:
-	proxy_handler = urllib2.ProxyHandler({'http': config['proxyurl']})
-else:
-	log.critical('"proxyurl" is missing in config')
-	sys.exit(1)
+proxy_handler = urllib2.ProxyHandler({'http': config['proxyurl']})
 opener = urllib2.build_opener(proxy_handler)
 
 all_sources = ExternalSource.objects.filter(active=True)
