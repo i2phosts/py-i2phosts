@@ -8,6 +8,10 @@ from logging import handlers
 def get_logger(filename=None, log_level='debug'):
 	""" Prepare logger instance for our scripts """
 
+	# workaround for django
+	if hasattr(logging, "web_logger"):
+		return logging.web_logger
+
 	LEVELS = {
 		'debug': logging.DEBUG,
 		'info': logging.INFO,
@@ -26,6 +30,9 @@ def get_logger(filename=None, log_level='debug'):
 		handler = logging.StreamHandler()
 	handler.setFormatter(formatter)
 	logger.addHandler(handler)
+
+	# workaround for django
+	logging.web_logger = logger
 
 	return logger
 
