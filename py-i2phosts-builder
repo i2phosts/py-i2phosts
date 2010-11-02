@@ -42,10 +42,13 @@ from web.lib.utils import validate_config
 validate_config(config)
 
 # result hosts.txt
-if 'hostsfile' in config:
-	hostsfile = config['hostsfile']
 if args.file:
 	hostsfile = args.file
+elif config['hostsfile'] != None:
+	hostsfile = config['hostsfile']
+else:
+	sys.stderr.write('Please specify "-f" or define "hostsfile" in config\n')
+	sys.exit(1)
 
 f = open(hostsfile, 'w')
 # get activated hosts
