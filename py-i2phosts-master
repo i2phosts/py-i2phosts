@@ -69,14 +69,17 @@ def main():
 
 	# if we're just started, wait while fetcher get some new hosts
 	fetcher = run_fetcher()
+	log.debug('just started, delaying checker run for 300 secs')
 	fetcher.join(300) # wait for 5 mins
 	# start checker and other
 	checker = run_checker()
 
 	while True:
 		if fetcher.isAlive() == False:
+			log.warning('fetcher thread is dead, respawning...')
 			fetcher = run_fetcher()
 		if checker.isAlive() == False:
+			log.warning('checker thread is dead, respawning...')
 			checker = run_checker()
 		# do check every 30 mins
 		time.sleep(1800)
@@ -154,4 +157,5 @@ if not args.debug and not args.verbose:
 		d.gid = pw_entry[3]
 	d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
+log.debug('daemonised')
 main()
