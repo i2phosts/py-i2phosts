@@ -100,9 +100,6 @@ for source in all_sources:
 	if etag:
 		log.debug('%s ETag: %s', source.name, etag)
 		source.etag = etag
-	# update last_success
-	source.last_success = datetime.datetime.now()
-	source.save()
 	# form commnd-line for invoke injector
 	log.info('adding hosts from: %s', source.name)
 	sp_args = ['py-i2phosts-injector', '-s', '-a', '-f', tmpfile, '-d',
@@ -112,3 +109,6 @@ for source in all_sources:
 	out = p.communicate()[0]
 	os.remove(tmpfile)
 	log.info('injector output: \n%s', out)
+	# update last_success
+	source.last_success = datetime.datetime.now()
+	source.save()
