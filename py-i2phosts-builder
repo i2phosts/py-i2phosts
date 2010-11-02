@@ -18,7 +18,11 @@ parser.add_argument('-d', '--debug', action='store_true',
 args = parser.parse_args()
 
 # read config
-config = configobj.ConfigObj(args.config_file, file_error=True)
+spec = '''
+	hostsfile = string(default=None)
+	'''
+spec = spec.split('\n')
+config = configobj.ConfigObj(args.config_file, configspec=spec, file_error=True)
 if 'include' in config:
 	config_included = configobj.ConfigObj(config['include'])
 	config.merge(config_included)
@@ -32,6 +36,10 @@ else:
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from web.postkey.models import i2phost
+from web.lib.utils import validate_config
+
+# validate config
+validate_config(config)
 
 # result hosts.txt
 if 'hostsfile' in config:
