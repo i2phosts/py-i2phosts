@@ -8,6 +8,7 @@ from django.template import RequestContext
 
 from web import settings
 from web.postkey.models import i2phost
+from web.lib.utils import get_logger
 from web.lib.validation import validate_hostname
 from web.lib.validation import validate_b64hash
 
@@ -27,6 +28,7 @@ class AddForm(ModelForm):
 	def clean_name(self):
 		"""Validate hostname"""
 		data = self.cleaned_data['name']
+		log.debug(u'hostname: %s', self.data['name'])
 		data = validate_hostname(data)
 		# Another set of reserved hostnames (suggested by zzz)
 		if re.search(r'(^|\.)(i2p|i2p2|geti2p|mail|project|i2project|i2pproject|i2p-project).i2p$', data):
@@ -37,6 +39,7 @@ class AddForm(ModelForm):
 	def clean_b64hash(self):
 		"""Validate base64 hash"""
 		data = self.cleaned_data['b64hash']
+		log.debug(u'hash: %s', self.data['b64hash'])
 		data = validate_b64hash(data)
 		return data
 
@@ -44,6 +47,7 @@ def addkey(request):
 	if request.method == 'POST':
 		form = AddForm(request.POST)
 		if form.is_valid():
+			log.debug('submit is valid, saving')
 			form.save()
 			request.session['hostname'] = form.cleaned_data['name']
 			return HttpResponseRedirect('success')
@@ -59,3 +63,5 @@ def success(request):
 		'title': settings.SITE_NAME,
 		'hostname': request.session['hostname'],
 		})
+
+log = get_logger(filename=settings.LOG_FILE, log_level=settings.LOG_LEVEL)
