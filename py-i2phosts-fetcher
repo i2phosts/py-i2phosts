@@ -9,6 +9,7 @@ import urllib2
 import subprocess
 import argparse
 import configobj
+import tempfile
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -57,8 +58,6 @@ opener = urllib2.build_opener(proxy_handler)
 all_sources = ExternalSource.objects.filter(active=True)
 
 for source in all_sources:
-	# use separate file for each host
-	filename = 'hosts.txt.' + source.name
 	if source.last_modified:
 		last_modified = source.last_modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
@@ -86,7 +85,9 @@ for source in all_sources:
 	except:
 		log.warning('failed to read data from %s', source.name)
 		continue
-	f = open(filename, 'w')
+	# save fetched content into temporary file
+	fd, tmpfile = tempfile.mkstemp(text=True)
+	f = os.fdopen(fd, 'w')
 	f.write(content)
 	f.close()
 	# get last-modified info from header
@@ -104,9 +105,10 @@ for source in all_sources:
 	source.save()
 	# form commnd-line for invoke injector
 	log.info('adding hosts from: %s', source.name)
-	sp_args = ['py-i2phosts-injector', '-s', '-a', '-f', filename, '-d',
+	sp_args = ['py-i2phosts-injector', '-s', '-a', '-f', tmpfile, '-d',
 			'Auto-added from ' + source.name]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	out = p.communicate()[0]
+	os.remove(tmpfile)
 	log.info('injector output: \n%s', out)
