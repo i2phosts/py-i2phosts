@@ -112,3 +112,6 @@ SITE_NAME = 'My cool registration service'
 DOMAIN = 'example.i2p'
 
 """
+# also may be put in local settings:
+LOG_LEVEL = 'debug'
+LOG_FILE = '/var/log/py-i2phosts/web.log'
