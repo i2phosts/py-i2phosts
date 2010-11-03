@@ -3,7 +3,6 @@ import re
 from django import forms
 from django.forms import ModelForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from django.template import RequestContext
 
 from web import settings
