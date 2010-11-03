@@ -4,14 +4,12 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from web.other.views import *
+from other.views import *
 
 urlpatterns = patterns('',
 		url(r'^$', index, name='index'),
-		(r'^postkey/', include('web.postkey.urls')),
-		(r'^jump/', include('web.jump.urls')),
-    # Example:
-    # (r'^web/', include('web.foo.urls')),
+		(r'^postkey/', include('postkey.urls')),
+		(r'^jump/', include('jump.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

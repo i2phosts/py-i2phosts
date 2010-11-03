@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('web.postkey.views',
+urlpatterns = patterns('postkey.views',
 		(r'^$', 'addkey'),
 		(r'^success/', 'success'),
 )

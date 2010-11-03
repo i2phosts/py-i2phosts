@@ -1,6 +1,6 @@
 from django.db import models
 
-from web.lib.validation import validate_i2purl
+from lib.validation import validate_i2purl
 
 class ExternalSource(models.Model):
 	name = models.CharField(max_length=128, unique=True)

@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('web.jump.views',
+urlpatterns = patterns('jump.views',
 		(r'^([^$/]+)', 'jumper'),
 
 )

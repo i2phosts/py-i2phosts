@@ -3,9 +3,9 @@ import re
 from django.shortcuts import render_to_response
 from django.core.exceptions import ValidationError
 
-from web.postkey.models import i2phost
-from web.lib.validation import validate_hostname
-from web import settings
+from postkey.models import i2phost
+from lib.validation import validate_hostname
+import settings
 
 def jumper(request, host):
 	"""Actually do jumps."""

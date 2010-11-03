@@ -5,11 +5,11 @@ from django.forms import ModelForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from web import settings
-from web.postkey.models import i2phost
-from web.lib.utils import get_logger
-from web.lib.validation import validate_hostname
-from web.lib.validation import validate_b64hash
+import settings
+from postkey.models import i2phost
+from lib.utils import get_logger
+from lib.validation import validate_hostname
+from lib.validation import validate_b64hash
 
 class AddForm(ModelForm):
 	"""
