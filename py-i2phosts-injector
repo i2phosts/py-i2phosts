@@ -39,9 +39,9 @@ else:
 	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
-from web.postkey.models import i2phost
-from web.lib.validation import validate_hostname
-from web.lib.validation import validate_b64hash
+from pyi2phosts.postkey.models import i2phost
+from pyi2phosts.lib.validation import validate_hostname
+from pyi2phosts.lib.validation import validate_b64hash
 
 # determine approve hosts or not
 if args.approve or config.as_bool('approve'):

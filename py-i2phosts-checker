@@ -42,9 +42,9 @@ else:
 	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
-from web.postkey.models import i2phost
-from web.lib.utils import get_logger
-from web.lib.utils import validate_config
+from pyi2phosts.postkey.models import i2phost
+from pyi2phosts.lib.utils import get_logger
+from pyi2phosts.lib.utils import validate_config
 
 # validate config
 validate_config(config)
