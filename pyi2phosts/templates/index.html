@@ -12,10 +12,10 @@
 	<a href=/export/alive-hosts.txt>subscription link</a> into router's addressbook.
 	<h2>Jump service</h2><p>
 		{{ title }} also provides a jump service. For accessing hosts through it,
-		use urls like <a href={% url jump.views.jumper 'example.i2p' %}>
-			http://{{ domain }}{% url jump.views.jumper 'example.i2p' %}<a/>
+		use urls like <a href={% url pyi2phosts.jump.views.jumper 'example.i2p' %}>
+			http://{{ domain }}{% url pyi2phosts.jump.views.jumper 'example.i2p' %}<a/>
 	</p>
 	<h2>Adding hosts</h2>
 	<p>If you are running an eepsite or another service and wants a human-readable domain name
-	for them, consider to <a href={% url postkey.views.addkey %}>register it</a>
+	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey %}>register it</a>
 {% endblock %}
