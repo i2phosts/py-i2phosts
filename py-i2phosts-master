@@ -102,10 +102,6 @@ spec = '''
 	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
 	pid_file = string(default='/var/run/py-i2phosts/master.pid')
 	runas = string(default='_pyi2phosts')
-	run_fetcher = boolean(default=True)
-	run_checker = boolean(default=True)
-	run_maint = boolean(default=True)
-	run_builder = boolean(default=True)
 	check_interval = integer(default=43200)
 	fetch_interval = integer(default=1800)
 	'''
