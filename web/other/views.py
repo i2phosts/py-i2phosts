@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-import settings
+from web import settings
 
 def index(request):
 	return render_to_response('index.html', {

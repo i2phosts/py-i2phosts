@@ -4,7 +4,7 @@ import re
 
 from django.core.exceptions import ValidationError
 
-from postkey.models import i2phost
+from pyi2phosts.postkey.models import i2phost
 
 
 def validate_hostname(data):
