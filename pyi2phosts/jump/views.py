@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.validation import validate_hostname
-from web import settings
+import settings
 
 def jumper(request, host):
 	"""Actually do jumps."""

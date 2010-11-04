@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from web import settings
+import settings
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.utils import get_logger
 from pyi2phosts.lib.validation import validate_hostname
