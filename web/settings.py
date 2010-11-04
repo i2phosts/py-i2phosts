@@ -93,8 +93,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'postkey',
-    'extsources',
+    'pyi2phosts.postkey',
+    'pyi2phosts.extsources',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
 )
