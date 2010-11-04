@@ -1,5 +1,5 @@
-from postkey.models import i2phost
-from postkey.models import PendingHost
+from pyi2phosts.postkey.models import i2phost
+from pyi2phosts.postkey.models import PendingHost
 from django.contrib import admin
 
 class i2phostAdmin(admin.ModelAdmin):

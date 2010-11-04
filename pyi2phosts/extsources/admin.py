@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from extsources.models import ExternalSource
+from pyi2phosts.extsources.models import ExternalSource
 
 
 class ExternalSourceAdmin(admin.ModelAdmin):
