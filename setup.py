@@ -11,7 +11,6 @@ setup(
 	    'pyi2phosts.postkey',
 	    'pyi2phosts.jump',
 	    'pyi2phosts.extsources',
-	    'pyi2phosts.other',
 	    'pyi2phosts.lib',],
     package_dir = {'': ''},
     package_data = {
