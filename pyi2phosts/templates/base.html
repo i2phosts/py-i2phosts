@@ -26,7 +26,11 @@
 
 		{% block footer %}
 		<hr>
-		<center>Powered-by: <a href=http://py-i2phosts.i2p/>py-i2phosts</a></center>
+		<div class="footer">
+			{% block footer-addon %}
+			{% endblock %}
+			powered-by: <a href=http://py-i2phosts.i2p/>py-i2phosts</a>
+		</div>
 		{% endblock %}
 	</body>
 </html>
