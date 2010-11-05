@@ -48,6 +48,11 @@ div.menu {
 	padding-top: 0em;
 }
 
+.errorlist {
+	color: red;
+	padding-left: 5em;
+}
+
 div.main {
 	margin: 0px 0px 0px 0px;
 	padding: 5px 40px 20px 190px;
