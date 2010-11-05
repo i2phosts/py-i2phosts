@@ -10,43 +10,42 @@
 		{% endfor %}
 	</ul>
 	</li>
-	<li>Adding throught our service.
+	<li>Adding through our service.
 	</li>
 </ol>
 
 <h3>Publish requirements</h3>
-To get published host must match the following criteria:
+To get published a host must meet the following criteria:
 <ul>
-	<li>Must be added at least 3 days ago</li>
+	<li>Must have been added at least 3 days ago</li>
 	<li>Must be up</li>
 	<li>Must be approved by admin</li>
 </ul>
-<p style="notice">Admin's approval isn't really necessary, it only needs for
-eliminate possible hijacking and mass registration attempts.
+<p style="notice">Admin's approval isn't really necessary, it is only needed in
+order to eliminate possible hijacking and mass registration attempts.
 </p>
 
 <h3>Expiration</h3>
 <p>
-Hosts gets checked for availability every 12 hours. If host alive, registration period
-prolongated to 1 month. Until this period ends hosts are published in our hosts.txt.
+Hosts gets checked for availability every 12 hours. If the host is alive, registration period
+prolongated 1 month. Until this period ends, hosts are published in our hosts.txt.
 </p>
 <p>
-If host expired, name/key pair will be keeped for 2 years but will not be
-published. Until this period ends, it's impossible to register this hostname
+When a host has expired, its name/key pair will be keept for 2 years but will not be
+published any longer. Until this period ends, it's impossible to register this hostname
 again.
 </p>
 
 <h3>Deletion of expired hosts</h3>
 <p>
-Hosts expired 2 years ago gets completely deleted from our database and becomes
-available for registration.
+Hosts expired 2 years ago get completely deleted from our database and become
+available for a new registration.
 </p>
 
 <h3>Deletion of dead hosts</h3>
 <p>
-If host was added from external source and we're never seen it alive, it will be
-deleted after 1 year since adding date and after 14 days if it is was added
-throught us. We're giving such small period because such hosts weren't published
-by us because they fails availability test.
+If a host was added from an external source and we've never seen it alive, it
+will be deleted after 1 year since its adding date, and after 14 days if it is
+was added through our registration service.
 </p>
 {% endblock %}
