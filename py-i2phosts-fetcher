@@ -108,7 +108,7 @@ for source in all_sources:
 		source.etag = etag
 	# form commnd-line for invoke injector
 	log.info('adding hosts from: %s', source.name)
-	sp_args = ['py-i2phosts-injector', '-s', '-a', '-f', tmpfile, '-d',
+	sp_args = ['py-i2phosts-injector', '-s', '-f', tmpfile, '-d',
 			'Auto-added from ' + source.name]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
