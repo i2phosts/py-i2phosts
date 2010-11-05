@@ -35,13 +35,13 @@ div.menu {
 	clear: left; /* fixes a bug in Opera */
 }
 
-#menu li {
+.menu li {
 	margin-left: .5em;
 	padding-left: .5em;
 	list-style: none;
 }
 
-#menu ol, ul {
+.menu ol, ul {
 	list-style-position: inside;
 	padding-left: 0em;
 	margin-top: 0em;
