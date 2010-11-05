@@ -5,7 +5,8 @@
 	<p>{{ title }} is a domain name registration service for I2P. Hostnames in I2P aren't
 	globally unique. {{ title }} doesn't act as "central authority", it only provides a
 	way to publish hosts to provide an easy means of access for them. You can read more about how
-	I2P naming works in <a href=http://www.i2p2.i2p/naming.html>official docs</a>
+	I2P naming works in <a href=http://www.i2p2.i2p/naming.html>official
+		docs</a>.
 	</p>
 	<h2>Addressbook service</h2>
 	To start getting new hostnames from {{ title }}, add this
@@ -15,9 +16,11 @@
 	<h2>Jump service</h2><p>
 		{{ title }} also provides a jump service. For accessing hosts through it,
 		use urls like <a href={% url pyi2phosts.jump.views.jumper 'example.i2p' %}>
-			http://{{ domain }}{% url pyi2phosts.jump.views.jumper 'example.i2p' %}<a/>
+			http://{{ domain }}{% url pyi2phosts.jump.views.jumper
+			'example.i2p' %}<a/>.
 	</p>
 	<h2>Adding hosts</h2>
 	<p>If you are running an eepsite or another service and want a human-readable domain name
-	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey %}>registering it</a>
+	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey
+		%}>registering it</a>.
 {% endblock %}
