@@ -4,8 +4,6 @@ import os
 import sys
 import argparse
 import datetime
-import hashlib
-import base64
 import configobj
 
 from i2p import samclasses
@@ -45,6 +43,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.utils import get_logger
 from pyi2phosts.lib.utils import validate_config
+from pyi2phosts.lib.utils import get_b32
 
 # validate config
 validate_config(config)
@@ -75,9 +74,7 @@ for host in all_hosts:
 	log.debug('testing %s', host.name)
 	# get b32 address from full dest key
 	dest = host.b64hash
-	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
-	hash = hashlib.sha256(raw_key)
-	b32dest = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+	b32dest = get_b32(dest)
 	# do name lookup query with b32 address
 	# it success only if host is alive
 	try:
