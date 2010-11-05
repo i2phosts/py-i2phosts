@@ -15,8 +15,7 @@ setup(
 	    'pyi2phosts.lib',],
     package_dir = {'': ''},
     package_data = {
-	    'pyi2phosts': ['templates/*.html',
-		    'templates/local/*.html',]},
+	    'pyi2phosts': ['templates/*.html', 'static/*']},
     scripts=['py-i2phosts-master', 'py-i2phosts-builder', 'py-i2phosts-checker',
 	    'py-i2phosts-fetcher', 'py-i2phosts-injector', 'py-i2phosts-maint'],
     data_files=[('/etc/py-i2phosts', ['conf/master.conf', 'conf/checker.conf', 'conf/fetcher.conf',
