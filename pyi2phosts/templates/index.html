@@ -2,10 +2,10 @@
 
 {% block content %}
 	<h2>About</h2>
-	<p>{{ title }} is a domain names registration service for I2P. Hostnames in I2P isn't
+	<p>{{ title }} is a domain name registration service for I2P. Hostnames in I2P aren't
 	globally unique. {{ title }} doesn't act as "central authority", it only provides a
-	way to publish a hosts to give easy accessability for them. You can read more about how
-	does I2P naming works in <a href=http://www.i2p2.i2p/naming.html>official docs</a>
+	way to publish hosts to provide an easy means of access for them. You can read more about how
+	I2P naming works in <a href=http://www.i2p2.i2p/naming.html>official docs</a>
 	</p>
 	<h2>Addressbook service</h2>
 	To start getting new hostnames from {{ title }}, add this
@@ -16,6 +16,6 @@
 			http://{{ domain }}{% url pyi2phosts.jump.views.jumper 'example.i2p' %}<a/>
 	</p>
 	<h2>Adding hosts</h2>
-	<p>If you are running an eepsite or another service and wants a human-readable domain name
-	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey %}>register it</a>
+	<p>If you are running an eepsite or another service and want a human-readable domain name
+	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey %}>registering it</a>
 {% endblock %}
