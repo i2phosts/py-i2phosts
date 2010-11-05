@@ -110,6 +110,7 @@ except ImportError:
 SECRET_KEY = 'topsecret'
 SITE_NAME = 'My cool registration service'
 DOMAIN = 'example.i2p'
+MY_B64 = 'my_base64_hash'
 
 """
 # also may be put in local settings:
