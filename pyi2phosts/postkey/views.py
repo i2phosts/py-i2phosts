@@ -59,9 +59,12 @@ def addkey(request):
 		}, context_instance=RequestContext(request))
 
 def success(request):
-	return render_to_response('success_submission.html', {
-		'title': settings.SITE_NAME,
-		'hostname': request.session['hostname'],
-		})
+	if 'hostname' in request.session:
+		return render_to_response('success_submission.html', {
+			'title': settings.SITE_NAME,
+			'hostname': request.session['hostname'],
+			})
+	else:
+		return redirect('/')
 
 log = get_logger(filename=settings.LOG_FILE, log_level=settings.LOG_LEVEL)
