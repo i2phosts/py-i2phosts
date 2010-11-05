@@ -1,10 +1,12 @@
+from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.postkey.models import PendingHost
 from django.contrib import admin
 
 class i2phostAdmin(admin.ModelAdmin):
 	def url(self, hostname):
-		return '<a href=http://' + hostname.name + '>look</a>'
+		return '<a href=http://' + get_b32(hostname.b64hash) + '>b32</a>'
+
 	url.allow_tags = True
 
 	list_display = ('url', 'name', 'description', 'date_added', 'last_seen', 'expires',
