@@ -59,3 +59,9 @@ div.main {
 	text-align: justify;
 	color: #000011;
 }
+
+div.footer {
+	font-size: 8pt;
+	text-align: center;
+	padding: 8px 0 0 0;
+}
