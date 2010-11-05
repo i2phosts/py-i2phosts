@@ -1,13 +1,20 @@
 from django.conf.urls.defaults import *
+from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
+from pyi2phosts.extsources.models import ExternalSource
 from pyi2phosts.other.views import *
 
 urlpatterns = patterns('',
 		url(r'^$', index, name='index'),
+		url(r'^faq/$', direct_to_template, {
+			'template': 'faq.html',
+			'extra_context': {'title': settings.SITE_NAME,
+				'sources': ExternalSource.objects.filter(active=True)}
+			}, name='faq' ),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
     # Example:
