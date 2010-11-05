@@ -25,3 +25,9 @@
 	for them, consider to <a href={% url pyi2phosts.postkey.views.addkey %}>registering it</a>.
 	</p>
 {% endblock %}
+
+{%block footer-addon %}
+<a href=http://{{ b32 }}>b32</a> |
+	<a href=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }}>
+		add</a> |
+{% endblock %}
