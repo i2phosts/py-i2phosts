@@ -2,6 +2,8 @@ import sys
 import logging
 import configobj
 import validate
+import hashlib
+import base64
 
 from logging import handlers
 
@@ -50,3 +52,11 @@ def validate_config(config):
 				sys.stderr.write('The following section was missing:%s ' %
 					', '.join(section_list))
 		sys.exit(1)
+
+
+def get_b32(dest):
+	""" Calculate base32 hash from base64 """
+	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
+	hash = hashlib.sha256(raw_key)
+	b32 = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+	return b32
