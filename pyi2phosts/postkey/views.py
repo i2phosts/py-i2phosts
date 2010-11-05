@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.forms import ModelForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.template import RequestContext
 
 import settings
@@ -50,7 +50,7 @@ def addkey(request):
 			log.debug('submit is valid, saving')
 			form.save()
 			request.session['hostname'] = form.cleaned_data['name']
-			return HttpResponseRedirect('success')
+			return redirect('pyi2phosts.postkey.views.success')
 	else:
 		form = AddForm()
 	return render_to_response('postkey.html', {
