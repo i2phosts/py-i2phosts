@@ -1,0 +1,56 @@
+html, body {
+	font-size:12pt;
+	background:#E6E6D1;
+	color:#000000;
+}
+
+input, textarea {
+	background-color: #AEB08D;
+	color: #000;
+	border: 1px solid #000;
+}
+a {
+	background:inherit;
+	color:#6E735E;
+	text-decoration:none;
+}
+a:visited {
+	background:inherit;
+	color:#6E735E;
+	text-decoration:none;
+}
+a:hover {
+	color:#000;
+	background:inherit;
+}
+
+div.menu {
+	float: left;
+	margin: 0px 20px 20px 0px;
+	padding: 10px 20px 20px 0px;
+	border-left: solid 1px #CCCCCC;
+	text-align: left;
+	color: black;
+	font-size: 8pt;
+	clear: left; /* fixes a bug in Opera */
+}
+
+#menu li {
+	margin-left: .5em;
+	padding-left: .5em;
+	list-style: none;
+}
+
+#menu ol, ul {
+	list-style-position: inside;
+	padding-left: 0em;
+	margin-top: 0em;
+	padding-top: 0em;
+}
+
+div.main {
+  margin: 0px 0px 0px 0px;
+  padding: 5px 40px 20px 190px;
+  text-align: justify;
+  color: #000011;
+}
