@@ -14,7 +14,7 @@ class i2phostAdmin(admin.ModelAdmin):
 	list_display_links = ['name']
 	list_filter = ('activated', 'external', 'approved')
 	search_fields = ['name']
-	ordering = ['date_added']
+	ordering = ['-date_added']
 
 class PendingAdmin(i2phostAdmin):
 	def queryset(self, request):
