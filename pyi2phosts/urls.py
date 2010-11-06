@@ -9,6 +9,9 @@ from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.extsources.models import ExternalSource
 import settings
 
+def get_extsources():
+	return ExternalSource.objects.filter(active=True)
+
 urlpatterns = patterns('',
 		url(r'^$', direct_to_template, {
 			'template': 'index.html',
@@ -23,7 +26,7 @@ urlpatterns = patterns('',
 			'template': 'faq.html',
 			'extra_context': {
 				'title': settings.SITE_NAME,
-				'sources': ExternalSource.objects.filter(active=True)
+				'sources': get_extsources
 				}
 			}, name='faq'),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
