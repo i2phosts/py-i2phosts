@@ -8,6 +8,7 @@ admin.autodiscover()
 
 from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.extsources.models import ExternalSource
+from pyi2phosts.postkey.models import i2phost
 import settings
 
 extsources = {
@@ -17,6 +18,12 @@ extsources = {
 		'extra_context': {
 			'title': settings.SITE_NAME,
 			}
+		}
+
+browse_hosts = {
+		'queryset': i2phost.objects.filter(activated=True),
+		'template_name': 'browse.html',
+		'template_object_name': 'host',
 		}
 
 urlpatterns = patterns('',
@@ -30,6 +37,7 @@ urlpatterns = patterns('',
 				}
 			}, name='index'),
 		url(r'^faq/$', object_list, extsources, name='faq'),
+		url(r'^browse/$', object_list, browse_hosts, name='browse'),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
     # Example:

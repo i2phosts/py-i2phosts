@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table>
+	<tr><td>Host</td><td>Last seen</td><td>Description</td>
+	{% for host in host_list %}
+	<tr><td>{{ host.name }}</td><td>{{ host.last_seen }}</td><td>
+			{{ host.description }}</td></tr>
+	{% endfor %}
+</table>
+{% endblock %}
