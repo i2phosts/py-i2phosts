@@ -24,6 +24,7 @@ browse_hosts = {
 		'queryset': i2phost.objects.filter(activated=True).order_by("-last_seen"),
 		'template_name': 'browse.html',
 		'template_object_name': 'host',
+		'paginate_by': 40,
 		}
 
 urlpatterns = patterns('',
