@@ -21,7 +21,7 @@ extsources = {
 		}
 
 browse_hosts = {
-		'queryset': i2phost.objects.filter(activated=True),
+		'queryset': i2phost.objects.filter(activated=True).order_by("-last_seen"),
 		'template_name': 'browse.html',
 		'template_object_name': 'host',
 		}
