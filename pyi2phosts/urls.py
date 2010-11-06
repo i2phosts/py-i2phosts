@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
+from django.views.generic.list_detail import object_list
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -9,8 +10,14 @@ from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.extsources.models import ExternalSource
 import settings
 
-def get_extsources():
-	return ExternalSource.objects.filter(active=True)
+extsources = {
+		'queryset': ExternalSource.objects.filter(active=True),
+		'template_name': 'faq.html',
+		'template_object_name': 'sources',
+		'extra_context': {
+			'title': settings.SITE_NAME,
+			}
+		}
 
 urlpatterns = patterns('',
 		url(r'^$', direct_to_template, {
@@ -22,13 +29,7 @@ urlpatterns = patterns('',
 				'b32': get_b32(settings.MY_B64)
 				}
 			}, name='index'),
-		url(r'^faq/$', direct_to_template, {
-			'template': 'faq.html',
-			'extra_context': {
-				'title': settings.SITE_NAME,
-				'sources': get_extsources
-				}
-			}, name='faq'),
+		url(r'^faq/$', object_list, extsources, name='faq'),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
     # Example:
