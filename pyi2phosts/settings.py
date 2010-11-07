@@ -99,11 +99,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 
-# include local settings
-try:
-	from local_settings import *
-except ImportError:
-	pass
 
 # template for local settings:
 """
@@ -116,3 +111,10 @@ MY_B64 = 'my_base64_hash'
 # also may be put in local settings:
 LOG_LEVEL = 'debug'
 LOG_FILE = '/var/log/py-i2phosts/web.log'
+
+
+# include local settings
+try:
+	from local_settings import *
+except ImportError:
+	pass
