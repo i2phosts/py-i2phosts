@@ -25,6 +25,9 @@ browse_hosts = {
 		'template_name': 'browse.html',
 		'template_object_name': 'host',
 		'paginate_by': 40,
+		'extra_context': {
+			'title': settings.SITE_NAME,
+			}
 		}
 
 urlpatterns = patterns('',
