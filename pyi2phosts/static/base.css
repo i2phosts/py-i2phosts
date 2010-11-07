@@ -1,7 +1,7 @@
 html, body {
-	font-size:12pt;
-	background:#E6E6D1;
-	color:#000000;
+	font-size: 12pt;
+	background: #E6E6D1;
+	color: #000000;
 }
 
 input, textarea {
@@ -10,24 +10,25 @@ input, textarea {
 	border: 1px solid #000;
 }
 a {
-	background:inherit;
-	color:#6E735E;
-	text-decoration:none;
+	background: inherit;
+	color: #6E735E;
+	text-decoration: none;
 }
 a:visited {
-	background:inherit;
-	color:#6E735E;
-	text-decoration:none;
+	background: inherit;
+	color: #6E735E;
+	text-decoration: none;
 }
 a:hover {
-	color:#000;
-	background:inherit;
+	color: #000;
+	background: inherit;
 }
 
 table {
-  border-collapse: collapse;
-  width: 80%;
-  margin: 10px 0px 10px 20px;
+	border-collapse: collapse;
+	width: 80%;
+	margin: 10px 0px 10px 20px;
+}
 
 tr:first-child {
 	border: 1px solid #CCCCCC;
