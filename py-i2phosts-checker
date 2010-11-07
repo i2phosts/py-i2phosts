@@ -84,7 +84,7 @@ for host in all_hosts:
 		continue
 	log.info('alive host: %s', host.name)
 	# update lastseen timestamp
-	host.last_seen = datetime.datetime.now()
+	host.last_seen = datetime.datetime.utcnow()
 	host.save()
 S.close()
 log.info('check finished')

@@ -63,7 +63,7 @@ all_hosts = i2phost.objects.all()
 log.info('starting maintaince')
 for host in all_hosts:
 	# how long host was added
-	dl = datetime.datetime.now() - host.date_added
+	dl = datetime.datetime.utcnow() - host.date_added
 	if host.last_seen == None:
 		# delete external hosts which we never seen after X days of inactivity
 		if host.external == True:
@@ -88,7 +88,7 @@ for host in all_hosts:
 		# get current host expiration date from database
 		if host.expires == None:
 			# workaround for situation when we updating expires first time
-			expires_current = datetime.datetime.now().date()
+			expires_current = datetime.datetime.utcnow().date()
 		else:
 			expires_current = host.expires
 		# calculate new expiration date
@@ -100,7 +100,7 @@ for host in all_hosts:
 			host.expires = expires_new
 		# deactivate if expired
 		min_dl = datetime.timedelta(days=config['activate_min_delay'])
-		if host.expires < datetime.datetime.now().date():
+		if host.expires < datetime.datetime.utcnow().date():
 			log.info('deactivating %s, reason: expired', host.name)
 			host.activated = False
 		# if not expired and added more than X days ago and approved then activate
@@ -109,7 +109,7 @@ for host in all_hosts:
 					host.name, config['activate_min_delay'])
 			host.activated = True
 		# if expired X days ago then delete
-		dl_e = datetime.datetime.now().date() - host.expires
+		dl_e = datetime.datetime.utcnow().date() - host.expires
 		if dl_e > datetime.timedelta(days=config['keep_expired']):
 			log.info('deleting %s, reason: expired % days ago',
 					host.name, config['keep_expired'])

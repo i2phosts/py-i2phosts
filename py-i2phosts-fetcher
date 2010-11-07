@@ -79,7 +79,7 @@ for source in all_sources:
 		elif hasattr(e, 'code'):
 			if e.code == 304:
 				log.info('%s: not modified', source.name)
-				source.last_success = datetime.datetime.now()
+				source.last_success = datetime.datetime.utcnow()
 				source.save()
 			else:
 				log.warning('server %s can\'t finish the request, error code: %s',
@@ -116,5 +116,5 @@ for source in all_sources:
 	os.remove(tmpfile)
 	log.info('injector output: \n%s', out)
 	# update last_success
-	source.last_success = datetime.datetime.now()
+	source.last_success = datetime.datetime.utcnow()
 	source.save()
