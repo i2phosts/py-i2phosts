@@ -71,7 +71,7 @@ S = samclasses.BaseSession(sam_addr)
 all_hosts = i2phost.objects.all()
 log.info('starting check')
 for host in all_hosts:
-	log.debug('testing %s', host.name)
+	log.debug('%s: testing...', host.name)
 	# get b32 address from full dest key
 	dest = host.b64hash
 	b32dest = get_b32(dest)
