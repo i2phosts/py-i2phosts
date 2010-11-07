@@ -42,7 +42,7 @@ class CheckerThread(Thread):
 
 def run_prog(prog):
 	try:
-		log.info('launching %s', prog)
+		log.info('starting: %s', prog)
 		sp_args = [prog]
 		if args.debug or args.verbose:
 			sp_args.append('-d')
@@ -50,10 +50,10 @@ def run_prog(prog):
 	except OSError, e:
 		log.error('failed to exec %s: %s', prog, e)
 		if e.errno == errno.ENOENT:
-			log.error('   maybe it isn\'t in PATH')
+			log.error('   maybe it isn\'t in PATH?')
 	else:
 		p.wait()
-		log.info('%s finished', prog)
+		log.info('finished: %s', prog)
 
 
 def main():
@@ -75,12 +75,17 @@ def main():
 	checker = run_checker()
 
 	while True:
+		log.debug('checking fetcher and checker threads status')
 		if fetcher.isAlive() == False:
 			log.warning('fetcher thread is dead, respawning...')
 			fetcher = run_fetcher()
+		else:
+			log.debug('fetcher thread: alive')
 		if checker.isAlive() == False:
 			log.warning('checker thread is dead, respawning...')
 			checker = run_checker()
+		else:
+			log.debug('checker thread: alive')
 		# do check every 30 mins
 		time.sleep(1800)
 
@@ -153,5 +158,5 @@ if not args.debug and not args.verbose:
 		d.gid = pw_entry[3]
 	d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
-log.debug('daemonised')
+log.info('started')
 main()
