@@ -1,7 +1,6 @@
 import re
 
 from django import forms
-from django.forms import ModelForm
 from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.template import RequestContext
@@ -12,7 +11,7 @@ from pyi2phosts.lib.utils import get_logger
 from pyi2phosts.lib.validation import validate_hostname
 from pyi2phosts.lib.validation import validate_b64hash
 
-class AddForm(ModelForm):
+class AddForm(forms.ModelForm):
 	"""
 	This is our class for host-add form. It's based on django's ModelForm
 	and uses our model "i2phost" (see postkey/models.py)
