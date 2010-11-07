@@ -28,6 +28,10 @@ table {
   border-collapse: collapse;
   width: 80%;
   margin: 10px 0px 10px 20px;
+
+tr:first-child {
+	border: 1px solid #CCCCCC;
+	font-weight: bold;
 }
 
 tr {
