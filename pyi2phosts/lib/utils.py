@@ -56,7 +56,11 @@ def validate_config(config):
 
 def get_b32(dest):
 	""" Calculate base32 hash from base64 """
-	raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
-	hash = hashlib.sha256(raw_key)
-	b32 = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
-	return b32
+	try:
+		raw_key = base64.b64decode(dest.encode('utf-8'), '-~')
+	except TypeError:
+		return 'corrupted_base64_hash'
+	else:
+		hash = hashlib.sha256(raw_key)
+		b32 = base64.b32encode(hash.digest()).lower().replace('=', '')+'.b32.i2p'
+		return b32
