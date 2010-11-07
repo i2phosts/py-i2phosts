@@ -68,7 +68,7 @@ else:
 	sam_addr = '127.0.0.1:7656'
 S = samclasses.BaseSession(sam_addr)
 
-all_hosts = i2phost.objects.all()
+all_hosts = i2phost.objects.all().order_by('-activated', '-last_seen')
 log.info('starting check')
 for host in all_hosts:
 	log.debug('%s: testing...', host.name)
