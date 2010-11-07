@@ -64,32 +64,36 @@ opener = urllib2.build_opener(proxy_handler)
 all_sources = ExternalSource.objects.filter(active=True)
 
 for source in all_sources:
+	log.debug('%s: starting work', source.name)
 	if source.last_modified:
 		last_modified = source.last_modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
 		# prevent redownloading of hosts-file by passing If-Modified-Since http header
 		opener.addheaders = [('If-Modified-Since', last_modified)]
+		log.debug('%s: appending If-Modified-Since: %s', source.name, last_modified)
 	if source.etag:
 		opener.addheaders = [('If-None-Match', source.etag)]
+		log.debug('%s: appending If-None-Match: %s', source.name, source.etag)
 	try:
-		log.debug('fetching hosts from: %s', source.name)
+		log.debug('%s: sending GET...', source.name)
 		resp = opener.open(source.url, timeout=60)
 	except urllib2.URLError, e:
 		if hasattr(e, 'reason'):
-			log.warning('failed to reach server %s, reason: %s', source.name, e.reason)
+			log.warning('%s: failed to reach server, reason: %s', source.name, e.reason)
 		elif hasattr(e, 'code'):
 			if e.code == 304:
 				log.info('%s: not modified', source.name)
 				source.last_success = datetime.datetime.utcnow()
 				source.save()
 			else:
-				log.warning('server %s can\'t finish the request, error code: %s',
+				log.warning('%s: %s can\'t finish the request, error code: %s',
 					source.name, e.code)
 		continue
 	# read data from remote and write it to local file
 	try:
+		log.debug('%s: reading response data', source.name)
 		content = resp.read()
 	except:
-		log.warning('failed to read data from %s', source.name)
+		log.warning('%s: failed to read data', source.name)
 		continue
 	# save fetched content into temporary file
 	fd, tmpfile = tempfile.mkstemp(text=True)
@@ -99,22 +103,23 @@ for source in all_sources:
 	# get last-modified info from header
 	lm = resp.headers.get('Last-Modified')
 	if lm:
-		log.debug('%s Last-Modified: %s', source.name, lm)
+		log.debug('%s: Last-Modified: %s', source.name, lm)
 		source.last_modified = datetime.datetime.strptime(lm, '%a, %d %b %Y %H:%M:%S GMT')
 	# get ETag
 	etag = resp.headers.get('ETag')
 	if etag:
-		log.debug('%s ETag: %s', source.name, etag)
+		log.debug('%s: ETag: %s', source.name, etag)
 		source.etag = etag
 	# form commnd-line for invoke injector
-	log.info('adding hosts from: %s', source.name)
+	log.info('%s: adding hosts...', source.name)
 	sp_args = ['py-i2phosts-injector', '-s', '-f', tmpfile, '-d',
 			'Auto-added from ' + source.name]
 	p = subprocess.Popen(sp_args, shell=False, stdin=None,
 			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	out = p.communicate()[0]
 	os.remove(tmpfile)
-	log.info('injector output: \n%s', out)
+	log.info('%s: injector output: \n%s', source.name, out)
 	# update last_success
 	source.last_success = datetime.datetime.utcnow()
+	log.debug('%s: updating last_success timestamp: %s', source.name, source.last_success)
 	source.save()
