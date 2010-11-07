@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(
 		epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/injector.conf', dest='config_file',
 		help='config file to use')
-parser.add_argument('-f', '--file', default=os.environ['HOME'] + '/.i2p/hosts.txt', dest='hostsfile',
+parser.add_argument('-f', '--file', dest='hostsfile',
 		help='hosts.txt for parsing')
 parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
 		help='provide custom description message')
@@ -52,6 +52,17 @@ else:
 # turn on output supressing if quiet
 if args.quiet:
 	args.supress = True
+
+# determine what hosts.txt file we should parse
+if args.hostsfile:
+	hostsfile = args.hostsfile
+else:
+	env = os.environ
+	if 'HOME' in env:
+		hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
+	else:
+		sys.stderr.write('unable to determine hosts file for parsing\n')
+		sys.exit(1)
 
 f = open(args.hostsfile, 'r')
 for line in f:
