@@ -87,14 +87,14 @@ for line in f:
 			h = i2phost.objects.get(name=hostname)
 		except i2phost.DoesNotExist:
 			if not args.quiet:
-				sys.stdout.write('Adding %s' % hostname)
+				sys.stdout.write('Adding %s\n' % hostname)
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
 					activated=False, external=True, approved=approved)
 			host.save()
 		else:
 			if not args.supress:
-				sys.stdout.write('Host %s already exists' % hostname)
+				sys.stdout.write('Host %s already exists\n' % hostname)
 			if h.b64hash != base64:
-				sys.stdout.write('Key conflict for host: %s' % hostname)
+				sys.stdout.write('Key conflict for host: %s\n' % hostname)
 f.close()
