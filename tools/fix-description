@@ -1,0 +1,82 @@
+#!/usr/bin/python
+
+import os
+import sys
+import configobj
+import argparse
+
+from django.core.exceptions import ValidationError
+
+def build_list():
+	h = []
+	f = open(args.hostsfile, 'r')
+	for line in f:
+		# ignore comments and empty lines
+		if line.startswith('#') or line.isspace():
+			continue
+		if line.find('=') == -1:
+			sys.stdout.write('Invalid line: %s\n' % line)
+			continue
+		# strip trailing '\n'
+		line = line.rstrip('\n')
+		entry = line.split('=')
+		try:
+			hostname = validate_hostname(entry[0])
+			base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
+		except ValidationError, e:
+			sys.stdout.write('validation error: %s: %s\n\n' % (e, line))
+		else:
+			h.append(hostname)
+	f.close()
+	return h
+
+
+# parse command line options
+parser = argparse.ArgumentParser(
+		description='Description fixer for py-i2phosts.',
+		epilog='Report bugs to http://zzz.i2p/topics/733')
+parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fixer.conf', dest='config_file',
+		help='config file to use')
+parser.add_argument('-f', '--file', dest='hostsfile',
+		help='hosts.txt for parsing')
+parser.add_argument('-n', '--newdescription',
+		help='new description when fixing hosts with FIXME')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-d', '--description',
+		help='description to look for')
+group.add_argument('-i', '--fixme', action='store_true',
+		help='update description for hosts where description=FIXME')
+args = parser.parse_args()
+
+config = configobj.ConfigObj(args.config_file)
+if 'include' in config:
+	config_included = configobj.ConfigObj(config['include'])
+	config.merge(config_included)
+
+# django setup
+DJANGO_SETTINGS_MODULE = 'settings'
+if 'DJANGO_PROJECT_PATH' in config:
+	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+else:
+	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+sys.path.insert(1, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+
+from pyi2phosts.lib.validation import validate_hostname
+from pyi2phosts.lib.validation import validate_b64hash
+from pyi2phosts.postkey.models import i2phost
+
+if args.description:
+	hosts_list = build_list()
+	hosts = i2phost.objects.filter(description=args.description)
+	for host in hosts:
+		if host.name not in hosts_list:
+			host.description = 'FIXME'
+			host.save()
+elif args.fixme:
+	hosts_list = build_list()
+	hosts = i2phost.objects.filter(description='FIXME')
+	for host in hosts:
+		if host.name in hosts_list:
+			host.description = args.newdescription
+			host.save()
