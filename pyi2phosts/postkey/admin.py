@@ -22,7 +22,7 @@ class i2phostAdminForm(forms.ModelForm):
 	def clean_b64hash(self):
 		"""Validate base64 hash"""
 		data = self.cleaned_data['b64hash']
-		data = validate_b64hash(data)
+		data = validate_b64hash(data, check_uniq=False)
 		return data
 
 
