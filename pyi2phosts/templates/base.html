@@ -10,6 +10,15 @@
 		<link rel="stylesheet" type="text/css" href="/static/base.css" />
 	</head>
 	<body>
+		<div class="search_host">
+			<form action="/search/">
+				<input class="input" name="q" maxlength="67" type="text" value="Search host"
+				onblur="if (value == '') {value = 'Search host'}" onfocus="if (value == 'Search host')
+				{value =''}" />
+				<input type="submit" value="Search" />
+			</form>
+		</div>
+
 		{% block navigation %}
 		<div class="menu">
 			<ul>
