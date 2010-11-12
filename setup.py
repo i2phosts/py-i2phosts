@@ -12,7 +12,8 @@ setup(
 	    'pyi2phosts.postkey.templatetags',
 	    'pyi2phosts.jump',
 	    'pyi2phosts.extsources',
-	    'pyi2phosts.lib',],
+	    'pyi2phosts.lib',
+	    'pyi2phosts.search',],
     package_dir = {'': ''},
     package_data = {
 	    'pyi2phosts': ['templates/*.html', 'static/*']},
