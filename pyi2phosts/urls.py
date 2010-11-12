@@ -62,6 +62,7 @@ urlpatterns = patterns('',
 		url(r'^faq/$', object_list, extsources, name='faq'),
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
 		url(r'^latest/$', object_list, latest_hosts, name='latest'),
+		(r'^search/$', include('pyi2phosts.search.urls')),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
     # Example:
