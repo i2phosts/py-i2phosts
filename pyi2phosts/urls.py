@@ -31,6 +31,7 @@ browse_hosts = {
 			}
 		}
 
+# FIXME: move to settings
 day_count = 30
 hosts_count = 40
 now_date = datetime.datetime.utcnow()
