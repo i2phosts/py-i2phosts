@@ -81,6 +81,17 @@ div.footer {
 	padding: 8px 0 0 0;
 }
 
+div.search_host {
+	position:absolute;
+	right: 15px;
+}
+
+div.search_host .input input {
+	font-size: 10px;
+	color: #6E735E;
+	width: 200px;
+}
+
 .pager {
 	padding-top: 20px;
 	padding-left: 100px;
