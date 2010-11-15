@@ -6,7 +6,7 @@ class i2phost(models.Model):
 	# Maximum key length 616 bytes (to account for certs up to 100 bytes).
 	b64hash = models.CharField("Base 64 hash", max_length=616)
 	description = models.CharField("Description", max_length=4096, blank=True)
-	date_added = models.DateTimeField(auto_now_add=True)
+	date_added = models.DateTimeField(null=True, blank=True)
 	# Last time this host was up
 	last_seen = models.DateTimeField(null=True, blank=True)
 	# Scheduled expiration date
