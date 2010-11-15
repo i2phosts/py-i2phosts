@@ -1,4 +1,5 @@
 import re
+import datetime
 
 from django import forms
 from django.shortcuts import render_to_response
@@ -47,7 +48,9 @@ def addkey(request):
 		form = AddForm(request.POST)
 		if form.is_valid():
 			log.debug('submit is valid, saving')
-			form.save()
+			newhost = form.save(commit=False)
+			newhost.date_added = datetime.datetime.utcnow()
+			newhost.save()
 			request.session['hostname'] = form.cleaned_data['name']
 			return redirect('pyi2phosts.postkey.views.success')
 	else:
