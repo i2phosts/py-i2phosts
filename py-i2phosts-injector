@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 import configobj
+import datetime
 
 from django.core.exceptions import ValidationError
 
@@ -90,6 +91,7 @@ for line in f:
 				sys.stdout.write('Adding %s\n' % hostname)
 			host = i2phost(name=hostname, b64hash=base64,
 					description=args.description,
+					date_added=datetime.datetime.utcnow(),
 					activated=False, external=True, approved=approved)
 			host.save()
 		else:
