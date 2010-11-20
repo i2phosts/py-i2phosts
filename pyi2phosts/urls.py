@@ -31,21 +31,18 @@ browse_hosts = {
 			}
 		}
 
-# FIXME: move to settings
-day_count = 30
-hosts_count = 40
 now_date = datetime.datetime.utcnow()
-start_date = now_date - datetime.timedelta(days=day_count)
+start_date = now_date - datetime.timedelta(days=settings.LATEST_DAY_COUNT)
 latest_hosts = {
 		'queryset': i2phost.objects.filter(activated=True,
-			date_added__range=(start_date, now_date)).order_by("-date_added")[:hosts_count],
+			date_added__range=(start_date, now_date)).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT],
 		'template_name': 'latest.html',
 		'template_object_name': 'host',
 		'paginate_by': 40,
 		'extra_context': {
 			'title': settings.SITE_NAME,
-			'day_count': day_count,
-			'hosts_count': hosts_count,
+			'day_count': settings.LATEST_DAY_COUNT,
+			'hosts_count': settings.LATEST_HOSTS_COUNT,
 			}
 		}
 
@@ -62,6 +59,7 @@ urlpatterns = patterns('',
 		url(r'^faq/$', object_list, extsources, name='faq'),
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
 		url(r'^latest/$', object_list, latest_hosts, name='latest'),
+
 		(r'^search/$', include('pyi2phosts.search.urls')),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),

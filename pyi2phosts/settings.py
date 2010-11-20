@@ -111,6 +111,8 @@ MY_B64 = 'my_base64_hash'
 # also may be put in local settings:
 LOG_LEVEL = 'debug'
 LOG_FILE = '/var/log/py-i2phosts/web.log'
+LATEST_DAY_COUNT = 30
+LATEST_HOSTS_COUNT = 40
 
 
 # include local settings
