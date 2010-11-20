@@ -12,6 +12,12 @@ from pyi2phosts.extsources.models import ExternalSource
 from pyi2phosts.postkey.models import i2phost
 import settings
 
+def now_date():
+	return datetime.datetime.utcnow()
+
+def start_date():
+	return now_date() - datetime.timedelta(days=settings.LATEST_DAY_COUNT)
+
 extsources = {
 		'queryset': ExternalSource.objects.filter(active=True),
 		'template_name': 'faq.html',
@@ -31,11 +37,9 @@ browse_hosts = {
 			}
 		}
 
-now_date = datetime.datetime.utcnow()
-start_date = now_date - datetime.timedelta(days=settings.LATEST_DAY_COUNT)
 latest_hosts = {
 		'queryset': i2phost.objects.filter(activated=True,
-			date_added__range=(start_date, now_date)).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT],
+			date_added__range=(start_date(), now_date())).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT],
 		'template_name': 'latest.html',
 		'template_object_name': 'host',
 		'paginate_by': 40,
