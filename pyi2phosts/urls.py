@@ -1,4 +1,3 @@
-import datetime
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
@@ -31,21 +30,6 @@ browse_hosts = {
 			}
 		}
 
-now_date = datetime.datetime.utcnow()
-start_date = now_date - datetime.timedelta(days=settings.LATEST_DAY_COUNT)
-latest_hosts = {
-		'queryset': i2phost.objects.filter(activated=True,
-			date_added__range=(start_date, now_date)).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT],
-		'template_name': 'latest.html',
-		'template_object_name': 'host',
-		'paginate_by': 40,
-		'extra_context': {
-			'title': settings.SITE_NAME,
-			'day_count': settings.LATEST_DAY_COUNT,
-			'hosts_count': settings.LATEST_HOSTS_COUNT,
-			}
-		}
-
 urlpatterns = patterns('',
 		url(r'^$', direct_to_template, {
 			'template': 'index.html',
@@ -58,8 +42,8 @@ urlpatterns = patterns('',
 			}, name='index'),
 		url(r'^faq/$', object_list, extsources, name='faq'),
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
-		url(r'^latest/$', object_list, latest_hosts, name='latest'),
 
+		(r'^latest/$', include('pyi2phosts.latest.urls')),
 		(r'^search/$', include('pyi2phosts.search.urls')),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
