@@ -13,7 +13,8 @@ setup(
 	    'pyi2phosts.jump',
 	    'pyi2phosts.extsources',
 	    'pyi2phosts.lib',
-	    'pyi2phosts.search',],
+	    'pyi2phosts.search',
+	    'pyi2phosts.latest'],
     package_dir = {'': ''},
     package_data = {
 	    'pyi2phosts': ['templates/*.html', 'static/*']},
