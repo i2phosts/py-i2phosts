@@ -60,7 +60,7 @@ else:
 log = get_logger(filename=log_file, log_level=log_level)
 
 all_hosts = i2phost.objects.all()
-log.info('starting maintaince')
+log.info('starting maintenance')
 for host in all_hosts:
 	# how long host was added
 	dl = datetime.datetime.utcnow() - host.date_added
