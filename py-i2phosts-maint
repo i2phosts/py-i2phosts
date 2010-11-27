@@ -101,8 +101,9 @@ for host in all_hosts:
 		# deactivate if expired
 		min_dl = datetime.timedelta(days=config['activate_min_delay'])
 		if host.expires < datetime.datetime.utcnow().date():
-			log.info('deactivating %s, reason: expired', host.name)
-			host.activated = False
+			if host.activated == True:
+				log.info('deactivating %s, reason: expired', host.name)
+				host.activated = False
 		# if not expired and added more than X days ago and approved then activate
 		elif dl > min_dl and host.activated == False and host.approved == True:
 			log.info('activating %s, reason: host up and added more than %s days ago',
