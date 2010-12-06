@@ -36,7 +36,7 @@ class i2phostAdmin(admin.ModelAdmin):
 			'activated', 'external')
 	list_display_links = ['name']
 	list_filter = ('activated', 'external', 'approved')
-	search_fields = ['name']
+	search_fields = ('name', 'b64hash')
 	ordering = ['-date_added']
 
 
