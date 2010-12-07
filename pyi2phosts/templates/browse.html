@@ -4,7 +4,7 @@
 <table>
 	<tr><td>Host</td><td>Last seen</td><td>Date added</td><td>Description</td></tr>
 	{% for host in host_list %}
-	<tr><td><a href="http://{{ host.name }}">{{ host.name }}</a></td><td>{{ host.last_seen }}</td>
+	<tr><td><a href="http://{{ host.name }}/?i2paddresshelper={{host.b64hash}}">{{ host.name }}</a></td><td>{{ host.last_seen }}</td>
 		<td>{{ host.date_added }}</td><td>{{ host.description }}</td></tr>
 	{% endfor %}
 </table>
