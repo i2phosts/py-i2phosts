@@ -1,6 +1,7 @@
 import re
 
 from django.shortcuts import render_to_response
+from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
 
 from pyi2phosts.postkey.models import i2phost
@@ -17,11 +18,15 @@ def jumper(request, host):
 			'error': e,
 			})
 	try:
-		key = i2phost.objects.get(name=hostname, activated=True).b64hash
+		h = i2phost.objects.get(name=hostname)
 	except i2phost.DoesNotExist:
 		return render_to_response('jump-unknown.html', {
 			'title': settings.SITE_NAME,
 			})
+	if h.activated == True:
+		key = h.b64hash
+	else:
+		return redirect('/search/?q=' + hostname)
 	# begin forming url
 	url = 'http://' + hostname
 	# get params from requst string, e.g. from 'example.i2p/smth/1?a=b&c=d' get 'smth/1?a=b&c=d'
