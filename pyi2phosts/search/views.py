@@ -7,7 +7,7 @@ from pyi2phosts.postkey.models import i2phost
 
 def search(request):
 	q = request.GET.get('q', '')
-	fil = Q(name__icontains=q)
+	fil = Q(name__icontains=q) | Q(b64hash__contains=q)
 	qs = i2phost.objects.filter(fil)
 	return list_detail.object_list(
 			request = request,
