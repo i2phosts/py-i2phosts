@@ -72,17 +72,17 @@ def validate_b64hash(data, check_uniq=True):
 		raise ValidationError('You should paste base64 hash, not a base32!')
 	# fail if contains .i2p= (full foo.i2p=key)
 	if re.search(r'\.i2p=', data):
-		raise ValidationError('Do not paste full hosts.txt entry! Only base64 hash are needed')
+		raise ValidationError('Do not paste full hosts.txt entry! Only base64 hash is needed')
 	# check for pasting router hash
 	if length == 44:
 		raise ValidationError('Do not paste router hash! Go to i2ptunnel page and \
 				find a destination hash')
 	# Minimum key length 516 bytes
 	if length < 516:
-		raise ValidationError('Specified base64 hash are less than 516 bytes')
+		raise ValidationError('Specified base64 hash is less than 516 bytes')
 	# Maximum key length 616 bytes
 	if length > 616:
-		raise ValidationError('Specified base64 hash are bigger than 616 bytes')
+		raise ValidationError('Specified base64 hash is bigger than 616 bytes')
 	# keys with cert may ends with anything, so check is relaxed
 	if length > 516 and re.match(r'[a-zA-Z0-9\-~]+$', data) == None:
 		raise ValidationError('Invalid characters in base64 hash')
