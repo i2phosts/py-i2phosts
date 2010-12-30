@@ -42,6 +42,14 @@ class AddForm(forms.ModelForm):
 		log.debug(u'hash: %s', self.data['b64hash'])
 		data = validate_b64hash(data)
 		return data
+	def is_valid(self):
+		"""Log validation errors"""
+		is_valid = super(AddForm, self).is_valid()
+		if not is_valid:
+			for field in self.errors.keys():
+				log.info('ValidationError: [%s]: \"%s\" %s',
+						field, self.data[field], self.errors[field].as_text())
+		return is_valid
 
 def addkey(request):
 	if request.method == 'POST':
