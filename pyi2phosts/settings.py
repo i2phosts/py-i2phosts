@@ -113,6 +113,7 @@ LOG_LEVEL = 'debug'
 LOG_FILE = '/var/log/py-i2phosts/web.log'
 LATEST_DAY_COUNT = 30
 LATEST_HOSTS_COUNT = 40
+EEPROXY_URL = 'http://127.0.0.1:4444'
 
 
 # include local settings
