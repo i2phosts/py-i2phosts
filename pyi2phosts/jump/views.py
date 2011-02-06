@@ -48,3 +48,6 @@ def jumper(request, host):
 		'title': settings.SITE_NAME,
 		'url': url,
 		})
+
+def index(request):
+	return redirect('/')
