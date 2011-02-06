@@ -32,7 +32,10 @@
 		use urls like
 		<a href="{% url pyi2phosts.jump.views.jumper 'example.i2p' %}">
 			http://{{ domain }}{% url pyi2phosts.jump.views.jumper "example.i2p" %}</a>.
-	</p>
+		I2P since 0.8.3 gives possibility to add a custom jump-servers. Go to the i2ptunnel
+		<a href="http://localhost:7657/i2ptunnel/edit?tunnel=0">eeproxy configuration page
+		</a> and add <em>http://{{ domain }}{% url pyi2phosts.jump.views.index %}</em> to "Jump URL List" section.
+		</p>
 
 	<h2>Registration service</h2>
 	<p>If you are running an eepsite or another service and want a human-readable domain name
