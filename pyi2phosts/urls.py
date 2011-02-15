@@ -6,6 +6,7 @@ from django.views.generic.list_detail import object_list
 from django.contrib import admin
 admin.autodiscover()
 
+from pyi2phosts.lib.rss import AliveHostsFeed
 from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.extsources.models import ExternalSource
 from pyi2phosts.postkey.models import i2phost
@@ -42,6 +43,7 @@ urlpatterns = patterns('',
 			}, name='index'),
 		url(r'^faq/$', object_list, extsources, name='faq'),
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
+		url(r'^browse/rss/$', AliveHostsFeed()),
 
 		(r'^latest/$', include('pyi2phosts.latest.urls')),
 		(r'^search/$', include('pyi2phosts.search.urls')),
