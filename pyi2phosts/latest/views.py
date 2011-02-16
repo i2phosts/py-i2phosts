@@ -5,14 +5,17 @@ from django.views.generic import list_detail
 import settings
 from pyi2phosts.postkey.models import i2phost
 
-def latest(request):
+def get_latest():
 	now_date = datetime.datetime.utcnow()
 	start_date = now_date - datetime.timedelta(days=settings.LATEST_DAY_COUNT)
 	qs = i2phost.objects.filter(activated=True,
 			date_added__range=(start_date, now_date)).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT]
+	return qs
+
+def latest(request):
 	return list_detail.object_list(
 			request = request,
-			queryset = qs,
+			queryset = get_latest(),
 			template_name = 'latest.html',
 			template_object_name = 'host',
 			paginate_by = 40,
