@@ -2,6 +2,7 @@
 
 from django.contrib.syndication.views import Feed
 from pyi2phosts.postkey.models import i2phost
+from pyi2phosts.latest.views import get_latest
 
 import settings
 
@@ -24,3 +25,15 @@ class AliveHostsFeed(Feed):
 
 	def item_description(self, item):
 		return item.description
+
+
+class LatestHostsFeed(AliveHostsFeed):
+	""" Generate RSS feed with freshly added hosts """
+
+	title = settings.DOMAIN + ' latest hosts'
+	# FIXME: make this URL more dynamic
+	link = 'http://' + settings.DOMAIN + '/latest/'
+	description = 'Freshly added hosts'
+
+	def items(self):
+		return get_latest()
