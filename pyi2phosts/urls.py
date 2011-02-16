@@ -45,7 +45,7 @@ urlpatterns = patterns('',
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
 		url(r'^browse/rss/$', AliveHostsFeed()),
 
-		(r'^latest/$', include('pyi2phosts.latest.urls')),
+		(r'^latest/', include('pyi2phosts.latest.urls')),
 		(r'^search/$', include('pyi2phosts.search.urls')),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
