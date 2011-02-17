@@ -1,5 +1,6 @@
 {% extends "browse.html" %}
 
 {% block header %}
-<h3>Latest {{ hosts_count }} hosts added in {{ day_count }} days</h3>
+<h3>Latest {{ hosts_count }} hosts added in {{ day_count }} days
+<a href={% url latest-rss %}><img src="/static/rss-grey-18.png" border="0" width="18" height="18" alt="rss"></a></h3>
 {% endblock %}
