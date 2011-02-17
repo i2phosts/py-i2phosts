@@ -45,9 +45,12 @@ class PendingAdmin(i2phostAdmin):
 		qs = super(PendingAdmin, self).queryset(request)
 		return qs.filter(approved=False)
 
+	def approve_selected(modeladmin, request, queryset):
+		queryset.update(approved=True)
+
 	list_filter = []
 	list_display = ('url', 'name', 'description', 'date_added', 'last_seen', 'expires', 'approved')
-	list_editable = ['approved']
+	actions = ['approve_selected']
 
 
 admin.site.register(i2phost, i2phostAdmin)
