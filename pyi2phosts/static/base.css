@@ -55,22 +55,24 @@ td {
 div.menu {
 	float: left;
 	margin: 0px 20px 20px 0px;
-	padding: 10px 20px 20px 0px;
+	padding: 10px 20px 20px 15px;
 	border-left: solid 1px #CCCCCC;
 	text-align: left;
 	color: black;
 	font-size: 8pt;
 	clear: left; /* fixes a bug in Opera */
+	width: 160px;
 }
 
 .menu li {
 	margin-left: .5em;
+	margin-top: .2em;
 	padding-left: .5em;
-	list-style: none;
+	list-style-type: circle;
+	list-style-position: outside;
 }
 
 .menu ol, ul {
-	list-style-position: inside;
 	padding-left: 0em;
 	margin-top: 0em;
 	padding-top: 0em;
@@ -83,7 +85,7 @@ div.menu {
 
 div.main {
 	margin: 0px 0px 0px 0px;
-	padding: 22px 40px 20px 190px;
+	padding: 22px 40px 20px 220px;
 	text-align: justify;
 	color: #000011;
 }
