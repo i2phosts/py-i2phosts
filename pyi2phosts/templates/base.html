@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <html>
 	<title>
 		{% block title %}
@@ -12,21 +14,21 @@
 	<body>
 		<div class="search_host">
 			<form action="/search/">
-				<input class="input" name="q" maxlength="67" type="text" value="Search host"
-				onblur="if (value == '') {value = 'Search host'}" onfocus="if (value == 'Search host')
+				<input class="input" name="q" maxlength="67" type="text" value="{% trans "Search host" %}"
+				onblur="if (value == '') {value = '{% trans "Search host" %}'}" onfocus="if (value == '{% trans "Search host" %}')
 				{value =''}" />
-				<input type="submit" value="Search" />
+				<input type="submit" value="{% trans "Search" %}" />
 			</form>
 		</div>
 
 		{% block navigation %}
 		<div class="menu">
 			<ul>
-				<li><a href=/>Home</a></li>
+				<li><a href=/>{% trans "Home" %}</a></li>
 				<li><a href={% url faq %}>FAQ</a></li>
-				<li><a href={% url browse %}>Browse alive hosts</a></li>
-				<li><a href={% url latest %}>Browse latest hosts</a></li>
-				<li><a href={% url pyi2phosts.postkey.views.addkey %}>Register a domain</a></li>
+				<li><a href={% url browse %}>{% trans "Browse alive hosts" %}</a></li>
+				<li><a href={% url latest %}>{% trans "Browse latest hosts" %}</a></li>
+				<li><a href={% url pyi2phosts.postkey.views.addkey %}>{% trans "Register a domain" %}</a></li>
 			</ul>
 		</div>
 
@@ -54,7 +56,7 @@
 		<div class="footer">
 			{% block footer-addon %}
 			{% endblock %}
-			powered-by: <a href=http://py-i2phosts.i2p/>py-i2phosts</a>
+			{% trans "powered-by" %}: <a href=http://py-i2phosts.i2p/>py-i2phosts</a>
 		</div>
 		{% endblock %}
 	</body>

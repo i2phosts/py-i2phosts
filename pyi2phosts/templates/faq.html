@@ -1,19 +1,21 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
-<h3>How we are learning about new hosts</h3>
+<h3>{% trans "How we are learning about new hosts" %}</h3>
 <ol>
-	<li>Pulling from external sources:
+	<li>{% trans "Pulling from external sources:" %}
 	<ul>
 		{% for source in sources_list %}
 			<li>{{ source.url }}</li>
 		{% endfor %}
 	</ul>
 	</li>
-	<li>Adding through our service.
+	<li>{% trans "Adding through our service." %}
 	</li>
 </ol>
 
+{% blocktrans %}
 <h3>Publishing requirements</h3>
 To get published a host must meet the following criteria:
 <ul>
@@ -24,7 +26,9 @@ To get published a host must meet the following criteria:
 <p style="notice">Admin's approval isn't really necessary, it is only needed in
 order to eliminate possible hijacking and mass registration attempts.
 </p>
+{% endblocktrans %}
 
+{% blocktrans %}
 <h3>Expiration</h3>
 <p>
 Hosts gets checked for availability every 12 hours. If the host is alive, registration period
@@ -35,13 +39,17 @@ When a host has expired, its name/key pair will be keept for 2 years but will no
 published any longer. Until this period ends, it's impossible to register this hostname
 again.
 </p>
+{% endblocktrans %}
 
+{% blocktrans %}
 <h3>Deletion of expired hosts</h3>
 <p>
 Hosts expired 2 years ago get completely deleted from our database and become
 available for a new registration.
 </p>
+{% endblocktrans %}
 
+{% blocktrans %}
 <h3>Deletion of dead hosts</h3>
 <p>
 If a host was added from an external source and we've never seen it alive, it
@@ -49,4 +57,7 @@ will be deleted after 1 year since its adding date, and after 14 days if it is
 was added through our registration service. Since these hosts were not published
 through our service, we only grant them such a short grace period.
 </p>
+{% endblocktrans %}
+
 {% endblock %}
+

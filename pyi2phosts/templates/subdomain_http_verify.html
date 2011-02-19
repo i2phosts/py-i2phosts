@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
+{% blocktrans %}
 <p>
 You are trying to add a subdomain. Our policy permits subdomains registration only if you're own an
 upper domain (2nd-level domain). Before subdomain will be added, we must ensure that you're own an upper-level
@@ -11,6 +13,8 @@ Unfortunately, we can verify a 2nd-level domain ownage only via http, so if you'
 please run a webserver temporary. Create the following file in the webserver's document root and press "OK" button.
 This file should be accessible via http://{{ topdomain }}/&laquo;filename&raquo; (without quotes).
 </p>
+{% endblocktrans %}
+
 	<form action="/postkey/subdomain/" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}

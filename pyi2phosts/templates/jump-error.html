@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
-You are trying to access an invalid hostname. Maybe you're just mistyped it.<br>
-Error: {{ error }}
+{% trans "You are trying to access an invalid hostname. Maybe you're just mistyped it." %}<br>
+{% trans "Error:" %} {{ error }}
 {% endblock %}

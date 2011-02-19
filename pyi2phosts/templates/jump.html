@@ -1,12 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block head %}
 <meta http-equiv="refresh" content="5;URL={{ url }}" />
 {% endblock %}
 
 {% block content %}
+{% blocktrans %}
 <h3>Congratulations! We're found that host you're requesting. Redirecting in 5 secs...</h3>
 <p>
 We're suggesting to start use our subscription service. <a href=/>Find more...</a>
 </p>
+{% endblocktrans %}
 {% endblock %}

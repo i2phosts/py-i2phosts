@@ -1,5 +1,9 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
-Successfully added {{ hostname }}. It will be activated after admin's approval.
+{% blocktrans %}
+Successfully added {{ hostname }}. It will be activated after admin's approval and
+automatic availability test.
+{% endblocktrans %}
 {% endblock %}

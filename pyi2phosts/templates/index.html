@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
+	{% url faq as faq_url %}
+	{% blocktrans %}
 	<h2>About</h2>
 	<p>{{ title }} is a domain name registration service for I2P. Hostnames in I2P aren't
 	globally unique. {{ title }} doesn't act as "central authority", it only provides a
@@ -8,8 +11,9 @@
 	I2P naming works in the <a href=http://www.i2p2.i2p/naming.html>official
 		docs</a>.
 	</p>
+
 	<p>To find out how we're registering and publishing hosts, look at
-	<a href={% url faq %}>FAQ</a> page.
+	<a href={{ faq_url }}>FAQ</a> page.
 	</p>
 	<p>
 	If you have any questions, feel free to ask <a href="http://forum.i2p/viewtopic.php?t=5083">here</a>
@@ -17,7 +21,9 @@
 	using <em>uxGqmWz4HxLqjPVm7eSGGRqaGInm5hh8lZYubYdUX4Cih4Qhna2tSSMrupbWdDj80zDNoXvBc-le0GsywgVulw</em>
 	identity.
 	</p>
+	{% endblocktrans %}
 
+	{% blocktrans %}
 	<h2>Addressbook service</h2>
 	<p>
 	To start getting new hostnames from {{ title }}, add this
@@ -26,25 +32,31 @@
 		addressbook</a>. Of course, you should <a
 		href=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }}>add INR</a>'s destination before.
 	</p>
+	{% endblocktrans %}
 
+	{% url pyi2phosts.jump.views.jumper 'example.i2p' as jump_url %}
+	{% url pyi2phosts.jump.views.index as jump_index %}
+	{% blocktrans %}
 	<h2>Jump service</h2><p>
 		{{ title }} also provides a jump service. For accessing hosts through it,
 		use urls like
-		<a href="{% url pyi2phosts.jump.views.jumper 'example.i2p' %}">
-			http://{{ domain }}{% url pyi2phosts.jump.views.jumper "example.i2p" %}</a>.
+		<a href="{{ jump_url }}">
+			http://{{ domain }}{{ jump_url }}</a>.
 		I2P since 0.8.3 gives possibility to add a custom jump-servers. Go to the i2ptunnel
 		<a href="http://localhost:7657/i2ptunnel/edit?tunnel=0">eeproxy configuration page
-		</a> and add <em>http://{{ domain }}{% url pyi2phosts.jump.views.index %}</em> to "Jump URL List" section.
+		</a> and add <em>http://{{ domain }}{{ jump_index }}</em> to "Jump URL List" section.
 		</p>
+	{% endblocktrans %}
 
+	{% url pyi2phosts.postkey.views.addkey as addkey_url %}
+	{% blocktrans %}
 	<h2>Registration service</h2>
 	<p>If you are running an eepsite or another service and want a human-readable domain name
-	for them, consider <a href={% url pyi2phosts.postkey.views.addkey %}>registering it</a>.
+	for them, consider <a href={{ addkey_url }}>registering it</a>.
 	</p>
+	{% endblocktrans %}
 {% endblock %}
 
-{%block footer-addon %}
-<a href=http://{{ b32 }}>b32</a> |
-	<a href=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }}>
-		add</a> |
+{% block footer-addon %}
+	<a href=http://{{ b32 }}>b32</a> | <a href=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }}>{% trans "add" %}</a> |
 {% endblock %}
