@@ -59,7 +59,7 @@ ul {
 div.menu {
 	float: left;
 	margin: 0px 20px 20px 0px;
-	padding: 10px 20px 20px 15px;
+	padding: 10px 20px 20px 0px;
 	border-left: solid 1px #CCCCCC;
 	text-align: left;
 	color: black;
@@ -70,9 +70,10 @@ div.menu {
 
 .menu li {
 	margin-left: .5em;
-	margin-top: .2em;
+	margin-top: .4em;
 	padding-left: .5em;
-	list-style-type: circle;
+	line-height: 1.2;
+	list-style-type: none;
 	list-style-position: outside;
 }
 
