@@ -35,8 +35,8 @@ a:hover {
 
 table {
 	border-collapse: collapse;
-	width: 80%;
-	margin: 10px 0px 10px 20px;
+	width: 90%;
+	margin: 10px 0px 10px 0px;
 }
 
 tr:first-child {
