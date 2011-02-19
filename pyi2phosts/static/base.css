@@ -52,10 +52,6 @@ td {
 	max-width: 220px;
 }
 
-ul {
-	list-style-position: inside;
-}
-
 div.menu {
 	float: left;
 	margin: 0px 20px 20px 0px;
@@ -93,6 +89,10 @@ div.main {
 	padding: 22px 40px 20px 220px;
 	text-align: justify;
 	color: #000011;
+}
+
+div.main li {
+	margin-left: 15px;
 }
 
 div.footer {
