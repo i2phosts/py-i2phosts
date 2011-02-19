@@ -3,5 +3,4 @@
 *.swp
 *.mo
 local_settings.py
-inproxy.html
 i2p/
