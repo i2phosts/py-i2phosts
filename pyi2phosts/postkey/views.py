@@ -56,7 +56,7 @@ class AddForm(forms.ModelForm):
 
 class SubdomainVerifyForm(forms.Form):
 	"""Form for displaying verification filename and code when verifying a subdomain"""
-	filename = forms.CharField(widget=forms.TextInput(attrs={
+	filename = forms.CharField(label=_('Filename'), widget=forms.TextInput(attrs={
 		'size': '20',
 		'readonly': 'readonly',
 		'onclick': 'this.select();',
