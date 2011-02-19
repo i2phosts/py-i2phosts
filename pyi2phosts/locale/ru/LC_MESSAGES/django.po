@@ -127,6 +127,10 @@ msgstr "Описание"
 msgid "Trying to use hostname from additional reserved set"
 msgstr "Попытка использования зарезервированного имени из дополнительного списка"
 
+#: postkey/views.py:59
+msgid "Filename"
+msgstr "Имя файла"
+
 #: templates/base.html:17
 #: templates/base.html.py:18
 msgid "Search host"
@@ -500,7 +504,7 @@ msgstr ""
 "<p>\n"
 "К сожалению, мы можем убедиться в вашем владении доменом 2-го уровня только через http, так что если вы используете этот домен не для http,\n"
 "то пожалуйста запустите на нём веб-сервер временно. Создайте нижеуказанный файл в корневой директории веб-сервера (docroot) и нажмите кнопку \"OK\".\n"
-"Этот файо должен быть доступен по URL-ю http://%(topdomain)s/&laquo;filename&raquo; (без кавычек).\n"
+"Этот файл должен быть доступен по URL http://%(topdomain)s/&laquo;filename&raquo; (без кавычек).\n"
 "</p>\n"
 
 #: templates/subdomain_http_verify_failure.html:6
