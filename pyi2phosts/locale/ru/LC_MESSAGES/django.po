@@ -1,0 +1,423 @@
+# py-i2phosts
+# Copyright (C) 2011 py-i2phosts project
+# This file is distributed under the same license as the py-i2phosts package.
+# Hidden Z <hiddenz@mail.i2p>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: py-i2phosts\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-19 11:01+0000\n"
+"PO-Revision-Date: 2011-02-19 11:11+0000\n"
+"Last-Translator: Hidden Z <hiddenz@mail.i2p>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: templates/base.html:17
+#: templates/base.html.py:18
+msgid "Search host"
+msgstr "Поиск хоста"
+
+#: templates/base.html:20
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/base.html:27
+msgid "Home"
+msgstr "Главная"
+
+#: templates/base.html:29
+msgid "Browse alive hosts"
+msgstr "Активные хосты"
+
+#: templates/base.html:30
+msgid "Browse latest hosts"
+msgstr "Недавно добавленные хосты"
+
+#: templates/base.html:31
+msgid "Register a domain"
+msgstr "Зарегистрировать домен"
+
+#: templates/base.html:59
+msgid "powered-by"
+msgstr "работает на"
+
+#: templates/browse.html:5
+msgid "All active hosts in I2P"
+msgstr "Все активные хосты в I2P"
+
+#: templates/browse.html:11
+msgid "Host"
+msgstr "Хост"
+
+#: templates/browse.html:11
+msgid "Last seen"
+msgstr "Был доступен"
+
+#: templates/browse.html:11
+msgid "Date added"
+msgstr "Добавлен"
+
+#: templates/browse.html:11
+msgid "Description"
+msgstr "Описание"
+
+#: templates/faq.html:5
+msgid "How we are learning about new hosts"
+msgstr "Как мы узнаём о новых хостах"
+
+#: templates/faq.html:7
+msgid "Pulling from external sources:"
+msgstr "Опрос внешних источников:"
+
+#: templates/faq.html:14
+msgid "Adding through our service."
+msgstr "Добавление через наш сервис."
+
+#: templates/faq.html:18
+msgid ""
+"\n"
+"<h3>Publishing requirements</h3>\n"
+"To get published a host must meet the following criteria:\n"
+"<ul>\n"
+"\t<li>Must have been added at least 3 days ago</li>\n"
+"\t<li>Must be up</li>\n"
+"\t<li>Must be approved by admin</li>\n"
+"</ul>\n"
+"<p style=\"notice\">Admin's approval isn't really necessary, it is only needed in\n"
+"order to eliminate possible hijacking and mass registration attempts.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h3>Требования к публикации</h3>\n"
+"Чтобы быть опубликованным, хост должен соответствовать следующим критериям:\n"
+"<ul>\n"
+"\t<li>Должен быть добавлен не менее 3-х дней назад</li>\n"
+"\t<li>Должен работать</li>\n"
+"\t<li>Должен быть подтверждён администрацией</li>\n"
+"</ul>\n"
+"<p style=\"notice\">Административное подтверждение не является реально необходимым, оно требуется только для\n"
+"предотвращения массовых регистраций и прочих зловредных действий.\n"
+"</p>\n"
+
+#: templates/faq.html:31
+msgid ""
+"\n"
+"<h3>Expiration</h3>\n"
+"<p>\n"
+"Hosts gets checked for availability every 12 hours. If the host is alive, registration period\n"
+"prolongated 1 month. Until this period ends, hosts are published in our hosts.txt.\n"
+"</p>\n"
+"<p>\n"
+"When a host has expired, its name/key pair will be keept for 2 years but will not be\n"
+"published any longer. Until this period ends, it's impossible to register this hostname\n"
+"again.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h3>Истечение регистрации</h3>\n"
+"<p>\n"
+"Хосты проверяются на доступность каждые 12 часов. Если хост работает, регистрационный период\n"
+"продлевается на 1 месяц. До тех пор, пока этот период не истёк, хост публикуется в нашем hosts.txt.\n"
+"</p>\n"
+"<p>\n"
+"Когда регистрация хоста истекает, его пара домен/хэш продолжит храниться 2 года, но публиковаться в hosts.txt не будет.\n"
+"Пока этот период не кончился, такой домен нельзя зарегистрировать заново.\n"
+"</p>\n"
+
+#: templates/faq.html:44
+msgid ""
+"\n"
+"<h3>Deletion of expired hosts</h3>\n"
+"<p>\n"
+"Hosts expired 2 years ago get completely deleted from our database and become\n"
+"available for a new registration.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h3>Удаление истёкших регистраций</h3>\n"
+"<p>\n"
+"Хосты, чей срок регистрации истёк 2 года назад, полностью удаляются из базы и становятся\n"
+"снова доступными для регистрации.\n"
+"</p>\n"
+
+#: templates/faq.html:52
+msgid ""
+"\n"
+"<h3>Deletion of dead hosts</h3>\n"
+"<p>\n"
+"If a host was added from an external source and we've never seen it alive, it\n"
+"will be deleted after 1 year since its adding date, and after 14 days if it is\n"
+"was added through our registration service. Since these hosts were not published\n"
+"through our service, we only grant them such a short grace period.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h3>Удаление мёртвых хостов</h3>\n"
+"<p>\n"
+"Если хост был добавлен из внешнего источника и мы никогда не видели его работающим,\n"
+"то он будет удалён через 1 год с момента добавления. Если хост был добавлен через наш сервис, то он будет удалён через 14 дней.\n"
+"Так как такие хосты не публикуются в нашем hosts.txt,\n"
+"мы даём лишь столь небольшой период ожидания.\n"
+"</p>\n"
+
+#: templates/index.html:6
+#, python-format
+msgid ""
+"\n"
+"\t<h2>About</h2>\n"
+"\t<p>%(title)s is a domain name registration service for I2P. Hostnames in I2P aren't\n"
+"\tglobally unique. %(title)s doesn't act as \"central authority\", it only provides a\n"
+"\tway to publish hosts as an easy means of access to them. You can read more about how\n"
+"\tI2P naming works in the <a href=http://www.i2p2.i2p/naming.html>official\n"
+"\t\tdocs</a>.\n"
+"\t</p>\n"
+"\n"
+"\t<p>To find out how we're registering and publishing hosts, look at\n"
+"\t<a href=%(faq_url)s>FAQ</a> page.\n"
+"\t</p>\n"
+"\t<p>\n"
+"\tIf you have any questions, feel free to ask <a href=\"http://forum.i2p/viewtopic.php?t=5083\">here</a>\n"
+"\tpublicly. Private questions can be asked through <a href=\"http://i2pbote.i2p/\">i2pbote</a>\n"
+"\tusing <em>uxGqmWz4HxLqjPVm7eSGGRqaGInm5hh8lZYubYdUX4Cih4Qhna2tSSMrupbWdDj80zDNoXvBc-le0GsywgVulw</em>\n"
+"\tidentity.\n"
+"\t</p>\n"
+"\t"
+msgstr ""
+"\n"
+"\t<h2>О сервисе</h2>\n"
+"\t<p>%(title)s - это сервис регистрации доменных имён для I2P. Имена доменов в I2P не\n"
+"\tявляются уникальными глобально. %(title)s не выступает в качестве \"центра авторизации\", он всего лишь предоставляет\n"
+"\tлёгкий способ опубликовать адреса хостов, чтобы упростить доступ к ним. Вы можете прочитать более подробно о том, как\n"
+"\tработает именование узлов в I2P в <a href=http://www.i2p2.i2p/naming.html>официальной\n"
+"\t\tдокументации</a>.\n"
+"\t</p>\n"
+"\n"
+"\t<p>Чтобы узнать, как мы регистрируем и публикуем хосты, смотрите страницу\n"
+"\t<a href=%(faq_url)s>FAQ</a>.\n"
+"\t</p>\n"
+"\t<p>\n"
+"\tЕсли у вас есть вопросы, можете задавать их публично <a href=\"http://forum.i2p/viewtopic.php?t=5083\">на форуме</a>.\n"
+"\tПриватные вопросы можно задавать через <a href=\"http://i2pbote.i2p/\">i2pbote</a>\n"
+"\tна адрес <em>uxGqmWz4HxLqjPVm7eSGGRqaGInm5hh8lZYubYdUX4Cih4Qhna2tSSMrupbWdDj80zDNoXvBc-le0GsywgVulw</em>.\n"
+"\t</p>\n"
+"\t"
+
+#: templates/index.html:26
+#, python-format
+msgid ""
+"\n"
+"\t<h2>Addressbook service</h2>\n"
+"\t<p>\n"
+"\tTo start getting new hostnames from %(title)s, add this\n"
+"\t<a href=/export/alive-hosts.txt>subscription link</a> into your <a\n"
+"\t\thref=http://localhost:7657/susidns/subscriptions.jsp>router's\n"
+"\t\taddressbook</a>. Of course, you should <a\n"
+"\t\thref=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname=%(domain)s&destination=%(b64)s>add INR</a>'s destination before.\n"
+"\t</p>\n"
+"\t"
+msgstr ""
+"\n"
+"\t<h2>Сервис адресной книги</h2>\n"
+"\t<p>\n"
+"\tДля того, чтобы получать данные о хостах от %(title)s, добавьте\n"
+"\t<a href=/export/alive-hosts.txt>ссылку на подписку</a> в <a\n"
+"\t\thref=http://localhost:7657/susidns/subscriptions.jsp>адресную книгу</a>\n"
+"\t\tвашего I2P-роутера. Конечно, перед этим вы должны <a\n"
+"\t\thref=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname=%(domain)s&destination=%(b64)s>добавить адрес INR</a> в неё.\n"
+"\t</p>\n"
+"\t"
+
+#: templates/index.html:39
+#, python-format
+msgid ""
+"\n"
+"\t<h2>Jump service</h2><p>\n"
+"\t\t%(title)s also provides a jump service. For accessing hosts through it,\n"
+"\t\tuse urls like\n"
+"\t\t<a href=\"%(jump_url)s\">\n"
+"\t\t\thttp://%(domain)s%(jump_url)s</a>.\n"
+"\t\tI2P since 0.8.3 gives possibility to add a custom jump-servers. Go to the i2ptunnel\n"
+"\t\t<a href=\"http://localhost:7657/i2ptunnel/edit?tunnel=0\">eeproxy configuration page\n"
+"\t\t</a> and add <em>http://%(domain)s%(jump_index)s</em> to \"Jump URL List\" section.\n"
+"\t\t</p>\n"
+"\t"
+msgstr ""
+"\n"
+"\t<h2>Jump-сервис</h2><p>\n"
+"\t\t%(title)s так же предоставляет jump-сервис (сервис коротких переходов). Для перехода к хостам через него,\n"
+"\t\tиспользуйте адреса вида\n"
+"\t\t<a href=\"%(jump_url)s\">\n"
+"\t\t\thttp://%(domain)s%(jump_url)s</a>.\n"
+"\t\tНачиная с I2P 0.8.3, имеется возможность добавления произвольных jump-серверов. Откройте\n"
+"\t\t<a href=\"http://localhost:7657/i2ptunnel/edit?tunnel=0\">страницу настройки eeproxy\n"
+"\t\t</a> в i2ptunnel и добавьте  в секцию \"Jump URL List\" <em>http://%(domain)s%(jump_index)s</em>.\n"
+"\t\t</p>\n"
+"\t"
+
+#: templates/index.html:52
+#, python-format
+msgid ""
+"\n"
+"\t<h2>Registration service</h2>\n"
+"\t<p>If you are running an eepsite or another service and want a human-readable domain name\n"
+"\tfor them, consider <a href=%(addkey_url)s>registering it</a>.\n"
+"\t</p>\n"
+"\t"
+msgstr ""
+"\n"
+"\t<h2>Сервис регистрации доменов</h2>\n"
+"\t<p>Если вы поддерживаете eepsite или другой сервис, и хотите чтобы у него было человекочитаемое имя домена,\n"
+"\tподумайте о его <a href=%(addkey_url)s>регистрации</a>.\n"
+"\t</p>\n"
+"\t"
+
+#: templates/index.html:61
+msgid "add"
+msgstr "добавить"
+
+#: templates/jump-error.html:5
+msgid "You are trying to access an invalid hostname. Maybe you're just mistyped it."
+msgstr "Вы пытаетесь перейти на некорректный узел. Возможно, вы ошиблись при вводе."
+
+#: templates/jump-error.html:6
+msgid "Error:"
+msgstr "Ошибка:"
+
+#: templates/jump-unknown.html:5
+msgid "You are trying to access an unknown hostname."
+msgstr "Вы пытаетесь перейти к неизвестному нам узлу."
+
+#: templates/jump.html:8
+msgid ""
+"\n"
+"<h3>Congratulations! We're found that host you're requesting. Redirecting in 5 secs...</h3>\n"
+"<p>\n"
+"We're suggesting to start use our subscription service. <a href=/>Find more...</a>\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<h3>Поздравляем! Мы нашли хост который вы запрашивали. Перенаправление через 5 секунд...</h3>\n"
+"<p>\n"
+"Предлагаем вам воспользоваться нашим сервисом подписки. <a href=/>Узнать больше...</a>\n"
+"</p>\n"
+
+#: templates/latest.html:5
+#, python-format
+msgid ""
+"\n"
+"<h3>Latest %(hosts_count)s hosts added in %(day_count)s days</h3>\n"
+msgstr ""
+"\n"
+"<h3>%(hosts_count)s новых хостов, добавленных в течение последних %(day_count)s дней</h3>\n"
+
+#: templates/policy.html:3
+msgid "Domain name registration policy"
+msgstr "Политика регистрации доменных имён"
+
+#: templates/policy.html:5
+msgid "Domain name registration is free."
+msgstr "Регистрация домена бесплатна."
+
+#: templates/policy.html:6
+msgid "Anyone can register a domain name."
+msgstr "Кто угодно может зарегистрировать домен."
+
+#: templates/policy.html:7
+msgid "Domain names are available on a 'first come, first serve' basis."
+msgstr "Домены доступны по принципу \"первый пришёл, первый обслуживаешь\"."
+
+#: templates/policy.html:8
+msgid "A domain name's destination must be active."
+msgstr "Хост, для которого регистрируется имя, должен работать."
+
+#: templates/policy.html:9
+msgid "Inactive destinations cannot be published."
+msgstr "Неработающие хосты не могут быть опубликованы в нашей адресной книге."
+
+#: templates/policy.html:10
+msgid "Domain name hoarding through mass registration (cybersquatting) is not allowed."
+msgstr "Массовая регистрация доменов (киберсквоттинг) запрещена."
+
+#: templates/policy.html:11
+msgid "Domain name registrations will not be rejected based on content."
+msgstr "В регистрации домена не может быть отказано на основании размещённого контента."
+
+#: templates/policy.html:12
+msgid "Domain name registrations will stop propagating after some period of inactivity."
+msgstr "В случае неактивности хоста в течении некоторого периода, публикация домена в адресной книге будет приостановлена."
+
+#: templates/policy.html:13
+msgid "Temporary or test sites should not be registered. Use b32 address instead."
+msgstr "Временные или тестовые сайты не стоит регистрировать. Используйте b32-адрес вместо этого."
+
+#: templates/policy.html:14
+msgid "Changing key for existing domains is prohibited."
+msgstr "Изменение хэша у уже зарегистрированных доменов запрещено."
+
+#: templates/postkey.html:8
+msgid "Enter your domain details"
+msgstr "Введите сведения о домене"
+
+#: templates/postkey.html:10
+msgid "Submit"
+msgstr "Отправить"
+
+#: templates/search_results.html:5
+msgid "Search results"
+msgstr "Результаты поиска"
+
+#: templates/subdomain_http_verify.html:5
+#, python-format
+msgid ""
+"\n"
+"<p>\n"
+"You are trying to add a subdomain. Our policy permits subdomains registration only if you're own an\n"
+"upper domain (2nd-level domain). Before subdomain will be added, we must ensure that you're own an upper-level\n"
+"domain.\n"
+"</p>\n"
+"<p>\n"
+"Unfortunately, we can verify a 2nd-level domain ownage only via http, so if you're use the domain not for http,\n"
+"please run a webserver temporary. Create the following file in the webserver's document root and press \"OK\" button.\n"
+"This file should be accessible via http://%(topdomain)s/&laquo;filename&raquo; (without quotes).\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"Вы пытаетесь зарегистрировать поддомен. Наша политика разрешает регистрацию поддоменов если вы\n"
+"владеете доменом вышестоящего уровня (а именно, доменом 2-го уровня). Перед тем, как поддомен будет зарегистрирован, мы должны убедиться что вы владеете доменом вышестоящего уровня.\n"
+"</p>\n"
+"<p>\n"
+"К сожалению, мы можем убедиться в вашем владении доменом 2-го уровня только через http, так что если вы используете этот домен не для http,\n"
+"то пожалуйста запустите на нём веб-сервер временно. Создайте нижеуказанный файл в корневой директории веб-сервера (docroot) и нажмите кнопку \"OK\".\n"
+"Этот файо должен быть доступен по URL-ю http://%(topdomain)s/&laquo;filename&raquo; (без кавычек).\n"
+"</p>\n"
+
+#: templates/subdomain_http_verify_failure.html:6
+msgid "Verification failed. Webserver returned http code:"
+msgstr "Проверка провалилась. Веб-сервер вернул http-код:"
+
+#: templates/success_submission.html:5
+#, python-format
+msgid ""
+"\n"
+"Successfully added %(hostname)s. It will be activated after admin's approval and\n"
+"automatic availability test.\n"
+msgstr ""
+"\n"
+"Домен %(hostname)s успешно добавлен. Он будет активирован после подтверждения администрации и\n"
+"автоматической проверки на доступность.\n"
+
+#: templates/admin/base_site.html:4
+msgid "py-i2phosts | admin"
+msgstr "py-i2phosts | admin"
+
+#: templates/admin/base_site.html:7
+msgid "py-i2phosts administration console"
+msgstr "py-i2phosts administration console"
+
