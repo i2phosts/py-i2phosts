@@ -108,7 +108,7 @@ def validate_b64hash(data, check_uniq=True):
 		# Avoid adding non-unique hashes
 		qs = i2phost.objects.filter(b64hash=data)
 		if qs.exists():
-			raise ValidationError(_('Base64 hash must be unique'))
+			raise ValidationError(_('Some host already have the same Base64 hash'))
 	return data
 
 
