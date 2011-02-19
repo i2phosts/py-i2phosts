@@ -18,6 +18,115 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
+#: lib/validation.py:22
+msgid "Too long hostname (should be 67 chars max)"
+msgstr "Слишком длинное имя хоста (должно быть 67 символов максимум)"
+
+#: lib/validation.py:25
+msgid "Hostname doesn't ends with .i2p"
+msgstr "Имя хоста не оканчивается на .i2p"
+
+#: lib/validation.py:28
+msgid "Base32 hostnames are not allowed"
+msgstr "Base32-адреса не допускаются"
+
+#: lib/validation.py:31
+msgid "Incomplete hostname"
+msgstr "Неполное имя хоста"
+
+#: lib/validation.py:33
+msgid "Do not paste full URL, just domain"
+msgstr "Не вставляйте полный URL, только домен"
+
+#: lib/validation.py:36
+msgid "\"..\" in hostname"
+msgstr "\"..\" в имени"
+
+#: lib/validation.py:39
+msgid "Subdomains deeper than 4LD are not allowed"
+msgstr "Поддомены глубже 4-го уровня не допускаются"
+
+#: lib/validation.py:43
+msgid "Illegal characters in hostname"
+msgstr "Недопустимые символы в имени хоста"
+
+#: lib/validation.py:48
+msgid "Hostname must not starts with \".\" or \"-\""
+msgstr "Имя хоста не должно начинаться с \".\" или \"-\""
+
+#: lib/validation.py:51
+msgid "Hostname contain \".-\" or \"-.\""
+msgstr "Имя хоста содержит \".-\" или \"-.\""
+
+#: lib/validation.py:54
+msgid "Hostname contain \"--\" and it's not an IDN"
+msgstr "Имя хоста содержит \"--\", но это не IDN-имя"
+
+#: lib/validation.py:57
+msgid "Trying to use reserved hostname"
+msgstr "Попытка использования зарезервированного имени"
+
+#: lib/validation.py:60
+msgid "localhost.* not allowed"
+msgstr "localhost.* не допускается"
+
+#: lib/validation.py:73
+msgid "You should paste base64 hash, not a base32!"
+msgstr "Вы должны вставить base64 хэш, а не base32!"
+
+#: lib/validation.py:76
+msgid "Do not paste full hosts.txt entry! Only base64 hash is needed"
+msgstr "Не вставляйте полную строку для hosts.txt! Нужен только base64 хэш."
+
+#: lib/validation.py:79
+msgid "Do not paste router hash! Go to i2ptunnel page and \t\t\t\tfind a destination hash"
+msgstr "Не вставляйте хэш роутера! Пойдите на страницу i2ptunnel и найдите хэш нужного адреса назначения"
+
+#: lib/validation.py:83
+msgid "Specified base64 hash is less than 516 bytes"
+msgstr "Указанный base64 хэш меньше чем 516 байт"
+
+#: lib/validation.py:86
+msgid "Specified base64 hash is bigger than 616 bytes"
+msgstr "Указанный base64 хэш больше чем 616 байт"
+
+#: lib/validation.py:89
+msgid "Invalid characters in base64 hash"
+msgstr "Недопустимые символы в base64 хэше"
+
+#: lib/validation.py:103
+msgid "Corrupted base64 hash"
+msgstr "Повреждённый base64 хэш"
+
+#: lib/validation.py:106
+msgid "Invalid base64 hash"
+msgstr "Неправильный base64 хэш"
+
+#: lib/validation.py:111
+msgid "Some host already have the same Base64 hash"
+msgstr "Хост с таким base64 хэшем уже зарегистрирован"
+
+#: lib/validation.py:121
+msgid "Bad I2P url"
+msgstr "Плохой I2P URL"
+
+#: postkey/models.py:6
+msgid "I2P hostname"
+msgstr "Имя I2P-хоста"
+
+#: postkey/models.py:8
+msgid "Base 64 hash"
+msgstr "Base 64 хэш"
+
+#: postkey/models.py:9
+#: templates/browse.html:11
+msgid "Description"
+msgstr "Описание"
+
+#: postkey/views.py:39
+msgid "Trying to use hostname from additional reserved set"
+msgstr "Попытка использования зарезервированного имени из дополнительного списка"
+
 #: templates/base.html:17
 #: templates/base.html.py:18
 msgid "Search host"
@@ -62,10 +171,6 @@ msgstr "Был доступен"
 #: templates/browse.html:11
 msgid "Date added"
 msgstr "Добавлен"
-
-#: templates/browse.html:11
-msgid "Description"
-msgstr "Описание"
 
 #: templates/faq.html:5
 msgid "How we are learning about new hosts"
@@ -293,7 +398,7 @@ msgstr "Ошибка:"
 msgid "You are trying to access an unknown hostname."
 msgstr "Вы пытаетесь перейти к неизвестному нам узлу."
 
-#: templates/jump.html:8
+#: templates/jump.html:9
 msgid ""
 "\n"
 "<h3>Congratulations! We're found that host you're requesting. Redirecting in 5 secs...</h3>\n"
@@ -421,3 +526,5 @@ msgstr "py-i2phosts | admin"
 msgid "py-i2phosts administration console"
 msgstr "py-i2phosts administration console"
 
+#~ msgid "Base64 hash must be unique"
+#~ msgstr "Base64 хэш должен быть уникален"
