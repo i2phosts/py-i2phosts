@@ -420,10 +420,10 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"<h3>Latest %(hosts_count)s hosts added in %(day_count)s days</h3>\n"
+"<h3>Latest %(hosts_count)s hosts added in %(day_count)s days\n"
 msgstr ""
 "\n"
-"<h3>%(hosts_count)s новых хостов, добавленных в течение последних %(day_count)s дней</h3>\n"
+"<h3>%(hosts_count)s новых хостов, добавленных в течение последних %(day_count)s дней\n"
 
 #: templates/policy.html:3
 msgid "Domain name registration policy"
