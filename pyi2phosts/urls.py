@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 from django.views.generic.list_detail import object_list
 
 # Uncomment the next two lines to enable the admin:
@@ -8,6 +7,7 @@ admin.autodiscover()
 
 from pyi2phosts.lib.rss import AliveHostsFeed
 from pyi2phosts.lib.utils import get_b32
+from pyi2phosts.lib.generic import LocalTemplateView
 from pyi2phosts.extsources.models import ExternalSource
 from pyi2phosts.postkey.models import i2phost
 import settings
@@ -32,15 +32,7 @@ browse_hosts = {
 		}
 
 urlpatterns = patterns('',
-		url(r'^$', direct_to_template, {
-			'template': 'index.html',
-			'extra_context': {
-				'title': settings.SITE_NAME,
-				'domain': settings.DOMAIN,
-				'b64': settings.MY_B64,
-				'b32': get_b32(settings.MY_B64)
-				}
-			}, name='index'),
+		url(r'^$', LocalTemplateView.as_view(template_name='index.html'), name='index'),
 		url(r'^faq/$', object_list, extsources, name='faq'),
 		url(r'^browse/$', object_list, browse_hosts, name='browse'),
 		url(r'^browse/rss/$', AliveHostsFeed(), name='browse-rss'),
