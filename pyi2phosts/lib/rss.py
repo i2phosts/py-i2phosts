@@ -1,5 +1,3 @@
-#!/usr/bin/env python2.6
-
 from django.contrib.syndication.views import Feed
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.latest.views import get_latest
