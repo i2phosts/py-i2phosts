@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
+from pyi2phosts.search.views import SearchedHostsListsView
 
-urlpatterns = patterns('pyi2phosts.search.views',
-		(r'^$', 'search'),
+urlpatterns = patterns('',
+		(r'^$', SearchedHostsListsView.as_view()),
 )

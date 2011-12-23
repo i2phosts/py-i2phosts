@@ -1,40 +1,20 @@
 from django.conf.urls.defaults import *
-from django.views.generic.list_detail import object_list
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 from pyi2phosts.lib.rss import AliveHostsFeed
-from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.lib.generic import LocalTemplateView
-from pyi2phosts.extsources.models import ExternalSource
-from pyi2phosts.postkey.models import i2phost
+from pyi2phosts.lib.generic import FaqView
+from pyi2phosts.lib.generic import HostsListsView
 import settings
 
-extsources = {
-		'queryset': ExternalSource.objects.filter(active=True),
-		'template_name': 'faq.html',
-		'template_object_name': 'sources',
-		'extra_context': {
-			'title': settings.SITE_NAME,
-			}
-		}
-
-browse_hosts = {
-		'queryset': i2phost.objects.filter(activated=True).order_by("-last_seen"),
-		'template_name': 'browse.html',
-		'template_object_name': 'host',
-		'paginate_by': 40,
-		'extra_context': {
-			'title': settings.SITE_NAME,
-			}
-		}
 
 urlpatterns = patterns('',
 		url(r'^$', LocalTemplateView.as_view(template_name='index.html'), name='index'),
-		url(r'^faq/$', object_list, extsources, name='faq'),
-		url(r'^browse/$', object_list, browse_hosts, name='browse'),
+		url(r'^faq/$', FaqView.as_view(), name='faq'),
+		url(r'^browse/$', HostsListsView.as_view(), name='browse'),
 		url(r'^browse/rss/$', AliveHostsFeed(), name='browse-rss'),
 
 		(r'^latest/', include('pyi2phosts.latest.urls')),
