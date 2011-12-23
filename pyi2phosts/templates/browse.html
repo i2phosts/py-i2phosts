@@ -16,7 +16,20 @@
 </table>
 
 {% if is_paginated %}
-	{% load paginator %}{% paginator 3 %}
+<div class="pager">
+   {% if page_obj.has_previous %}
+      <span class="page">
+      <a href="?page={{ page_obj.previous_page_number }}">&lt; Prev</a>
+      </span>
+   {% endif %}
+
+   <span class="current">Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+
+   {% if page_obj.has_next %}
+      <span class="page"><a href="?page={{ page_obj.next_page_number }}">Next &gt;</a></span>
+   {% endif %}
+   {{ paginator.count }} {% trans "hosts total" %}
+
 {% endif %}
 
 {% endblock %}
