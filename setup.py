@@ -22,7 +22,8 @@ setup(
 	    'py-i2phosts-fetcher', 'py-i2phosts-injector', 'py-i2phosts-maint'],
     data_files=[('/etc/py-i2phosts', ['conf/master.conf', 'conf/checker.conf', 'conf/fetcher.conf',
 	    'conf/maintainer.conf', 'conf/builder.conf', 'conf/common.conf', 'conf/injector.conf'],),
-	    ('/var/log/py-i2phosts', ['.placeholder'],)],
+	    ('/var/log/py-i2phosts', ['.placeholder'],),
+	    ('/var/run/py-i2phosts', ['.placeholder'],),],
     classifiers=[
         'Development Status :: 4 - Beta',
 	'Environment :: Console',
