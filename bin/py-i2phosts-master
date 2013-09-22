@@ -11,7 +11,11 @@ import validate
 import subprocess
 import threading
 import daemon
-import daemon.pidlockfile
+# workaround for python-daemon >= 1.6
+try:
+	import daemon.pidlockfile
+except ImportError:
+	import daemon.pidfile
 
 class Thread(threading.Thread):
 
