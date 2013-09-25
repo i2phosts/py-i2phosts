@@ -5,9 +5,7 @@ import sys
 import argparse
 import datetime
 import configobj
-
-from i2p import samclasses
-from i2p import socket
+import socket
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -60,13 +58,27 @@ else:
 	log_file = config['log_file']
 log = get_logger(filename=log_file, log_level=log_level)
 
-# determine SAM interface address
-if 'sam_addr' in config:
-	sam_addr = config['sam_addr']
+# determine BOB interface address
+if 'bob_addr' in config:
+	bob_addr = config['bob_addr']
 else:
-	log.warning('SAM address isn\'t specified in config, falling back to localhost')
-	sam_addr = '127.0.0.1:7656'
-S = samclasses.BaseSession(sam_addr)
+	log.warning('BOB address isn\'t specified in config, falling back to localhost')
+	bob_addr = '127.0.0.1:2827'
+
+# split bob_addr to ip and port
+bob_ip, bob_port = bob_addr.split(':')
+
+# connect to BOB
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+	s.connect((bob_ip, int(bob_port)))
+	# just receive BOB's greeting
+	data = s.recv(512)
+	# make file object
+	f = s.makefile('r')
+except socket.error, e:
+	log.error('failed to connect to BOB: %s', e)
+	sys.exit(1)
 
 all_hosts = i2phost.objects.all().order_by('-activated', '-last_seen')
 log.info('starting check')
@@ -77,14 +89,17 @@ for host in all_hosts:
 	b32dest = get_b32(dest)
 	# do name lookup query with b32 address
 	# it success only if host is alive
-	try:
-		a = S._namelookup(b32dest)
-	except socket.NetworkError, e:
-		log.debug('%s: %s', host.name, e.args[0][0])
+	s.send('lookup %s\n' % b32dest)
+	data = f.readline().rstrip('\n')
+	if data == 'ERROR Address Not found.':
+		log.debug('unable to resolve: %s', host.name)
 		continue
-	log.info('alive host: %s', host.name)
-	# update lastseen timestamp
-	host.last_seen = datetime.datetime.utcnow()
-	host.save()
-S.close()
+	elif data == 'OK ' + host.b64hash:
+		log.info('alive host: %s', host.name)
+		# update lastseen timestamp
+		host.last_seen = datetime.datetime.utcnow()
+		host.save()
+	else:
+		log.warning('unexpected reply: %s', data)
+s.close()
 log.info('check finished')
