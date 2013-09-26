@@ -94,7 +94,7 @@ for host in all_hosts:
 	s.send('lookup %s\n' % b32dest)
 	data = f.readline().rstrip('\n')
 	if data == 'ERROR Address Not found.':
-		log.debug('unable to resolve: %s', host.name)
+		log.debug('%s: unable to resolve', host.name)
 		continue
 	elif data == 'OK ' + host.b64hash:
 		log.info('alive host: %s', host.name)
