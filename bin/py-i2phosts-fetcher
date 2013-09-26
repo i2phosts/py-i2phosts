@@ -4,6 +4,7 @@ import re
 import os
 import os.path
 import sys
+import errno
 import datetime
 import urllib2
 import subprocess
@@ -117,8 +118,14 @@ for source in all_sources:
 	log.info('%s: adding hosts...', source.name)
 	sp_args = ['py-i2phosts-injector', '-s', '-f', tmpfile, '-d',
 			'Auto-added from ' + source.name]
-	p = subprocess.Popen(sp_args, shell=False, stdin=None,
-			stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	try:
+		p = subprocess.Popen(sp_args, shell=False, stdin=None,
+				stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	except OSError, e:
+		log.error('failed to exec py-i2phosts-injector: %s', e)
+		if e.errno == errno.ENOENT:
+			log.error('check your PATH environment variable')
+		sys.exit(1)
 	out = p.communicate()[0]
 	os.remove(tmpfile)
 	log.info('%s: injector output: \n%s', source.name, out)
