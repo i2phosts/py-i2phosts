@@ -114,7 +114,7 @@ for source in all_sources:
 	if etag:
 		log.debug('%s: ETag: %s', source.name, etag)
 		source.etag = etag
-	# form commnd-line for invoke injector
+	# form command-line for invoke injector
 	log.info('%s: adding hosts...', source.name)
 	sp_args = ['py-i2phosts-injector', '-s', '-f', tmpfile, '-d',
 			'Auto-added from ' + source.name]
