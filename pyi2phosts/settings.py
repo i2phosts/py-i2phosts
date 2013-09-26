@@ -53,20 +53,28 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static/')
+#MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/static/'
+#MEDIA_URL = '/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+#ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'u*x8(m=px4az@g+!-c&p9d5z0$g+bhw@t28wf*fz#lo$@^bc5u'
+
+# Static files will be addressed as http://example.com/static/
+STATIC_URL = '/static/'
+
+# Additional dirs to look for static files. See https://docs.djangoproject.com/en/1.5/howto/static-files/
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, "static-common"),
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -103,6 +111,7 @@ INSTALLED_APPS = (
     'pyi2phosts.extsources',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'django.contrib.staticfiles'
 )
 
 
