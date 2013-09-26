@@ -6,6 +6,7 @@ import argparse
 import datetime
 import configobj
 import socket
+import time
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -73,6 +74,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
 	s.connect((bob_ip, int(bob_port)))
 	# just receive BOB's greeting
+	time.sleep(1)
 	data = s.recv(512)
 	# make file object
 	f = s.makefile('r')
