@@ -10,6 +10,7 @@ import subprocess
 import argparse
 import configobj
 import tempfile
+import socket
 
 # parse command line options
 parser = argparse.ArgumentParser(
@@ -76,17 +77,19 @@ for source in all_sources:
 	try:
 		log.debug('%s: sending GET...', source.name)
 		resp = opener.open(source.url, timeout=60)
+	except socket.timeout:
+		log.warning('%s: socket timeout', source.name)
+		continue
+	except urllib2.HTTPError, e:
+		if e.code == 304:
+			log.info('%s: not modified', source.name)
+			source.last_success = datetime.datetime.utcnow()
+			source.save()
+		else:
+			log.warning('%s: can\'t finish the request, error code: %s, reason: %s', source.name, e.code, e.reason)
+		continue
 	except urllib2.URLError, e:
-		if hasattr(e, 'reason'):
-			log.warning('%s: failed to reach server, reason: %s', source.name, e.reason)
-		elif hasattr(e, 'code'):
-			if e.code == 304:
-				log.info('%s: not modified', source.name)
-				source.last_success = datetime.datetime.utcnow()
-				source.save()
-			else:
-				log.warning('%s: %s can\'t finish the request, error code: %s',
-					source.name, e.code)
+		log.warning('%s: failed to reach server, reason: %s', source.name, e.reason)
 		continue
 	# read data from remote and write it to local file
 	try:
