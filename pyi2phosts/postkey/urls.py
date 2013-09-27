@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 urlpatterns = patterns('pyi2phosts.postkey.views',
 		(r'^$', 'addkey'),
