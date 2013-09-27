@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-	{% url faq as faq_url %}
+	{% url 'faq' as faq_url %}
 	{% blocktrans %}
 	<h2>About</h2>
 	<p>{{ title }} is a domain name registration service for I2P. Hostnames in I2P aren't
@@ -34,8 +34,8 @@
 	</p>
 	{% endblocktrans %}
 
-	{% url pyi2phosts.jump.views.jumper 'example.i2p' as jump_url %}
-	{% url pyi2phosts.jump.views.index as jump_index %}
+	{% url 'pyi2phosts.jump.views.jumper' 'example.i2p' as jump_url %}
+	{% url 'pyi2phosts.jump.views.index' as jump_index %}
 	{% blocktrans %}
 	<h2>Jump service</h2><p>
 		{{ title }} also provides a jump service. For accessing hosts through it,
@@ -48,7 +48,7 @@
 		</p>
 	{% endblocktrans %}
 
-	{% url pyi2phosts.postkey.views.addkey as addkey_url %}
+	{% url 'pyi2phosts.postkey.views.addkey' as addkey_url %}
 	{% blocktrans %}
 	<h2>Registration service</h2>
 	<p>If you are running an eepsite or another service and want a human-readable domain name
