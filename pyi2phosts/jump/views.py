@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.template import RequestContext
 
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.validation import validate_hostname
@@ -16,13 +17,13 @@ def jumper(request, host):
 		return render_to_response('jump-error.html', {
 			'title': settings.SITE_NAME,
 			'error': e,
-			})
+			}, context_instance=RequestContext(request))
 	try:
 		h = i2phost.objects.get(name=hostname)
 	except i2phost.DoesNotExist:
 		return render_to_response('jump-unknown.html', {
 			'title': settings.SITE_NAME,
-			})
+			}, context_instance=RequestContext(request))
 	if h.activated == True:
 		key = h.b64hash
 	else:
@@ -47,7 +48,7 @@ def jumper(request, host):
 	return render_to_response('jump.html', {
 		'title': settings.SITE_NAME,
 		'url': url,
-		})
+		}, context_instance=RequestContext(request))
 
 def index(request):
 	return redirect('/')

@@ -106,7 +106,7 @@ def success(request):
 		return render_to_response('success_submission.html', {
 			'title': settings.SITE_NAME,
 			'hostname': hn,
-			})
+			}, context_instance=RequestContext(request))
 	else:
 		return redirect('/')
 
@@ -136,7 +136,7 @@ def subdomain(request):
 					return render_to_response('subdomain_http_verify_failure.html', {
 						'title': settings.SITE_NAME,
 						'code': e.code,
-						})
+						}, context_instance=RequestContext(request))
 			else:
 				log.debug('subdomain verification success, saving host')
 				s = save_host(request)
