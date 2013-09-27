@@ -32,7 +32,7 @@ if 'include' in config:
 	config.merge(config_included)
 
 # django setup
-DJANGO_SETTINGS_MODULE = 'settings'
+DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
 	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
