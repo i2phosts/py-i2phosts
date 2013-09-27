@@ -36,7 +36,7 @@ DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
 	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/web'
+	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
