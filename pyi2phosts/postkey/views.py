@@ -8,9 +8,9 @@ from django import forms
 from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.template import RequestContext
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-import settings
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.utils import get_logger
 from pyi2phosts.lib.validation import validate_hostname

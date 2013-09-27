@@ -1,6 +1,7 @@
 import datetime
 
-import settings
+from django.conf import settings
+
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.generic import HostsListsView
 

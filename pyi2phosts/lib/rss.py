@@ -1,8 +1,8 @@
 from django.contrib.syndication.views import Feed
+from django.conf import settings
+
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.latest.views import get_latest
-
-import settings
 
 class AliveHostsFeed(Feed):
 	""" Generate RSS feed with all alive hosts """

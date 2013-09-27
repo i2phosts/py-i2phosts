@@ -4,11 +4,12 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
+from django.conf import settings
+
 from pyi2phosts.lib.rss import AliveHostsFeed
 from pyi2phosts.lib.generic import LocalTemplateView
 from pyi2phosts.lib.generic import FaqView
 from pyi2phosts.lib.generic import HostsListsView
-import settings
 
 
 urlpatterns = patterns('',

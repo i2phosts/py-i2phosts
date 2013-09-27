@@ -1,13 +1,12 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator
+from django.conf import settings
 
 from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.extsources.models import ExternalSource
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.postkey.templatetags import paginator
-
-import settings
 
 class LocalTemplateView(TemplateView):
 	""" Renders some template with passing some local config variables """

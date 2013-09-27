@@ -3,10 +3,10 @@ import re
 from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.validation import validate_hostname
-import settings
 
 def jumper(request, host):
 	"""Actually do jumps."""
