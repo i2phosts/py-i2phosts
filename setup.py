@@ -18,8 +18,8 @@ setup(
     package_dir = {'': ''},
     package_data = {
 	    'pyi2phosts': ['templates/*.html', 'static/*', 'locale/*/*/*']},
-    scripts=['py-i2phosts-master', 'py-i2phosts-builder', 'py-i2phosts-checker',
-	    'py-i2phosts-fetcher', 'py-i2phosts-injector', 'py-i2phosts-maint'],
+    scripts=['bin/py-i2phosts-master', 'bin/py-i2phosts-builder', 'bin/py-i2phosts-checker',
+	    'bin/py-i2phosts-fetcher', 'bin/py-i2phosts-injector', 'bin/py-i2phosts-maint'],
     data_files=[('/etc/py-i2phosts', ['conf/master.conf', 'conf/checker.conf', 'conf/fetcher.conf',
 	    'conf/maintainer.conf', 'conf/builder.conf', 'conf/common.conf', 'conf/injector.conf'],),
 	    ('/var/log/py-i2phosts', ['.placeholder'],),
