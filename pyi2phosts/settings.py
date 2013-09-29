@@ -76,6 +76,11 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, "static-common"),
 )
 
+# Directories where Django looks for translation files
+LOCALE_PATHS = (
+    os.path.join(PROJECT_ROOT, "locale"),
+)
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -84,12 +89,12 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'pyi2phosts.urls'
