@@ -112,7 +112,7 @@ for host in all_hosts:
 		# if expired X days ago then delete
 		dl_e = datetime.datetime.utcnow().date() - host.expires
 		if dl_e > datetime.timedelta(days=config['keep_expired']):
-			log.info('deleting %s, reason: expired % days ago',
+			log.info('deleting %s, reason: expired %s days ago',
 					host.name, config['keep_expired'])
 			host.delete()
 			continue
