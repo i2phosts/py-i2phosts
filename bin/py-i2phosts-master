@@ -160,6 +160,7 @@ if not args.debug and not args.verbose:
 		pw_entry = pwd.getpwnam(runas)
 		d.uid = pw_entry[2]
 		d.gid = pw_entry[3]
+	os.chown(config['log_file'], d.uid, d.gid)
 	d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
 log.info('started')
