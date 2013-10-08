@@ -14,6 +14,7 @@ from pyi2phosts.lib.generic import HostsListsView
 
 urlpatterns = patterns('',
 		url(r'^$', LocalTemplateView.as_view(template_name='index.html'), name='index'),
+		url(r'^contacts/$',  LocalTemplateView.as_view(template_name='contacts.html'), name='contacts'),
 		url(r'^faq/$', FaqView.as_view(), name='faq'),
 		url(r'^browse/$', HostsListsView.as_view(), name='browse'),
 		url(r'^browse/rss/$', AliveHostsFeed(), name='browse-rss'),

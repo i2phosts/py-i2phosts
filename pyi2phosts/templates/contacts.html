@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+{% blocktrans %}
+<h3>Direct contact methods:</h3>
+<ul>
+	<li>IRC: #i2p-dev, nick "slow". This is the fastest contact method and should be used first.</li>
+	<li>Email: hiddenz@mail.i2p. You can send your message here, but don't expect a fast reply.</li>
+</ul>
+{% endblocktrans %}
+
+{% blocktrans %}
+<h3>Public discussions about service, feedback, proposals and feature requests</h3>
+<ul>
+	<li><a href="http://hiddenchan.i2p/d/res/4222.html">Thread at hiddenchan.i2p</a>: the best place for discussion (russian and english are allowed)</li>
+	<li><a href="http://forum.i2p/viewtopic.php?t=5083">Thread at forum.i2p</a>: very rarely readable (english)</li>
+	<li><a href="http://zzz.i2p/topics/733">py-i2phosts thread at zzz.i2p</a>: thread about py-i2phosts development, rarely readable (english)</li>
+</ul>
+{% endblocktrans %}
+{% endblock %}
