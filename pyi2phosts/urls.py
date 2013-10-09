@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 		(r'^search/$', include('pyi2phosts.search.urls')),
 		(r'^postkey/', include('pyi2phosts.postkey.urls')),
 		(r'^jump/', include('pyi2phosts.jump.urls')),
+		(r'^api/', include('pyi2phosts.api.urls')),
 		(r'^i18n/', include('django.conf.urls.i18n')),
     # Example:
     # (r'^pyi2phosts.', include('pyi2phosts.foo.urls')),
