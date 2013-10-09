@@ -2,3 +2,4 @@ Django
 django-extensions
 configobj
 python-daemon
+simplejson
