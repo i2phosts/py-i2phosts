@@ -44,7 +44,7 @@ class FaqView(LocalObjectList):
 class HostsListsView(LocalObjectList):
 	""" Renders list of active hosts """
 
-	queryset = i2phost.objects.filter(activated=True).order_by("-last_seen")
+	queryset = i2phost.objects.filter(activated=True).order_by("name")
 	template_name =  'browse.html'
 	context_object_name = 'host_list'
 	paginate_by = 40
