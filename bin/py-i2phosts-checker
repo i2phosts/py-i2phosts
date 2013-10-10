@@ -24,6 +24,7 @@ args = parser.parse_args()
 spec = '''
 	log_file = string(default='/var/log/py-i2phosts/master.log')
 	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+	lookup_retries = integer(1, 20, default=2)
 	'''
 spec = spec.split('\n')
 config = configobj.ConfigObj(args.config_file, configspec=spec)
@@ -91,17 +92,18 @@ for host in all_hosts:
 	b32dest = get_b32(dest)
 	# do name lookup query with b32 address
 	# it success only if host is alive
-	s.send('lookup %s\n' % b32dest)
-	data = f.readline().rstrip('\n')
-	if data == 'ERROR Address Not found.':
-		log.debug('%s: unable to resolve', host.name)
-		continue
-	elif data == 'OK ' + host.b64hash:
-		log.info('alive host: %s', host.name)
-		# update lastseen timestamp
-		host.last_seen = datetime.datetime.utcnow()
-		host.save()
-	else:
-		log.warning('unexpected reply: %s', data)
+	for i in range(config['lookup_retries']):
+		s.send('lookup %s\n' % b32dest)
+		data = f.readline().rstrip('\n')
+		if data == 'ERROR Address Not found.':
+			log.debug('%s: unable to resolve, try: %s', host.name, i)
+		elif data == 'OK ' + host.b64hash:
+			log.info('alive host: %s', host.name)
+			# update lastseen timestamp
+			host.last_seen = datetime.datetime.utcnow()
+			host.save()
+			break
+		else:
+			log.warning('unexpected reply: %s', data)
 s.close()
 log.info('check finished')
