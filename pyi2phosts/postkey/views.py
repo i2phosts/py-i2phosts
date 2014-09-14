@@ -129,7 +129,7 @@ def subdomain(request):
 				resp = opener.open(url, timeout=60)
 			except urllib2.URLError, e:
 				if hasattr(e, 'reason'):
-					log.warning('%s: failed to reach server, reason: %s', topdomain, e.reason)
+					log.warning('%s: failed to reach server, reason: %s', request.session['topdomain'], e.reason)
 				elif hasattr(e, 'code'):
 					log.warning('%s can\'t finish the request, error code: %s',
 							request.session['topdomain'], e.code)
