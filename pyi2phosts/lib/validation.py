@@ -85,7 +85,7 @@ def validate_b64hash(data, check_uniq=True):
 	if length > 616:
 		raise ValidationError(_('Specified base64 hash is bigger than 616 bytes'))
 	# keys with cert may ends with anything, so check is relaxed
-	if length > 516 and re.match(r'[a-zA-Z0-9\-~]+$', data) == None:
+	if length > 516 and re.match(r'[a-zA-Z0-9\-~=]+$', data) == None:
 		raise ValidationError(_('Invalid characters in base64 hash'))
 	# base64-validity test
 	if length > 516:
@@ -104,6 +104,9 @@ def validate_b64hash(data, check_uniq=True):
 	# base64-i2p
 	if length == 516 and re.match(r'[a-zA-Z0-9\-~]+AA$', data) == None:
 		raise ValidationError(_('Invalid base64 hash'))
+	# check ECDSA validity
+	if length == 524 and re.match(r'[a-zA-Z0-9\-~]+AEAAEAAA==$', data) == None:
+                raise ValidationError(_('Invalid base64 ECDSA hash'))
 	if check_uniq == True:
 		# Avoid adding non-unique hashes
 		qs = i2phost.objects.filter(b64hash=data)
