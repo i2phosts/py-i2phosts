@@ -75,7 +75,7 @@ for line in f:
 		continue
 	# strip trailing '\n'
 	line = line.rstrip('\n')
-	entry = line.split('=')
+	entry = line.split('=', 1)
 	try:
 		hostname = validate_hostname(entry[0])
 		base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
