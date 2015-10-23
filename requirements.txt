@@ -3,3 +3,4 @@ django-extensions
 configobj
 python-daemon
 simplejson
+psycopg2
