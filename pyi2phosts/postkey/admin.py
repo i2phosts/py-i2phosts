@@ -10,8 +10,6 @@ from pyi2phosts.lib.validation import validate_b64hash
 
 class i2phostAdminForm(forms.ModelForm):
 	""" Custom form for editing hosts via admin interface """
-	class Meta:
-		model = i2phost
 
 	def clean_name(self):
 		"""Validate hostname"""
