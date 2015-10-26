@@ -7,3 +7,7 @@
 {% endblocktrans %}
 <a href={% url 'latest-rss' %}><img src="/static/rss-grey-18.png" border="0" width="18" height="18" alt="rss"></a></h3>
 {% endblock %}
+{% block table_header %}
+<table>
+    <tr><td>{% trans "Host" %}</td><td>{% trans "Last seen" %}</td><td>{% trans "Date added" %}</td><td>{% trans "Description" %}</td></tr>
+{% endblock table_header %}
