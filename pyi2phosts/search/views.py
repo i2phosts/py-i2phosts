@@ -5,14 +5,14 @@ from pyi2phosts.lib.generic import HostsListsView
 
 
 class SearchedHostsListsView(HostsListsView):
-	""" Renders list of hosts matching search request """
+    """ Renders list of hosts matching search request """
 
-	def get_queryset(self):
-		q = self.request.GET.get('q', '')
-		fil = Q(name__icontains=q) | Q(b64hash__contains=q)
-		queryset = i2phost.objects.filter(fil)
-		return queryset
+    def get_queryset(self):
+        q = self.request.GET.get('q', '')
+        fil = Q(name__icontains=q) | Q(b64hash__contains=q)
+        queryset = i2phost.objects.filter(fil)
+        return queryset
 
-	template_name = 'search_results.html'
-	template_object_name = 'host_list'
-	paginate_by = 40
+    template_name = 'search_results.html'
+    template_object_name = 'host_list'
+    paginate_by = 40

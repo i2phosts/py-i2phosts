@@ -37,9 +37,9 @@ TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 
 LANGUAGES = (
-	('en', 'English'),
-	('ru', 'Russian'),
-	)
+    ('en', 'English'),
+    ('ru', 'Russian'),
+    )
 
 SITE_ID = 1
 
@@ -139,6 +139,6 @@ EEPROXY_URL = 'http://127.0.0.1:4444'
 
 # include local settings
 try:
-	from local_settings import *
+    from local_settings import *
 except ImportError:
-	pass
+    pass

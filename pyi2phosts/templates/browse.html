@@ -11,10 +11,10 @@
 <table>
     <tr><td><a href="?order=name">{% trans "Host" %}</a></td><td><a href="?order=last_seen">{% trans "Last seen" %}</a></td><td><a href="?order=date_added">{% trans "Date added" %}</a></td><td>{% trans "Description" %}</td></tr>
 {% endblock table_header %}
-	{% for host in host_list %}
-	<tr><td><a href="http://{{ host.name }}/?i2paddresshelper={{host.b64hash}}">{{ host.name }}</a></td><td>{{ host.last_seen }}</td>
-		<td>{{ host.date_added }}</td><td>{{ host.description }}</td></tr>
-	{% endfor %}
+    {% for host in host_list %}
+    <tr><td><a href="http://{{ host.name }}/?i2paddresshelper={{host.b64hash}}">{{ host.name }}</a></td><td>{{ host.last_seen }}</td>
+        <td>{{ host.date_added }}</td><td>{{ host.description }}</td></tr>
+    {% endfor %}
 </table>
 
 {% if is_paginated %}

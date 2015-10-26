@@ -10,34 +10,34 @@ import time
 
 # parse command line options
 parser = argparse.ArgumentParser(
-		description='Hosts checker for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+        description='Hosts checker for py-i2phosts.',
+        epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
-		help='set loglevel to debug and write messages to stdout'),
+        help='set loglevel to debug and write messages to stdout'),
 parser.add_argument('-v', '--verbose', action='store_true',
-		help='set loglevel to info and write messages to stdout'),
+        help='set loglevel to info and write messages to stdout'),
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/checker.conf', dest='config_file',
-		help='config file to use')
+        help='config file to use')
 args = parser.parse_args()
 
 # read config
 spec = '''
-	log_file = string(default='/var/log/py-i2phosts/master.log')
-	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
-	lookup_retries = integer(1, 20, default=2)
-	'''
+    log_file = string(default='/var/log/py-i2phosts/master.log')
+    log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+    lookup_retries = integer(1, 20, default=2)
+    '''
 spec = spec.split('\n')
 config = configobj.ConfigObj(args.config_file, configspec=spec)
 if 'include' in config:
-	config_included = configobj.ConfigObj(config['include'])
-	config.merge(config_included)
+    config_included = configobj.ConfigObj(config['include'])
+    config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+    DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
+    DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
@@ -50,22 +50,22 @@ validate_config(config)
 
 # configure logger
 if args.debug == True:
-	log_level = 'debug'
-	log_file = None
+    log_level = 'debug'
+    log_file = None
 elif args.verbose == True:
-	log_level = 'info'
-	log_file = None
+    log_level = 'info'
+    log_file = None
 else:
-	log_level = config['log_level']
-	log_file = config['log_file']
+    log_level = config['log_level']
+    log_file = config['log_file']
 log = get_logger(filename=log_file, log_level=log_level)
 
 # determine BOB interface address
 if 'bob_addr' in config:
-	bob_addr = config['bob_addr']
+    bob_addr = config['bob_addr']
 else:
-	log.warning('BOB address isn\'t specified in config, falling back to localhost')
-	bob_addr = '127.0.0.1:2827'
+    log.warning('BOB address isn\'t specified in config, falling back to localhost')
+    bob_addr = '127.0.0.1:2827'
 
 # split bob_addr to ip and port
 bob_ip, bob_port = bob_addr.split(':')
@@ -73,37 +73,37 @@ bob_ip, bob_port = bob_addr.split(':')
 # connect to BOB
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-	s.connect((bob_ip, int(bob_port)))
-	# just receive BOB's greeting
-	time.sleep(1)
-	data = s.recv(512)
-	# make file object
-	f = s.makefile('r')
+    s.connect((bob_ip, int(bob_port)))
+    # just receive BOB's greeting
+    time.sleep(1)
+    data = s.recv(512)
+    # make file object
+    f = s.makefile('r')
 except socket.error, e:
-	log.error('failed to connect to BOB: %s', e)
-	sys.exit(1)
+    log.error('failed to connect to BOB: %s', e)
+    sys.exit(1)
 
 all_hosts = i2phost.objects.all().order_by('-activated', '-last_seen')
 log.info('starting check')
 for host in all_hosts:
-	log.debug('%s: testing...', host.name)
-	# get b32 address from full dest key
-	dest = host.b64hash
-	b32dest = get_b32(dest)
-	# do name lookup query with b32 address
-	# it success only if host is alive
-	for i in range(config['lookup_retries']):
-		s.send('lookup %s\n' % b32dest)
-		data = f.readline().rstrip('\n')
-		if data == 'ERROR Address Not found.':
-			log.debug('%s: unable to resolve, try: %s', host.name, i)
-		elif data == 'OK ' + host.b64hash:
-			log.info('alive host: %s', host.name)
-			# update lastseen timestamp
-			host.last_seen = datetime.datetime.utcnow()
-			host.save()
-			break
-		else:
-			log.warning('unexpected reply: %s', data)
+    log.debug('%s: testing...', host.name)
+    # get b32 address from full dest key
+    dest = host.b64hash
+    b32dest = get_b32(dest)
+    # do name lookup query with b32 address
+    # it success only if host is alive
+    for i in range(config['lookup_retries']):
+        s.send('lookup %s\n' % b32dest)
+        data = f.readline().rstrip('\n')
+        if data == 'ERROR Address Not found.':
+            log.debug('%s: unable to resolve, try: %s', host.name, i)
+        elif data == 'OK ' + host.b64hash:
+            log.info('alive host: %s', host.name)
+            # update lastseen timestamp
+            host.last_seen = datetime.datetime.utcnow()
+            host.save()
+            break
+        else:
+            log.warning('unexpected reply: %s', data)
 s.close()
 log.info('check finished')

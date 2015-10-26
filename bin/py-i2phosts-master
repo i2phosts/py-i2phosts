@@ -13,119 +13,125 @@ import threading
 import daemon
 # workaround for python-daemon >= 1.6
 try:
+<<<<<<< HEAD
 	import daemon.pidlockfile as pidfile
 except ImportError:
 	import daemon.pidfile as pidfile
+=======
+    import daemon.pidlockfile as pidfile
+except ImportError:
+    import daemon.pidfile as pidfile
+>>>>>>> 923b94f... Convert tabs to spaces
 
 class Thread(threading.Thread):
 
-	def __init__(self):
-		threading.Thread.__init__(self)
-		self.setDaemon(True)
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.setDaemon(True)
 
 
 class FetcherThread(Thread):
-	""" Run py-i2phosts-fetcher periodically """
+    """ Run py-i2phosts-fetcher periodically """
 
-	def run(self):
-		while True:
-			run_prog('py-i2phosts-fetcher')
-			time.sleep(float(config['fetch_interval']))
+    def run(self):
+        while True:
+            run_prog('py-i2phosts-fetcher')
+            time.sleep(float(config['fetch_interval']))
 
 
 class CheckerThread(Thread):
-	""" Run py-i2phosts-checker, py-i2phosts-maint, py-i2phosts-builder periodically """
+    """ Run py-i2phosts-checker, py-i2phosts-maint, py-i2phosts-builder periodically """
 
-	def run(self):
-		while True:
-			run_prog('py-i2phosts-checker')
-			run_prog('py-i2phosts-maint')
-			run_prog('py-i2phosts-builder')
-			time.sleep(float(config['check_interval']))
+    def run(self):
+        while True:
+            run_prog('py-i2phosts-checker')
+            run_prog('py-i2phosts-maint')
+            run_prog('py-i2phosts-builder')
+            time.sleep(float(config['check_interval']))
 
 
 def run_prog(prog):
-	try:
-		log.info('starting: %s', prog)
-		sp_args = [prog]
-		if args.debug or args.verbose:
-			sp_args.append('-d')
-		p = subprocess.Popen(sp_args, shell=False)
-	except OSError, e:
-		log.error('failed to exec %s: %s', prog, e)
-		if e.errno == errno.ENOENT:
-			log.error('   maybe it isn\'t in PATH?')
-	else:
-		p.wait()
-		log.info('finished: %s', prog)
+    try:
+        log.info('starting: %s', prog)
+        sp_args = [prog]
+        if args.debug or args.verbose:
+            sp_args.append('-d')
+        p = subprocess.Popen(sp_args, shell=False)
+    except OSError, e:
+        log.error('failed to exec %s: %s', prog, e)
+        if e.errno == errno.ENOENT:
+            log.error('   maybe it isn\'t in PATH?')
+    else:
+        p.wait()
+        log.info('finished: %s', prog)
 
 
 def main():
-	def run_fetcher():
-		fetcher = FetcherThread()
-		fetcher.start()
-		return fetcher
+    def run_fetcher():
+        fetcher = FetcherThread()
+        fetcher.start()
+        return fetcher
 
-	def run_checker():
-		checker = CheckerThread()
-		checker.start()
-		return checker
+    def run_checker():
+        checker = CheckerThread()
+        checker.start()
+        return checker
 
-	# if we're just started, wait while fetcher get some new hosts
-	fetcher = run_fetcher()
-	log.debug('just started, delaying checker run for 300 secs')
-	fetcher.join(300) # wait for 5 mins
-	# start checker and other
-	checker = run_checker()
+    # if we're just started, wait while fetcher get some new hosts
+    fetcher = run_fetcher()
+    log.debug('just started, delaying checker run for 300 secs')
+    fetcher.join(300) # wait for 5 mins
+    # start checker and other
+    checker = run_checker()
 
-	while True:
-		log.debug('checking fetcher and checker threads status')
-		if fetcher.isAlive() == False:
-			log.warning('fetcher thread is dead, respawning...')
-			fetcher = run_fetcher()
-		else:
-			log.debug('fetcher thread: alive')
-		if checker.isAlive() == False:
-			log.warning('checker thread is dead, respawning...')
-			checker = run_checker()
-		else:
-			log.debug('checker thread: alive')
-		# do check every 30 mins
-		time.sleep(1800)
+    while True:
+        log.debug('checking fetcher and checker threads status')
+        if fetcher.isAlive() == False:
+            log.warning('fetcher thread is dead, respawning...')
+            fetcher = run_fetcher()
+        else:
+            log.debug('fetcher thread: alive')
+        if checker.isAlive() == False:
+            log.warning('checker thread is dead, respawning...')
+            checker = run_checker()
+        else:
+            log.debug('checker thread: alive')
+        # do check every 30 mins
+        time.sleep(1800)
 
 # parse command line options
 parser = argparse.ArgumentParser(
-		description='Master daemon for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+        description='Master daemon for py-i2phosts.',
+        epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
-		help='run in debug mode without detaching from terminal'),
+        help='run in debug mode without detaching from terminal'),
 parser.add_argument('-v', '--verbose', action='store_true',
-		help='run in verbose mode without detaching from terminal'),
+        help='run in verbose mode without detaching from terminal'),
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/master.conf', dest='config_file',
-		help='config file to use')
+        help='config file to use')
 args = parser.parse_args()
 
 # read and validate config
 spec = '''
-	log_file = string(default='/var/log/py-i2phosts/master.log')
-	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
-	pid_file = string(default='/var/run/py-i2phosts/master.pid')
-	runas = string(default='_pyi2phosts')
-	check_interval = integer(default=43200)
-	fetch_interval = integer(default=1800)
-	'''
+    log_file = string(default='/var/log/py-i2phosts/master.log')
+    log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+    pid_file = string(default='/var/run/py-i2phosts/master.pid')
+    runas = string(default='_pyi2phosts')
+    check_interval = integer(default=43200)
+    fetch_interval = integer(default=1800)
+    '''
 spec = spec.split('\n')
 config = configobj.ConfigObj(args.config_file, configspec=spec)
 if 'include' in config:
-	config_included = configobj.ConfigObj(config['include'])
-	config.merge(config_included)
+    config_included = configobj.ConfigObj(config['include'])
+    config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+    DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
+    DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.lib.utils import get_logger
@@ -136,32 +142,32 @@ validate_config(config)
 
 # configure logger
 if args.debug == True:
-	log_level = 'debug'
-	log_file = None
+    log_level = 'debug'
+    log_file = None
 elif args.verbose == True:
-	log_level = 'info'
-	log_file = None
+    log_level = 'info'
+    log_file = None
 else:
-	log_level = config['log_level']
-	log_file = config['log_file']
+    log_level = config['log_level']
+    log_file = config['log_file']
 
 if not args.debug and not args.verbose:
-	# get pid object for daemon
-	pid = pidfile.TimeoutPIDLockFile(config['pid_file'], 10)
-	# create daemon context
-	d = daemon.DaemonContext(pidfile=pid, umask=077)
-	# write stderr to logfile # FIXME: and how we will deal with log rotation?
-	logfile = open(config['log_file'], 'a')
-	d.stderr = logfile
-	d.stdout = logfile
-	# drop privileges when started as root
-	if os.getuid() == 0:
-		runas = config['runas']
-		pw_entry = pwd.getpwnam(runas)
-		d.uid = pw_entry[2]
-		d.gid = pw_entry[3]
-	os.chown(config['log_file'], d.uid, d.gid)
-	d.open() # become daemon
+    # get pid object for daemon
+    pid = pidfile.TimeoutPIDLockFile(config['pid_file'], 10)
+    # create daemon context
+    d = daemon.DaemonContext(pidfile=pid, umask=077)
+    # write stderr to logfile # FIXME: and how we will deal with log rotation?
+    logfile = open(config['log_file'], 'a')
+    d.stderr = logfile
+    d.stdout = logfile
+    # drop privileges when started as root
+    if os.getuid() == 0:
+        runas = config['runas']
+        pw_entry = pwd.getpwnam(runas)
+        d.uid = pw_entry[2]
+        d.gid = pw_entry[3]
+    os.chown(config['log_file'], d.uid, d.gid)
+    d.open() # become daemon
 log = get_logger(filename=log_file, log_level=log_level)
 log.info('started')
 main()

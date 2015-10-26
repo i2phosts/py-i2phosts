@@ -10,37 +10,37 @@ import configobj
 
 # parse command line options
 parser = argparse.ArgumentParser(
-		description='Hosts maintainer for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+        description='Hosts maintainer for py-i2phosts.',
+        epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-d', '--debug', action='store_true',
-		help='write debug messages to stdout')
+        help='write debug messages to stdout')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/maintainer.conf', dest='config_file',
-		help='config file to use')
+        help='config file to use')
 args = parser.parse_args()
 
 # read config
 spec = '''
-	log_file = string(default='/var/log/py-i2phosts/maintainer.log')
-	log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
-	external_inactive_max = integer(default=365)
-	internal_inactive_max = integer(default=14)
-	external_expires = integer(default=30)
-	internal_expires = integer(default=30)
-	activate_min_delay = integer(default=3)
-	keep_expired = integer(default=730)
-	'''
+    log_file = string(default='/var/log/py-i2phosts/maintainer.log')
+    log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
+    external_inactive_max = integer(default=365)
+    internal_inactive_max = integer(default=14)
+    external_expires = integer(default=30)
+    internal_expires = integer(default=30)
+    activate_min_delay = integer(default=3)
+    keep_expired = integer(default=730)
+    '''
 spec = spec.split('\n')
 config = configobj.ConfigObj(args.config_file, configspec=spec)
 if 'include' in config:
-	config_included = configobj.ConfigObj(config['include'])
-	config.merge(config_included)
+    config_included = configobj.ConfigObj(config['include'])
+    config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+    DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
+    DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
@@ -52,68 +52,68 @@ validate_config(config)
 
 # configure logger
 if args.debug == True:
-	log_level = 'debug'
-	log_file = None
+    log_level = 'debug'
+    log_file = None
 else:
-	log_level = config['log_level']
-	log_file = config['log_file']
+    log_level = config['log_level']
+    log_file = config['log_file']
 log = get_logger(filename=log_file, log_level=log_level)
 
 all_hosts = i2phost.objects.all()
 log.info('starting maintenance')
 for host in all_hosts:
-	# how long host was added
-	dl = datetime.datetime.utcnow() - host.date_added
-	if host.last_seen == None:
-		# delete external hosts which we never seen after X days of inactivity
-		if host.external == True:
-			if dl > datetime.timedelta(days=config['external_inactive_max']):
-				log.info('deleting %s, reason: external host, never seen for %s days',
-						host.name, config['external_inactive_max'])
-				host.delete()
-				continue
-		# delete hosts added by us and never seen after X days of inactivity
-		else:
-			if dl > datetime.timedelta(days=config['internal_inactive_max']):
-				log.info('deleting %s, reason: internal host, never seen for %s days',
-						host.name, config['internal_inactive_max'])
-				host.delete()
-				continue
-	else:
-		# configure registration period for hosts
-		if host.external == True:
-			timedelta = datetime.timedelta(days=config['external_expires'])
-		else:
-			timedelta = datetime.timedelta(days=config['internal_expires'])
-		# get current host expiration date from database
-		if host.expires == None:
-			# workaround for situation when we updating expires first time
-			expires_current = datetime.datetime.utcnow().date()
-		else:
-			expires_current = host.expires
-		# calculate new expiration date
-		expires_new = host.last_seen + timedelta
-		expires_new = expires_new.date()
-		# update expiration date only if changed
-		if expires_new > expires_current:
-			log.debug('updating expires for %s', host.name)
-			host.expires = expires_new
-		# deactivate if expired
-		min_dl = datetime.timedelta(days=config['activate_min_delay'])
-		if host.expires < datetime.datetime.utcnow().date():
-			if host.activated == True:
-				log.info('deactivating %s, reason: expired', host.name)
-				host.activated = False
-		# if not expired and added more than X days ago and approved then activate
-		elif dl > min_dl and host.activated == False and host.approved == True:
-			log.info('activating %s, reason: host up and added more than %s days ago',
-					host.name, config['activate_min_delay'])
-			host.activated = True
-		# if expired X days ago then delete
-		dl_e = datetime.datetime.utcnow().date() - host.expires
-		if dl_e > datetime.timedelta(days=config['keep_expired']):
-			log.info('deleting %s, reason: expired %s days ago',
-					host.name, config['keep_expired'])
-			host.delete()
-			continue
-		host.save()
+    # how long host was added
+    dl = datetime.datetime.utcnow() - host.date_added
+    if host.last_seen == None:
+        # delete external hosts which we never seen after X days of inactivity
+        if host.external == True:
+            if dl > datetime.timedelta(days=config['external_inactive_max']):
+                log.info('deleting %s, reason: external host, never seen for %s days',
+                        host.name, config['external_inactive_max'])
+                host.delete()
+                continue
+        # delete hosts added by us and never seen after X days of inactivity
+        else:
+            if dl > datetime.timedelta(days=config['internal_inactive_max']):
+                log.info('deleting %s, reason: internal host, never seen for %s days',
+                        host.name, config['internal_inactive_max'])
+                host.delete()
+                continue
+    else:
+        # configure registration period for hosts
+        if host.external == True:
+            timedelta = datetime.timedelta(days=config['external_expires'])
+        else:
+            timedelta = datetime.timedelta(days=config['internal_expires'])
+        # get current host expiration date from database
+        if host.expires == None:
+            # workaround for situation when we updating expires first time
+            expires_current = datetime.datetime.utcnow().date()
+        else:
+            expires_current = host.expires
+        # calculate new expiration date
+        expires_new = host.last_seen + timedelta
+        expires_new = expires_new.date()
+        # update expiration date only if changed
+        if expires_new > expires_current:
+            log.debug('updating expires for %s', host.name)
+            host.expires = expires_new
+        # deactivate if expired
+        min_dl = datetime.timedelta(days=config['activate_min_delay'])
+        if host.expires < datetime.datetime.utcnow().date():
+            if host.activated == True:
+                log.info('deactivating %s, reason: expired', host.name)
+                host.activated = False
+        # if not expired and added more than X days ago and approved then activate
+        elif dl > min_dl and host.activated == False and host.approved == True:
+            log.info('activating %s, reason: host up and added more than %s days ago',
+                    host.name, config['activate_min_delay'])
+            host.activated = True
+        # if expired X days ago then delete
+        dl_e = datetime.datetime.utcnow().date() - host.expires
+        if dl_e > datetime.timedelta(days=config['keep_expired']):
+            log.info('deleting %s, reason: expired %s days ago',
+                    host.name, config['keep_expired'])
+            host.delete()
+            continue
+        host.save()

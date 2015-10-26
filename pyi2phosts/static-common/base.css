@@ -1,133 +1,133 @@
 html, body {
-	font-size: 12pt;
-	background: #E6E6D1;
-	color: #000000;
+    font-size: 12pt;
+    background: #E6E6D1;
+    color: #000000;
 }
 
 input, textarea {
-	background-color: #AEB08D;
-	color: #000;
-	border: 1px solid #000;
+    background-color: #AEB08D;
+    color: #000;
+    border: 1px solid #000;
 }
 
 label {
-	width: 8em;
-	float: top;
-	text-align: left;
-	margin-right: 1em;
-	display: block;
+    width: 8em;
+    float: top;
+    text-align: left;
+    margin-right: 1em;
+    display: block;
 }
 
 a {
-	background: inherit;
-	color: #6E735E;
-	text-decoration: none;
+    background: inherit;
+    color: #6E735E;
+    text-decoration: none;
 }
 a:visited {
-	background: inherit;
-	color: #6E735E;
-	text-decoration: none;
+    background: inherit;
+    color: #6E735E;
+    text-decoration: none;
 }
 a:hover {
-	color: #000;
-	background: inherit;
+    color: #000;
+    background: inherit;
 }
 
 table {
-	border-collapse: collapse;
-	width: 90%;
-	margin: 10px 0px 10px 0px;
+    border-collapse: collapse;
+    width: 90%;
+    margin: 10px 0px 10px 0px;
 }
 
 tr:first-child {
-	border: 1px solid #CCCCCC;
-	font-weight: bold;
+    border: 1px solid #CCCCCC;
+    font-weight: bold;
 }
 
 tr {
-	border: 1px dashed #CCCCCC;
+    border: 1px dashed #CCCCCC;
 }
 
 td {
-	max-width: 220px;
+    max-width: 220px;
 }
 
 div.menu {
-	float: left;
-	margin: 0px 20px 20px 0px;
-	padding: 10px 20px 20px 0px;
-	border-left: solid 1px #CCCCCC;
-	text-align: left;
-	color: black;
-	font-size: 8pt;
-	clear: left; /* fixes a bug in Opera */
-	width: 160px;
+    float: left;
+    margin: 0px 20px 20px 0px;
+    padding: 10px 20px 20px 0px;
+    border-left: solid 1px #CCCCCC;
+    text-align: left;
+    color: black;
+    font-size: 8pt;
+    clear: left; /* fixes a bug in Opera */
+    width: 160px;
 }
 
 .menu li {
-	margin-left: .5em;
-	margin-top: .4em;
-	padding-left: .5em;
-	line-height: 1.2;
-	list-style-type: none;
-	list-style-position: outside;
+    margin-left: .5em;
+    margin-top: .4em;
+    padding-left: .5em;
+    line-height: 1.2;
+    list-style-type: none;
+    list-style-position: outside;
 }
 
 .menu ol, ul {
-	padding-left: 0em;
-	margin-top: 0em;
-	padding-top: 0em;
+    padding-left: 0em;
+    margin-top: 0em;
+    padding-top: 0em;
 }
 
 .errorlist {
-	color: red;
-	padding-left: 5em;
+    color: red;
+    padding-left: 5em;
 }
 
 div.main {
-	margin: 0px 0px 0px 0px;
-	padding: 22px 60px 20px 220px;
-	text-align: justify;
-	color: #000011;
+    margin: 0px 0px 0px 0px;
+    padding: 22px 60px 20px 220px;
+    text-align: justify;
+    color: #000011;
 }
 
 div.main li {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 
 div.footer {
-	font-size: 8pt;
-	text-align: center;
-	padding: 8px 0 0 0;
+    font-size: 8pt;
+    text-align: center;
+    padding: 8px 0 0 0;
 }
 
 div.search_host {
-	position:absolute;
-	right: 15px;
+    position:absolute;
+    right: 15px;
 }
 
 div.search_host .input input {
-	font-size: 10px;
-	color: #6E735E;
-	width: 200px;
+    font-size: 10px;
+    color: #6E735E;
+    width: 200px;
 }
 
 .pager {
-	padding-top: 20px;
-	padding-left: 100px;
-	font-size: 8pt;
+    padding-top: 20px;
+    padding-left: 100px;
+    font-size: 8pt;
 }
 .pager .page a {
-	border: 1px solid #bbbbbb;
-	margin-left: 1px;
-	margin-right: 1px;
-	padding: 0px 5px 0px 5px;
-	text-decoration: none;
-	color: #000000;
+    border: 1px solid #bbbbbb;
+    margin-left: 1px;
+    margin-right: 1px;
+    padding: 0px 5px 0px 5px;
+    text-decoration: none;
+    color: #000000;
 }
 .pager .current {
-	border: 2px solid #444444;
-	margin-left: 2px;
-	margin-right: 2px;
-	padding: 0px 5px 0px 5px;
+    border: 2px solid #444444;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 0px 5px 0px 5px;
 }

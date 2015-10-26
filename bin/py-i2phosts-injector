@@ -10,34 +10,34 @@ from django.core.exceptions import ValidationError
 
 # parse command line options
 parser = argparse.ArgumentParser(
-		description='Hosts injector for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+        description='Hosts injector for py-i2phosts.',
+        epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/injector.conf', dest='config_file',
-		help='config file to use')
+        help='config file to use')
 parser.add_argument('-f', '--file', dest='hostsfile',
-		help='hosts.txt for parsing')
+        help='hosts.txt for parsing')
 parser.add_argument('-d', '--description', default='Auto-added from external hosts.txt',
-		help='provide custom description message')
+        help='provide custom description message')
 parser.add_argument('-a', '--approve', action='store_true',
-		help='add hosts as approved')
+        help='add hosts as approved')
 parser.add_argument('-s', '--supress', action='store_true',
-		help='supress warnings about already existed hostnames'),
+        help='supress warnings about already existed hostnames'),
 parser.add_argument('-q', '--quiet', action='store_true',
-		help='be completely quiet, print only errors')
+        help='be completely quiet, print only errors')
 args = parser.parse_args()
 
 # read config
 config = configobj.ConfigObj(args.config_file)
 if 'include' in config:
-	config_included = configobj.ConfigObj(config['include'])
-	config.merge(config_included)
+    config_included = configobj.ConfigObj(config['include'])
+    config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+    DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
+    DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
@@ -46,57 +46,57 @@ from pyi2phosts.lib.validation import validate_b64hash
 
 # determine approve hosts or not
 if args.approve or config.as_bool('approve'):
-	approved = True
+    approved = True
 else:
-	approved = False
+    approved = False
 
 # turn on output supressing if quiet
 if args.quiet:
-	args.supress = True
+    args.supress = True
 
 # determine what hosts.txt file we should parse
 if args.hostsfile:
-	hostsfile = args.hostsfile
+    hostsfile = args.hostsfile
 else:
-	env = os.environ
-	if 'HOME' in env:
-		hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
-	else:
-		sys.stderr.write('unable to determine hosts file for parsing\n')
-		sys.exit(1)
+    env = os.environ
+    if 'HOME' in env:
+        hostsfile = os.environ['HOME'] + '/.i2p/hosts.txt'
+    else:
+        sys.stderr.write('unable to determine hosts file for parsing\n')
+        sys.exit(1)
 
 f = open(args.hostsfile, 'r')
 for line in f:
-	# ignore comments and empty lines
-	if line.startswith('#') or line.isspace():
-		continue
-	if line.find('=') == -1:
-		sys.stdout.write('Invalid line: %s\n' % line)
-		continue
-	# strip trailing '\n'
-	line = line.rstrip('\n')
-	entry = line.split('=', 1)
-	try:
-		hostname = validate_hostname(entry[0])
-		base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
-	except ValidationError, e:
-		sys.stdout.write('validation error: %s: %s\n\n' % (e, line))
-	else:
-		# Check for already existed hosts in database to avoid unneeded INSERTs
-		# beacuse they will fail anyway.
-		try:
-			h = i2phost.objects.get(name=hostname)
-		except i2phost.DoesNotExist:
-			if not args.quiet:
-				sys.stdout.write('Adding %s\n' % hostname)
-			host = i2phost(name=hostname, b64hash=base64,
-					description=args.description,
-					date_added=datetime.datetime.utcnow(),
-					activated=False, external=True, approved=approved)
-			host.save()
-		else:
-			if not args.supress:
-				sys.stdout.write('Host %s already exists\n' % hostname)
-			if h.b64hash != base64:
-				sys.stdout.write('Key conflict for host: %s\n' % hostname)
+    # ignore comments and empty lines
+    if line.startswith('#') or line.isspace():
+        continue
+    if line.find('=') == -1:
+        sys.stdout.write('Invalid line: %s\n' % line)
+        continue
+    # strip trailing '\n'
+    line = line.rstrip('\n')
+    entry = line.split('=', 1)
+    try:
+        hostname = validate_hostname(entry[0])
+        base64 = validate_b64hash(entry[1], check_uniq=False) # don't require uniqueness
+    except ValidationError, e:
+        sys.stdout.write('validation error: %s: %s\n\n' % (e, line))
+    else:
+        # Check for already existed hosts in database to avoid unneeded INSERTs
+        # beacuse they will fail anyway.
+        try:
+            h = i2phost.objects.get(name=hostname)
+        except i2phost.DoesNotExist:
+            if not args.quiet:
+                sys.stdout.write('Adding %s\n' % hostname)
+            host = i2phost(name=hostname, b64hash=base64,
+                    description=args.description,
+                    date_added=datetime.datetime.utcnow(),
+                    activated=False, external=True, approved=approved)
+            host.save()
+        else:
+            if not args.supress:
+                sys.stdout.write('Host %s already exists\n' % hostname)
+            if h.b64hash != base64:
+                sys.stdout.write('Key conflict for host: %s\n' % hostname)
 f.close()

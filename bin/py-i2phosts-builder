@@ -7,32 +7,32 @@ import configobj
 
 # parse command line options
 parser = argparse.ArgumentParser(
-		description='Hosts builder for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+        description='Hosts builder for py-i2phosts.',
+        epilog='Report bugs to http://zzz.i2p/topics/733')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/builder.conf', dest='config_file',
-		help='config file to use')
+        help='config file to use')
 parser.add_argument('-f', '--file',
-		help='write hosts into specified file')
+        help='write hosts into specified file')
 parser.add_argument('-d', '--debug', action='store_true',
-		help='write debug messages to stdout')
+        help='write debug messages to stdout')
 args = parser.parse_args()
 
 # read config
 spec = '''
-	hostsfile = string(default=None)
-	'''
+    hostsfile = string(default=None)
+    '''
 spec = spec.split('\n')
 config = configobj.ConfigObj(args.config_file, configspec=spec, file_error=True)
 if 'include' in config:
-	config_included = configobj.ConfigObj(config['include'])
-	config.merge(config_included)
+    config_included = configobj.ConfigObj(config['include'])
+    config.merge(config_included)
 
 # django setup
 DJANGO_SETTINGS_MODULE = 'pyi2phosts.settings'
 if 'DJANGO_PROJECT_PATH' in config:
-	DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
+    DJANGO_PROJECT_PATH = config['DJANGO_PROJECT_PATH']
 else:
-	DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
+    DJANGO_PROJECT_PATH = os.path.dirname(sys.argv[0]) + '/..'
 sys.path.insert(1, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 from pyi2phosts.postkey.models import i2phost
@@ -43,12 +43,12 @@ validate_config(config)
 
 # result hosts.txt
 if args.file:
-	hostsfile = args.file
+    hostsfile = args.file
 elif config['hostsfile'] != None:
-	hostsfile = config['hostsfile']
+    hostsfile = config['hostsfile']
 else:
-	sys.stderr.write('Please specify "-f" or define "hostsfile" in config\n')
-	sys.exit(1)
+    sys.stderr.write('Please specify "-f" or define "hostsfile" in config\n')
+    sys.exit(1)
 
 f = open(hostsfile, 'w')
 # get activated hosts
@@ -57,5 +57,5 @@ qs = i2phost.objects.filter(activated=True)
 l = qs.values('name', 'b64hash')
 # write final hosts.txt-format file
 for entry in l:
-	f.write(entry['name'] + '=' + entry['b64hash'] + '\n')
+    f.write(entry['name'] + '=' + entry['b64hash'] + '\n')
 f.close()
