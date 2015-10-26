@@ -128,14 +128,17 @@ def subdomain(request):
                 log.debug('trying to open %s', url)
                 resp = opener.open(url, timeout=60)
             except urllib2.URLError, e:
-                if hasattr(e, 'reason'):
-                    log.warning('%s: failed to reach server, reason: %s', request.session['topdomain'], e.reason)
-                elif hasattr(e, 'code'):
+                error = ''
+                if hasattr(e, 'code'):
+                    error = str(e.code)
                     log.warning('%s can\'t finish the request, error code: %s',
                             request.session['topdomain'], e.code)
+                if hasattr(e, 'reason'):
+                    error += ' - ' + str(e.reason)
+                    log.warning('%s: failed to reach server, reason: %s', request.session['topdomain'], e.reason)
                 return render_to_response('subdomain_http_verify_failure.html', {
                     'title': settings.SITE_NAME,
-                    'code': e.code,
+                    'error': error,
                     }, context_instance=RequestContext(request))
             else:
                 log.debug('subdomain verification success, saving host')
