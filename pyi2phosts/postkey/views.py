@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from pyi2phosts.postkey.models import i2phost
 from pyi2phosts.lib.utils import get_logger
+from pyi2phosts.lib.utils import get_b32
 from pyi2phosts.lib.validation import validate_hostname
 from pyi2phosts.lib.validation import validate_b64hash
 
@@ -119,7 +120,14 @@ def subdomain(request):
             proxy_handler = urllib2.ProxyHandler({'http': settings.EEPROXY_URL})
             opener = urllib2.build_opener(proxy_handler)
             if 'topdomain' in request.session and 'v_filename' in request.session:
-                url = 'http://' + request.session['topdomain'] + '/' + request.session['v_filename']
+                # get base64 for 2nd-level domain
+                try:
+                    h = i2phost.objects.get(name=request.session['topdomain'])
+                except i2phost.DoesNotExist:
+                    log.warning('refusing to verify subdomain for inexistent 2nd-level domain: %s', request.session['topdomain'])
+                    return redirect('/')
+                topdomain_b32 = get_b32(h.b64hash)
+                url = 'http://' + topdomain_b32 + '/' + request.session['v_filename']
             else:
                 log.warning('trying to call subdomain validation without a session')
                 return redirect('/')
