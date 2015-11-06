@@ -13,15 +13,9 @@ import threading
 import daemon
 # workaround for python-daemon >= 1.6
 try:
-<<<<<<< HEAD
-	import daemon.pidlockfile as pidfile
-except ImportError:
-	import daemon.pidfile as pidfile
-=======
     import daemon.pidlockfile as pidfile
 except ImportError:
     import daemon.pidfile as pidfile
->>>>>>> 923b94f... Convert tabs to spaces
 
 class Thread(threading.Thread):
 
