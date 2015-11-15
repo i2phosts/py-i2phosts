@@ -1,10 +1,10 @@
 from django.db.models import Q
 
 from pyi2phosts.postkey.models import i2phost
-from pyi2phosts.lib.generic import HostsListsView
+from pyi2phosts.lib.generic import LocalObjectList
 
 
-class SearchedHostsListsView(HostsListsView):
+class SearchedHostsListsView(LocalObjectList):
     """ Renders list of hosts matching search request """
 
     def get_queryset(self):
@@ -14,5 +14,5 @@ class SearchedHostsListsView(HostsListsView):
         return queryset
 
     template_name = 'search_results.html'
-    template_object_name = 'host_list'
+    context_object_name = 'host_list'
     paginate_by = 40
