@@ -39,12 +39,12 @@ class i2phostAdmin(admin.ModelAdmin):
 
 
 class PendingAdmin(i2phostAdmin):
-    def queryset(self, request):
-        qs = super(PendingAdmin, self).queryset(request)
+    def get_queryset(self, request):
+        qs = super(PendingAdmin, self).get_queryset(request)
         return qs.filter(approved=False)
 
-    def approve_selected(modeladmin, request, queryset):
-        queryset.update(approved=True)
+    def approve_selected(modeladmin, request, get_queryset):
+        get_queryset.update(approved=True)
 
     list_filter = []
     list_display = ('url', 'name', 'description', 'date_added', 'last_seen', 'expires', 'approved')
