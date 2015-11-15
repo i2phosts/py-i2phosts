@@ -149,7 +149,7 @@ if not args.debug and not args.verbose:
     # get pid object for daemon
     pid = pidfile.TimeoutPIDLockFile(config['pid_file'], 10)
     # create daemon context
-    d = daemon.DaemonContext(pidfile=pid, umask=077)
+    d = daemon.DaemonContext(pidfile=pid, umask=022)
     # write stderr to logfile # FIXME: and how we will deal with log rotation?
     logfile = open(config['log_file'], 'a')
     d.stderr = logfile
