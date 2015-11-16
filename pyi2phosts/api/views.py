@@ -13,4 +13,4 @@ def all(request):
     for host in queryset:
         # pass last_seen to json in unixtime
         json_dict[get_b32(host.b64hash)] = host.last_seen.strftime("%s")
-    return HttpResponse(json.dumps(json_dict), mimetype="application/json")
+    return HttpResponse(json.dumps(json_dict), content_type="application/json")
