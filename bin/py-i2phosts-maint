@@ -91,6 +91,7 @@ for host in all_hosts:
         if host.expires == None:
             # workaround for situation when we updating expires first time
             expires_current = datetime.datetime.utcnow().date()
+            host.expires = expires_current
         else:
             expires_current = host.expires
         # calculate new expiration date
