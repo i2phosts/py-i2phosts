@@ -105,8 +105,8 @@ def validate_b64hash(data, check_uniq=True):
     if length == 516 and re.match(r'[a-zA-Z0-9\-~]+AA$', data) == None:
         raise ValidationError(_('Invalid base64 hash'))
     # check ECDSA validity
-    if length == 524 and re.match(r'[a-zA-Z0-9\-~]+AEAAEAAA==$', data) == None:
-                raise ValidationError(_('Invalid base64 ECDSA hash'))
+    if length == 524 and re.match(r'[a-zA-Z0-9\-~]+AEAA[Ec]AAA==$', data) == None:
+                raise ValidationError(_('Invalid base64 ECDSA or EdDSA hash'))
     if check_uniq == True:
         # Avoid adding non-unique hashes
         qs = i2phost.objects.filter(b64hash=data)
