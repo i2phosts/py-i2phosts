@@ -15,10 +15,10 @@ This file should be accessible via http://{{ topdomain }}/&laquo;filename&raquo;
 </p>
 {% endblocktrans %}
 
-    <form action="/postkey/subdomain/" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="OK" />
-    </form>
+	<form action="/postkey/subdomain/" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="OK" />
+	</form>
 
 {% endblock %}

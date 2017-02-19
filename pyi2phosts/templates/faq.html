@@ -4,24 +4,24 @@
 {% block content %}
 <h3>{% trans "How we are learning about new hosts" %}</h3>
 <ol>
-    <li>{% trans "Pulling from external sources:" %}
-    <ul>
-        {% for source in sources_list %}
-            <li>{{ source.url }}</li>
-        {% endfor %}
-    </ul>
-    </li>
-    <li>{% trans "Adding through our service." %}
-    </li>
+	<li>{% trans "Pulling from external sources:" %}
+	<ul>
+		{% for source in sources_list %}
+			<li>{{ source.url }}</li>
+		{% endfor %}
+	</ul>
+	</li>
+	<li>{% trans "Adding through our service." %}
+	</li>
 </ol>
 
 {% blocktrans %}
 <h3>Publishing requirements</h3>
 To get published a host must meet the following criteria:
 <ul>
-    <li>Must have been added at least 3 days ago</li>
-    <li>Must be up</li>
-    <li>Must be approved by admin</li>
+	<li>Must have been added at least 3 days ago</li>
+	<li>Must be up</li>
+	<li>Must be approved by admin</li>
 </ul>
 <p style="notice">Admin's approval isn't really necessary, it is only needed in
 order to eliminate possible hijacking and mass registration attempts.
