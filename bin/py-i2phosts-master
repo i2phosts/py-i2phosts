@@ -96,7 +96,7 @@ def main():
 # parse command line options
 parser = argparse.ArgumentParser(
         description='Master daemon for py-i2phosts.',
-        epilog='Report bugs to http://zzz.i2p/topics/733')
+        epilog='Report bugs to https://github.com/i2phosts/py-i2phosts/issues')
 parser.add_argument('-d', '--debug', action='store_true',
         help='run in debug mode without detaching from terminal'),
 parser.add_argument('-v', '--verbose', action='store_true',

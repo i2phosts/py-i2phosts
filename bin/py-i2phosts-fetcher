@@ -16,7 +16,7 @@ import socket
 # parse command line options
 parser = argparse.ArgumentParser(
         description='Hosts fetcher for py-i2phosts.',
-        epilog='Report bugs to http://zzz.i2p/topics/733')
+        epilog='Report bugs to https://github.com/i2phosts/py-i2phosts/issues')
 parser.add_argument('-d', '--debug', action='store_true',
         help='write debug messages to stdout instead of log file'),
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fetcher.conf', dest='config_file',

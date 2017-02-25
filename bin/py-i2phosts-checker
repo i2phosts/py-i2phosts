@@ -11,7 +11,7 @@ import time
 # parse command line options
 parser = argparse.ArgumentParser(
         description='Hosts checker for py-i2phosts.',
-        epilog='Report bugs to http://zzz.i2p/topics/733')
+        epilog='Report bugs to https://github.com/i2phosts/py-i2phosts/issues')
 parser.add_argument('-d', '--debug', action='store_true',
         help='set loglevel to debug and write messages to stdout'),
 parser.add_argument('-v', '--verbose', action='store_true',

@@ -34,7 +34,7 @@ def build_list():
 # parse command line options
 parser = argparse.ArgumentParser(
 		description='Description fixer for py-i2phosts.',
-		epilog='Report bugs to http://zzz.i2p/topics/733')
+		epilog='Report bugs to https://github.com/i2phosts/py-i2phosts/issues')
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fixer.conf', dest='config_file',
 		help='config file to use')
 parser.add_argument('-f', '--file', dest='hostsfile',
