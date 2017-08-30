@@ -5,8 +5,8 @@ import random
 import urllib2
 
 from django import forms
-from django.shortcuts import render_to_response
 from django.shortcuts import redirect
+from django.shortcuts import render
 from django.template import RequestContext
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -74,7 +74,7 @@ def save_host(request):
                 description=request.session['description'],
                 date_added=datetime.datetime.utcnow())
         host.save()
-        return redirect('pyi2phosts.postkey.views.success')
+        return redirect('/postkey/success/')
     else:
         log.warning('refusing to save already existed host: %s', request.session['hostname'])
         request.session.flush()
@@ -88,26 +88,24 @@ def addkey(request):
             request.session['b64hash'] = form.cleaned_data['b64hash']
             request.session['description'] = form.cleaned_data['description']
             if form.cleaned_data['name'].count('.') > 1:
-                return redirect('pyi2phosts.postkey.views.subdomain')
+                return redirect('/postkey/subdomain/')
             else:
                 log.debug('submit is valid, saving')
                 s = save_host(request)
                 return s
     else:
         form = AddForm()
-    return render_to_response('postkey.html', {
-        'title': settings.SITE_NAME,
+    return render(request, 'postkey.html', {
         'form': form,
-        }, context_instance=RequestContext(request))
+        })
 
 def success(request):
     if 'hostname' in request.session:
         hn = request.session['hostname']
         request.session.flush()
-        return render_to_response('success_submission.html', {
-            'title': settings.SITE_NAME,
+        return render(request, 'success_submission.html', {
             'hostname': hn,
-            }, context_instance=RequestContext(request))
+            })
     else:
         return redirect('/')
 
@@ -144,10 +142,9 @@ def subdomain(request):
                 if hasattr(e, 'reason'):
                     error += ' - ' + str(e.reason)
                     log.warning('%s: failed to reach server, reason: %s', request.session['topdomain'], e.reason)
-                return render_to_response('subdomain_http_verify_failure.html', {
-                    'title': settings.SITE_NAME,
+                return render(request, 'subdomain_http_verify_failure.html', {
                     'error': error,
-                    }, context_instance=RequestContext(request))
+                    })
             else:
                 log.debug('subdomain verification success, saving host')
                 s = save_host(request)
@@ -164,11 +161,10 @@ def subdomain(request):
         request.session['v_filename'] = v_filename
         request.session['topdomain'] = topdomain
         form = SubdomainVerifyForm({'filename': v_filename})
-        return render_to_response('subdomain_http_verify.html', {
-            'title': settings.SITE_NAME,
+        return render(request, 'subdomain_http_verify.html', {
             'hostname': request.session['hostname'],
             'topdomain': topdomain,
             'form': form,
-            }, context_instance=RequestContext(request))
+            })
 
 log = get_logger(filename=settings.LOG_FILE, log_level=settings.LOG_LEVEL)

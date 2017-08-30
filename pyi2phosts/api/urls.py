@@ -1,6 +1,7 @@
-from django.conf.urls import *
+from django.conf.urls import url
+from . import views
 
-urlpatterns = patterns('pyi2phosts.api.views',
-        url(r'^all/$', 'all'),
-        url(r'^status/$', 'status'),
-)
+urlpatterns = [
+        url(r'^all/$', views.all),
+        url(r'^status/$', views.status),
+]

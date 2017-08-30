@@ -1,7 +1,7 @@
-from django.conf.urls import *
+from django.conf.urls import url
+from . import views
 
-urlpatterns = patterns('pyi2phosts.jump.views',
-        (r'^([^$/]+)', 'jumper'),
-        (r'', 'index'),
-
-)
+urlpatterns = [
+        url(r'^([^$/]+)', views.jumper),
+        url(r'', views.index),
+]

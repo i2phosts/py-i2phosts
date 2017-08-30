@@ -28,16 +28,16 @@
                 <li><a href={% url 'faq' %}>FAQ</a></li>
                 <li><a href={% url 'latest' %}>{% trans "Browse latest hosts" %}</a></li>
                 <li><a href={% url 'browse' %}>{% trans "Browse alive hosts" %}</a></li>
-                <li><a href={% url 'pyi2phosts.postkey.views.addkey' %}>{% trans "Register a domain" %}</a></li>
+                <li><a href={% url 'postkey-views-addkey' %}>{% trans "Register a domain" %}</a></li>
                 <li><a href={% url 'contacts' %}>{% trans "Contacts" %}</a></li>
             </ul>
         </div>
 
-        <form action="/i18n/setlang/" method="post">
+        <form action="{% url 'set_language' %}" method="post">
             {% csrf_token %}
             {% for lang in LANGUAGES %}
-            <input type="radio" value="{{ lang.0 }}" name="language" />
-            <img src="/static/{{ lang.0 }}.png" width="16" height="11" alt="{{ lang.0 }}"/>
+                <input type="radio" value="{{ lang.0 }}" name="language" />
+                <img src="/static/{{ lang.0 }}.png" width="16" height="11" alt="{{ lang.0 }}"/>
             {% endfor %}
             <input type="submit" value="Set" />
         </form>
