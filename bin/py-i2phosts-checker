@@ -103,7 +103,7 @@ for host in all_hosts:
     for i in range(config['lookup_retries']):
         s.send('lookup %s\n' % b32dest)
         data = f.readline().rstrip('\n')
-        if data == 'ERROR Address Not found.':
+        if data == 'ERROR Address Not found.' or data == 'ERROR LeaseSet Not found':
             log.debug('%s: unable to resolve, try: %s', host.name, i)
         elif data == 'OK ' + host.b64hash:
             log.info('alive host: %s', host.name)
