@@ -33,3 +33,11 @@ py-i2phosts-fetcher -c conf-devel/fetcher.conf -d --injector-config conf-devel/i
 py-i2phosts-maint -c conf-devel/maintainer.conf -d
 py-i2phosts-checker -d -c conf-devel/checker.conf
 ```
+
+Updating locale messages
+------------------------
+
+```
+cd pyi2phosts
+django-admin makemessages
+```
