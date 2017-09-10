@@ -1,11 +1,15 @@
 py-i2phosts
-=====
-Overview
------
-**py-i2phosts** is a hostnames registration application for I2P. It is open source (licensed under GPL). Web interface and database structure are made using django web framework. Other scripts are plain python programs, however, they are intergated with django app. Current status: all of base features are implemented and project is ready for production use. Tested with python 2.7 and django 1.8.x. There are working instances of py-i2phosts: http://inr.i2p/ and http://no.i2p/
+===========
+
+Description
+-----------
+**py-i2phosts** is a hostnames registration engine for I2P.
+
+It consists of django app and python scripts. All base features are implemented. Project is ready for production use.
+You can see working instances of py-i2phosts here : http://inr.i2p/ and http://no.i2p/
 
 Features
------
+--------
 * Web interface is made using django (a set of templates included)
     * Hosts submission page with local policy and form with fields Hostname, Destination and Description
     * Page for verification of upper-level domain when addind a subdomain
@@ -33,21 +37,19 @@ Features
 * Install script (using distutils)
 
 Source code
------
+-----------
 Sources available in 2 places:
 * github: https://github.com/i2phosts/py-i2phosts
 * git.repo.i2p: http://git.repo.i2p/w/py-i2phosts.git
 
 Documentation
------
-See the [Documentation page](http://py-i2phosts.i2p/docs/).
+-------------
 
-Discussion area
-----
-Here: http://zzz.i2p/topics/733
+* [How to deploy for development](DEVEL)
+* [Architecture overview](ARCH)
 
 TODO and ideas
------
+--------------
 **Web interface**
 * Add hostname reservation feature into admin interface
 * Improve design
