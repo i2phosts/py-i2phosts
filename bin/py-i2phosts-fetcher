@@ -21,6 +21,7 @@ parser.add_argument('-d', '--debug', action='store_true',
         help='write debug messages to stdout instead of log file'),
 parser.add_argument('-c', '--config', default='/etc/py-i2phosts/fetcher.conf', dest='config_file',
         help='config file to use')
+parser.add_argument('--injector-config', help='custom config file for py-i2phosts-injector')
 args = parser.parse_args()
 
 # read config
@@ -125,6 +126,8 @@ for source in all_sources:
     log.info('%s: adding hosts...', source.name)
     sp_args = ['py-i2phosts-injector', '-s', '-f', tmpfile, '-d',
             'Auto-added from ' + source.name]
+    if args.injector_config:
+        sp_args.extend(['-c', args.injector_config])
     try:
         p = subprocess.Popen(sp_args, shell=False, stdin=None,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
