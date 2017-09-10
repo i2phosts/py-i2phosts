@@ -30,6 +30,11 @@ spec = '''
     log_level = option('debug', 'info', 'warning', 'error', 'critical', default='info')
     '''
 spec = spec.split('\n')
+
+if not os.path.isfile(args.config_file):
+    sys.stderr.write('unable to open config: %s\n' % args.config_file)
+    sys.exit(1)
+
 config = configobj.ConfigObj(args.config_file, configspec=spec, file_error=True)
 if 'include' in config:
     config_included = configobj.ConfigObj(config['include'])

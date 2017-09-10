@@ -2,6 +2,7 @@
 # vim: set fileencoding=utf-8 :
 
 import os
+import os.path
 import sys
 import datetime
 import argparse
@@ -30,7 +31,13 @@ spec = '''
     keep_expired = integer(default=730)
     '''
 spec = spec.split('\n')
+
+if not os.path.isfile(args.config_file):
+    sys.stderr.write('unable to open config: %s\n' % args.config_file)
+    sys.exit(1)
+
 config = configobj.ConfigObj(args.config_file, configspec=spec)
+
 if 'include' in config:
     config_included = configobj.ConfigObj(config['include'])
     config.merge(config_included)

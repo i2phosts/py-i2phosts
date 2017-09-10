@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import os.path
 import sys
 import argparse
 import configobj
@@ -27,6 +28,10 @@ parser.add_argument('-q', '--quiet', action='store_true',
 args = parser.parse_args()
 
 # read config
+if not os.path.isfile(args.config_file):
+    sys.stderr.write('unable to open config: %s\n' % args.config_file)
+    sys.exit(1)
+
 config = configobj.ConfigObj(args.config_file)
 if 'include' in config:
     config_included = configobj.ConfigObj(config['include'])
@@ -67,7 +72,7 @@ else:
         sys.stderr.write('unable to determine hosts file for parsing\n')
         sys.exit(1)
 
-f = open(args.hostsfile, 'r')
+f = open(hostsfile, 'r')
 for line in f:
     # ignore comments and empty lines
     if line.startswith('#') or line.isspace():
