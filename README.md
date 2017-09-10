@@ -45,8 +45,8 @@ Sources available in 2 places:
 Documentation
 -------------
 
-* [How to deploy for development](DEVEL)
-* [Architecture overview](ARCH)
+* [How to deploy for development](DEVEL.md)
+* [Architecture overview](ARCH.md)
 
 TODO and ideas
 --------------
