@@ -144,6 +144,10 @@ EEPROXY_URL = 'http://127.0.0.1:4444'
 
 # include local settings
 try:
+    from local_settings_devel import *
+except ImportError:
+    pass
+try:
     from local_settings import *
 except ImportError:
     pass
