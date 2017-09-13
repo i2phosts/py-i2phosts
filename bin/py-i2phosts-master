@@ -49,8 +49,10 @@ def run_prog(prog):
     try:
         log.info('starting: %s', prog)
         sp_args = [prog]
-        if args.debug or args.verbose:
+        if args.debug:
             sp_args.append('-d')
+        if args.verbose:
+            sp_args.append('-v')
         p = subprocess.Popen(sp_args, shell=False)
     except OSError, e:
         log.error('failed to exec %s: %s', prog, e)
