@@ -1,3 +1,5 @@
+pyi2phosts in docker
+====================
 
 Provided [docker-compose.yml] file does not creates i2pd router CT.
 Assume you already have i2pd runing with all needed keys and server tunnels configured.

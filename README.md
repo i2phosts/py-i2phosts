@@ -18,16 +18,18 @@ Sources available in 2 places:
 * github: https://github.com/i2phosts/py-i2phosts
 * git.repo.i2p: http://git.repo.i2p/w/py-i2phosts.git
 
-Installing
-----------
+Running in production
+---------------------
 
 The recommended way is to use docker to use py-i2phosts in production.
-See [DOCKER](DOCKER.md) 
+
+* Running in [DOCKER](DOCKER.md)
+* Customizing templates [TEMPLATES](TEMPLATES.md)
 
 Development
--------------
+-----------
 
-* [How to deploy for development](DEVEL.md)
+* [Development deploy using virtualenv](VENV.md)
 * [Architecture overview](ARCH.md)
 
 TODO and ideas
