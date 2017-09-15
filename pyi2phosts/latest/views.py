@@ -1,9 +1,9 @@
 import datetime
 
 from django.conf import settings
+from django.views.generic.list import ListView
 
 from pyi2phosts.postkey.models import i2phost
-from pyi2phosts.lib.generic import LocalObjectList
 
 def get_latest():
     now_date = datetime.datetime.utcnow()
@@ -12,17 +12,8 @@ def get_latest():
             date_added__range=(start_date, now_date)).order_by("-date_added")[:settings.LATEST_HOSTS_COUNT]
     return qs
 
-class LatestHostsListsView(LocalObjectList):
+class LatestHostsListsView(ListView):
     """ Renders list of latest active hosts added """
-
-    def get_context_data(self, **kwargs):
-        context = super(LatestHostsListsView, self).get_context_data(**kwargs)
-        context.update({
-            'title': settings.SITE_NAME,
-            'day_count': settings.LATEST_DAY_COUNT,
-            'hosts_count': settings.LATEST_HOSTS_COUNT
-        })
-        return context
 
     queryset = get_latest()
     template_name = 'latest.html'

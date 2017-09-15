@@ -5,15 +5,16 @@ from django.contrib import admin
 
 from django.conf import settings
 
+from django.views.generic.base import TemplateView
+
 from pyi2phosts.lib.rss import AliveHostsFeed
-from pyi2phosts.lib.generic import LocalTemplateView
 from pyi2phosts.lib.generic import FaqView
 from pyi2phosts.lib.generic import HostsListsView
 
 
 urlpatterns = [
-        url(r'^$', LocalTemplateView.as_view(template_name='index.html'), name='index'),
-        url(r'^contacts/$',  LocalTemplateView.as_view(template_name='contacts.html'), name='contacts'),
+        url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+        url(r'^contacts/$',  TemplateView.as_view(template_name='contacts.html'), name='contacts'),
         url(r'^faq/$', FaqView.as_view(), name='faq'),
         url(r'^browse/$', HostsListsView.as_view(), name='browse'),
         url(r'^browse/rss/$', AliveHostsFeed(), name='browse-rss'),
