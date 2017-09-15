@@ -41,3 +41,10 @@ Updating locale messages
 cd pyi2phosts
 django-admin makemessages
 ```
+
+Create migrations after updating models
+---------------------------------------
+
+```
+python ./manage.py makemigrations
+```
