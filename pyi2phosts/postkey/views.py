@@ -76,7 +76,7 @@ def save_host(request):
         host.save()
         return redirect('/postkey/success/')
     else:
-        log.warning('refusing to save already existed host: %s', request.session['hostname'])
+        log.warning('refusing to save already existing host: %s', request.session['hostname'])
         request.session.flush()
         return redirect('/')
 
