@@ -4,3 +4,4 @@ configobj
 python-daemon
 simplejson
 psycopg2
+markdown

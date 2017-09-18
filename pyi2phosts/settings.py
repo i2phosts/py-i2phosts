@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pyi2phosts.postkey.apps.PostkeyConfig',
     'pyi2phosts.extsources.apps.ExtsourcesConfig',
+    'pyi2phosts.pages.apps.PagesConfig',
 )
 
 
