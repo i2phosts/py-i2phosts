@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class ExtsourcesConfig(AppConfig):
-    name = 'extsources'
+    name = 'pyi2phosts.extsources'

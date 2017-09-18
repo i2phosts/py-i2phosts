@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class PostkeyConfig(AppConfig):
-    name = 'postkey'
+    name = 'pyi2phosts.postkey'

@@ -122,7 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django_extensions',
     'django.contrib.staticfiles',
-    'pyi2phosts.postkey.apps.Pyi2phostsConfig',
+    'pyi2phosts.postkey.apps.PostkeyConfig',
     'pyi2phosts.extsources.apps.ExtsourcesConfig',
 )
 
