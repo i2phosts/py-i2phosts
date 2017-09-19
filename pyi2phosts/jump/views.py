@@ -2,6 +2,7 @@ import re
 
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.template import RequestContext
@@ -24,7 +25,7 @@ def jumper(request, host):
     if h.activated == True:
         key = h.b64hash
     else:
-        return redirect('/search/?q=' + hostname)
+        return redirect(reverse('search', kwargs={'q': hostname}))
     # begin forming url
     url = 'http://' + hostname
     # get params from requst string, e.g. from 'example.i2p/smth/1?a=b&c=d' get 'smth/1?a=b&c=d'
@@ -47,4 +48,4 @@ def jumper(request, host):
         })
 
 def index(request):
-    return redirect('/')
+    return redirect(reverse('index'))

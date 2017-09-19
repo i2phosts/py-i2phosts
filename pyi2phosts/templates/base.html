@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="search_host">
-            <form action="/search/">
+            <form action="{% url 'search' %}">
                 <input class="input" name="q" maxlength="67" type="text" value="{% trans "Search host" %}"
                 onblur="if (value == '') {value = '{% trans "Search host" %}'}" onfocus="if (value == '{% trans "Search host" %}')
                 {value =''}" />

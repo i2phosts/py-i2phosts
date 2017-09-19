@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import RequestContext
 from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from pyi2phosts.postkey.models import i2phost
@@ -74,11 +75,11 @@ def save_host(request):
                 description=request.session['description'],
                 date_added=datetime.datetime.utcnow())
         host.save()
-        return redirect('/postkey/success/')
+        return redirect(reverse('postkey-views-success'))
     else:
         log.warning('refusing to save already existing host: %s', request.session['hostname'])
         request.session.flush()
-        return redirect('/')
+        return redirect(reverse('index'))
 
 def addkey(request):
     if request.method == 'POST':
@@ -88,7 +89,7 @@ def addkey(request):
             request.session['b64hash'] = form.cleaned_data['b64hash']
             request.session['description'] = form.cleaned_data['description']
             if form.cleaned_data['name'].count('.') > 1:
-                return redirect('/postkey/subdomain/')
+                return redirect(reverse('postkey-views-subdomain'))
             else:
                 log.debug('submit is valid, saving')
                 s = save_host(request)
@@ -107,7 +108,7 @@ def success(request):
             'hostname': hn,
             })
     else:
-        return redirect('/')
+        return redirect(reverse('index'))
 
 def subdomain(request):
     """Subdomain verification"""
@@ -123,12 +124,12 @@ def subdomain(request):
                     h = i2phost.objects.get(name=request.session['topdomain'])
                 except i2phost.DoesNotExist:
                     log.warning('refusing to verify subdomain for inexistent 2nd-level domain: %s', request.session['topdomain'])
-                    return redirect('/')
+                    return redirect(reverse('index'))
                 topdomain_b32 = get_b32(h.b64hash)
                 url = 'http://' + topdomain_b32 + '/' + request.session['v_filename']
             else:
                 log.warning('trying to call subdomain validation without a session')
-                return redirect('/')
+                return redirect(reverse('index'))
             log.info('starting http-verification of subdomain: %s', request.session['hostname'])
             try:
                 log.debug('trying to open %s', url)
@@ -156,7 +157,7 @@ def subdomain(request):
             m = re.match('.+\.(.+\.i2p$)', request.session['hostname'])
             topdomain = m.group(1)
         else:
-            return redirect('/')
+            return redirect(reverse('index'))
         # save needed variables in session data because otherwise it will be lost
         request.session['v_filename'] = v_filename
         request.session['topdomain'] = topdomain
