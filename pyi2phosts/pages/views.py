@@ -13,5 +13,5 @@ class PageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PageView, self).get_context_data(**kwargs)
-        context['page'] = Page.objects.get(name=context['name'])
+        context['page'] = Page.objects.get(name=context['page_name'])
         return context
