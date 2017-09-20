@@ -11,8 +11,8 @@ from pyi2phosts.pages.views import PageView
 
 
 urlpatterns = [
-        url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
         url(r'^faq/$', FaqView.as_view(), name='faq'),
+        url(r'^subscription/$', TemplateView.as_view(template_name='subscription.html'), name='subscription'),
         url(r'^browse/$', HostsListsView.as_view(), name='browse'),
         url(r'^browse/rss/$', AliveHostsFeed(), name='browse-rss'),
 
@@ -24,6 +24,7 @@ urlpatterns = [
         url(r'^i18n/', include('django.conf.urls.i18n')),
 
         # put your custom pages here
+        url(r'^$', PageView.as_view(), {'page_name': 'index'}, name='index'),
         url(r'^(?P<page_name>contacts)/$', PageView.as_view(), name='page'),
 
         # admin site

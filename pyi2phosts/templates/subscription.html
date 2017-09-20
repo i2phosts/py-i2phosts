@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdownify %}
+
+{% block content %}
+
+{% filter markdownify %}
+{% url 'jump-views-jumper' 'example.i2p' as jump_url %}
+{% url 'jump-views-index' as jump_index %}
+
+Subscription to hosts feed
+==========================
+
+To start getting new hostnames from {{ title }}, add one of these subscription links to your i2p router:
+
+* <http://{{ domain }}/export/alive-hosts.txt>
+* <http://{{ b32 }}/export/alive-hosts.txt>
+
+i2pd router instructions
+------------------------
+
+In the i2pd.conf:
+
+    [addressbook]
+    defaulturl = http://{{ b32 }}/export/alive-hosts.txt
+
+java router instructions
+------------------------
+
+1. [Add](http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }})
+{{ title }} destination to the addressbook
+1. Go to the [router's addressbook](http://localhost:7657/susidns/subscriptions.jsp)
+1. Add subscription link listed before
+
+Jump service
+============
+
+{{ title }} also provides a jump service. For accessing hosts through it,
+use urls like [http://{{ domain }}{{ jump_url }}]({{ jump_url }})
+
+Java I2P since 0.8.3 gives possibility to add a custom jump-servers. Go to the i2ptunnel
+[eeproxy configuration page](http://localhost:7657/i2ptunnel/edit?tunnel=0)
+*<http://{{ domain }}{{ jump_index }}>* to "Jump URL List" section.
+{% endfilter %}
+
+{% endblock %}
+
+{% block footer-addon %}
+    <a href=http://{{ b32 }}>b32</a> | <a href=http://localhost:7657/susidns/addressbook.jsp?book=private&hostname={{ domain }}&destination={{ b64 }}>{% trans "add" %}</a> |
+{% endblock %}
