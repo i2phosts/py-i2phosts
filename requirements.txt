@@ -1,5 +1,9 @@
 Django==1.11
 django-extensions
+
+# to have runserver_plus
+Werkzeug
+
 configobj
 python-daemon
 simplejson
