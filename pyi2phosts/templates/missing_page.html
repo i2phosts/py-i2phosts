@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load markdownify %}
+
+{% block content %}
+{% filter markdownify %}
+Missing page
+============
+
+You're requested a missing page.
+
+How to create this page
+-----------------------
+
+Go to the django admin, find "pages", add new and save it with name you just requested.
+{% endfilter %}
+{% endblock %}
