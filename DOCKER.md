@@ -51,3 +51,9 @@ Create django superuser:
 docker-compose exec app ./manage.py createsuperuser
 ```
 
+Clean up:
+
+```
+docker network disconnect pyi2phosts_default i2pd
+docker-compose down
+```
