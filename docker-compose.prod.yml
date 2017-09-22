@@ -36,8 +36,6 @@ services:
       - static:/static
     expose:
       - "9000"
-    networks:
-      - i2p
 
   master:
     environment:
@@ -63,8 +61,6 @@ services:
     command: master
     volumes:
       - export:/export
-    networks:
-      - i2p
 
   www:
     build:
@@ -77,12 +73,7 @@ services:
       - export:/export
     expose:
       - "80"
-    networks:
-      - i2p
 volumes:
   static:
   export:
   dbdata:
-networks:
-  i2p:
-    driver: bridge
