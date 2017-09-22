@@ -24,12 +24,13 @@ Running in production
 The recommended way is to use docker to use py-i2phosts in production.
 
 * Running in [DOCKER](DOCKER.md)
-* Customizing pages (Contacts, FAQ, etc) [PAGES](PAGES.md)
+* Customizing pages (index, contacts, etc) [PAGES](PAGES.md)
 
 Development
 -----------
 
-* [Development deploy using virtualenv](VENV.md)
+* [Development in docker](DOCKER.md)
+* [Development locally using virtualenv](VENV.md)
 * [Architecture overview](ARCH.md)
 
 TODO and ideas
