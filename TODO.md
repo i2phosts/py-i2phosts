@@ -23,8 +23,7 @@ TODO and ideas
 * Display "key conflict" errors in admin interface or send email to admin
 * Probe alive hosts for http service, and provide http:// links at browse page only for them
 * Implement json-rpc API for inter-registration services communications.
-* Move customizable info from templates to db (edit content via django admin + markdown)
-* Custom templates support
+* DB backups for docker
 
 **Other**
 * Write some documentation ("how it works" for each component, INSTALL, README and so on)
