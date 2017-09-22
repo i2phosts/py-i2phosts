@@ -1,0 +1,11 @@
+include = /etc/py-i2phosts/common.conf
+
+bob_addr = {{ getenv "bob_addr" }}
+
+lookup_retries = {{ getenv "checker_lookup_retries" }}
+
+# i2pd
+#lookup_retries = 1
+
+# for java i2p
+#lookup_retries = 2

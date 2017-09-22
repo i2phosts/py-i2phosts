@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  db:
+    environment:
+      POSTGRES_USER: pyi2phosts
+      POSTGRES_PASSWORD: pass
+    restart: unless-stopped
+    image: postgres:9.6
+    expose:
+      - "5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  app:
+    environment:
+      DB_HOST: db
+      DB_NAME: pyi2phosts
+      DB_USER: pyi2phosts
+      DB_PASS: pass
+      proxyurl: http://i2pd:4445/
+      TIME_ZONE: Europe/Moscow
+      SECRET_KEY: fooobar_changeme
+      SITE_NAME: My cool registration service
+      DOMAIN: example.i2p
+      MY_B64: loooooooong b64
+    restart: unless-stopped
+    depends_on:
+      - db
+    image: py-i2phosts
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: uwsgi
+    volumes:
+      - static:/static
+    expose:
+      - "9000"
+    networks:
+      - i2p
+
+  master:
+    environment:
+      proxyurl: http://i2pd:4445/
+      bob_addr: i2pd:2827
+      builder_hostsfile: /export/alive-hosts.txt
+      DB_HOST: db
+      DB_NAME: pyi2phosts
+      DB_USER: pyi2phosts
+      DB_PASS: pass
+      TIME_ZONE: Europe/Moscow
+      SECRET_KEY: fooobar_changeme
+      SITE_NAME: My cool registration service
+      DOMAIN: example.i2p
+      MY_B64: loooooooong b64
+    restart: unless-stopped
+    # app should populate db on first run so wait for it
+    depends_on:
+      - app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: master
+    volumes:
+      - export:/export
+    networks:
+      - i2p
+
+  www:
+    build:
+      context: ./docker/nginx
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - static:/static
+      - export:/export
+    expose:
+      - "80"
+    networks:
+      - i2p
+volumes:
+  static:
+  export:
+  dbdata:
+networks:
+  i2p:
+    driver: bridge

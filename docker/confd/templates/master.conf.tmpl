@@ -1,0 +1,7 @@
+include = /etc/py-i2phosts/common.conf
+
+# number of seconds between checks
+check_interval = {{ getenv "master_check_interval" }}
+
+# number of seconds between fetching new hosts
+fetch_interval = {{ getenv "master_fetch_interval" }}

@@ -1,0 +1,19 @@
+include = /etc/py-i2phosts/common.conf
+
+# external hosts which we never seen after X days of inactivity will be deleted
+external_inactive_max = {{ getenv "maintainer_external_inactive_max" }}
+
+# internal hosts which never seen after X days of inactivity will be deleted
+internal_inactive_max = {{ getenv "maintainer_internal_inactive_max" }}
+
+# external hosts expires after X days since last seen
+external_expires = {{ getenv "maintainer_external_expires" }}
+
+# internal hosts expires after X days since last seen
+internal_expires = {{ getenv "maintainer_internal_expires" }}
+
+# minimal delay (in days) before activation of new host since it was added
+activate_min_delay = {{ getenv "maintainer_activate_min_delay" }}
+
+# keep expired hosts X days before deletion
+keep_expired = {{ getenv "maintainer_keep_expired" }}

@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db-dev:
+    environment:
+      POSTGRES_USER: pyi2phosts
+      POSTGRES_PASSWORD: pass
+    image: postgres:9.6
+    expose:
+      - "5432"
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+
+  app-dev:
+    # We bypassing the current code into the CT but we need to make sure we have docker-aware local_settings.
+    # Also, wait until Postgres is up, then run stuff.
+    command: bash -c "while ! nc -w 1 -z db-dev 5432; do sleep 0.1; done; ./manage.py migrate; while :; do ./manage.py runserver_plus 0.0.0.0:8000; sleep 1; done"
+    image: py-i2phosts
+    build: .
+    volumes:
+      - .:/opt/py-i2phosts
+    depends_on:
+      - db-dev
+    environment:
+      DJANGO_ENV: devel
+      DB_HOST: db-dev
+      DB_NAME: pyi2phosts
+      DB_USER: pyi2phosts
+      DB_PASS: pass
+      proxyurl: http://i2pd:4445/
+      bob_addr: i2pd:2827
+      builder_hostsfile: /export/alive-hosts.txt
+      TIME_ZONE: Europe/Moscow
+      SECRET_KEY: fooobar_changeme
+      SITE_NAME: Development reg service
+      DOMAIN: example.i2p
+      MY_B64: loooooooong b64
+
+
+  www-dev:
+    image: jumanjiman/caddy
+    depends_on:
+      - app-dev
+    ports:
+      - "8000:8000"
+    command: -port 8000 -host 0.0.0.0 "proxy / app-dev:8000 { }"
+

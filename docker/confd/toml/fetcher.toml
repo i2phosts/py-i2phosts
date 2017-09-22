@@ -1,0 +1,3 @@
+[template]
+src = "fetcher.conf.tmpl"
+dest = "/etc/py-i2phosts/fetcher.conf"
