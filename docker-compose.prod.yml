@@ -55,6 +55,7 @@ services:
     # app should populate db on first run so wait for it
     depends_on:
       - app
+    image: py-i2phosts
     build:
       context: .
       dockerfile: ./Dockerfile
