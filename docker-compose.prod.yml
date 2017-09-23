@@ -74,7 +74,12 @@ services:
       - export:/export
     expose:
       - "80"
+
 volumes:
   static:
   export:
   dbdata:
+
+networks:
+  default:
+    internal: true
