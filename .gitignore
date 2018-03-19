@@ -2,6 +2,5 @@
 *.pyo
 *.swp
 *.mo
-local_settings.py
 i2p/
 venv/
