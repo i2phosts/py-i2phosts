@@ -1,12 +1,12 @@
 Django==1.11
-django-extensions
+django-extensions==1.9.1
 
 # to have runserver_plus
-Werkzeug
+Werkzeug==0.12.2
 
-configobj
-python-daemon
-simplejson
-psycopg2
-markdown
-django-markdownify
+configobj==5.0.6
+python-daemon==2.1.2
+simplejson==3.11.1
+psycopg2==2.7.3.1
+markdown==2.6.9
+django-markdownify==0.2.1
